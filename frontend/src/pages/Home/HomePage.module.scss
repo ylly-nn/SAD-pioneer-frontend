@@ -1,0 +1,140 @@
+.page {
+    position: relative;
+    background: rgb(22, 71, 71);
+    height: 100vh;
+    width: 100vw; 
+
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: url('../../assets/33.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.container {
+    z-index: 2;
+    margin: 3%;
+}
+
+.header {
+    margin-top: 20px;
+    display: flex;
+    align-items: baseline;
+}
+
+.title {
+    font-size: 140pt;
+    font-weight: 900;
+    color: #F7F7F7;
+    line-height: 1;
+    margin: 0;
+  
+}
+
+.subtitle {
+    font-size: 20pt;
+    color: #549293;
+    font-weight: bold;
+    text-align: right;
+    margin: 0;
+    margin-left: 20px;
+}
+
+
+
+.section {
+    margin-top: 150px;
+}
+
+.sectionTitle {
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    color: #F7F7F7;
+    font-size: 20pt;;
+  
+}
+
+.cards {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    margin-top: 60px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.card {
+    width: 48%;
+}
+
+.cardButton {
+    border-radius: 12px;
+    padding: 15px;
+    background-color: #0e0e0ed2;
+
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box; 
+
+    background: linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.119) 0%,
+        rgba(33, 33, 33, 0.299) 80%,
+        rgba(21, 21, 21, 0) 100%
+    );
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(10px);
+    
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 
+        0 8px 20px rgba(0, 0, 0, 0.2),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.1),
+        inset 0 -2px 5px rgba(0, 0, 0, 0.1);
+
+}
+
+.cardButton:hover {
+    background: linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.35) 0%,
+        rgba(255, 255, 255, 0.1) 80%,
+        rgba(255, 255, 255, 0.0) 100%
+    );
+    backdrop-filter: blur(20px);
+    border-color: rgba(255, 255, 255, 0.35);
+    box-shadow: 
+        0 12px 28px rgba(0, 0, 0, 0.3),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.2),
+        inset 0 -2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.cardTitle {
+    font-size: 30px;
+    color: #F7F7F7;
+    margin-bottom: 0;
+}
+
+.cardTitle::after {
+    content: '';
+    display: block;
+    width: 98%;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.5);
+    margin-top: 8px;
+    margin-bottom: 20px; 
+    margin-left: auto;
+    margin-right: auto; 
+}
+
+.cardDescription {
+    font-size: 11px;
+    color: #F7F7F7
+}
+
+
+
+
