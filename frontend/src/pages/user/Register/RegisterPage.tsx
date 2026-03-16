@@ -21,7 +21,7 @@ const RegisterPage = () => {
   } = useRegisterForm();
 
   const [showPassword, setShowPassword] = useState(false);
-
+  
   const togglePassword = () => setShowPassword(!showPassword);
 
   return (

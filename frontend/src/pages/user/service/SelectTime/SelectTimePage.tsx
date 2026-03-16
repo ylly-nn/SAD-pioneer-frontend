@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./SelectTimePage.module.scss";
-import { useHandlesLogic } from "../../../../hooks/handlesLogic";
+//import { useHandlesLogic } from "../../../../hooks/handlesLogic";
 
 interface Service {
   id: string;
@@ -31,7 +31,7 @@ interface TimeSlot {
 
 const SelectTimePage = () => {
   const navigate = useNavigate();
-  const { handleSelectDetails } = useHandlesLogic();
+  //const { handleSelectDetails } = useHandlesLogic();
 
   const [draft, setDraft] = useState<BookingDraft | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
@@ -146,8 +146,6 @@ const SelectTimePage = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const {
-    handleHome,
 
     if (!selectedDate || !selectedTime) {
       alert("Выберите дату и время");

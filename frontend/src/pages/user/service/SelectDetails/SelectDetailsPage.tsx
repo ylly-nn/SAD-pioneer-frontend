@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./SelectDetailsPage.module.scss";
-import { useHandlesLogic } from "../../../../hooks/handlesLogic";
+//import { useHandlesLogic } from "../../../../hooks/handlesLogic";
 import washImg from "../../../../assets/wash.jpg";
 
 interface Service {
@@ -18,7 +18,7 @@ interface Organization {
 
 const SelectDetailsPage = () => {
   const navigate = useNavigate();
-  const { handleSelectOrganization } = useHandlesLogic();
+  //const { handleSelectOrganization } = useHandlesLogic();
 
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const [organization, setOrganization] = useState<Organization>({
@@ -86,8 +86,6 @@ const SelectDetailsPage = () => {
     // Сохраняем в localStorage
     const currentDraft = JSON.parse(localStorage.getItem("bookingDraft") || "{}");
     const selectedServicesData = availableServices.filter(s => selectedServices.includes(s.id));
-    const {
-    handleHome
 
     const updatedDraft = {
       ...currentDraft,

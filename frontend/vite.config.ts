@@ -10,8 +10,8 @@ export default defineConfig({
       '/api': {
         
         // основа
-        //target: 'http://localhost:8080', // для теста
-        target: 'http://10.129.0.3:8080', 
+        target: 'http://localhost:8080', // для теста
+        //target: 'http://10.129.0.3:8080', 
         changeOrigin: true,        
         rewrite: (path) => path.replace(/^\/api/, '')
 
