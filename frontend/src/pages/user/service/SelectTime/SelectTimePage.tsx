@@ -6,20 +6,6 @@ const SelectTimePage = () => {
 
     const {
     handleHome,
-    handleUserLogin,
-    handleUserRegister,
-    handleSelectService,
-    handleSelectOrganization,
-    handleSelectDetails,
-    handleSelectTime,
-    handleConfirmBooking,
-
-    handleOrganizationLogin,
-    handleOrganizationRegister,
-    handleViewForm,
-
-    handleAdminFormView,
-    handleAdminFormList,
 
   } = useHandlesLogic();
 

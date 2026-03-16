@@ -3,49 +3,17 @@ import styles from "./LoginPage.module.scss";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
-
 import { ROUTES } from "../../../constants/routes";
-import { useHandlesLogic } from "../../../hooks/handlesLogic";
-import { authService } from "../../../api/authService";
+import { useNavigation } from "../../../hooks/useNavigation";
+import { useLoginForm } from "../../../hooks/useLoginForm";
 
 const LoginPage = () => {
 
-    const {
-    handleHome,
-  } = useHandlesLogic();
+  const { goHome } = useNavigation();
+  const { formData, error, isLoading, handleChange, handleSubmit } = useLoginForm();
 
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-
-  const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-    setIsLoading(true);
-
-    try {
-      const response = await authService.login(formData);
-      console.log("Успешный вход:", response);
-      
-      
-    } catch (err: any) {
-      const message = err.response?.data?.message || "Ошибка авторизации";
-      setError(message);
-      console.error("Ошибка логина:", message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
+  const [showPassword, setShowPassword] = useState(false);
+  const togglePassword = () => setShowPassword(!showPassword);
 
   return (
     <div className={styles.page}>
@@ -54,7 +22,7 @@ const LoginPage = () => {
           <h1 className={styles.title}>Вход</h1>
           <button
             className={styles.close}
-            onClick={handleHome}
+            onClick={goHome}
             aria-label="Закрыть"
           >
             ✕
@@ -81,13 +49,25 @@ const LoginPage = () => {
             </div>
 
             <div className={styles.field}>
-              <label className={styles.label} htmlFor="password">
-                Пароль
-              </label>
+              <div className={styles.b}>
+                <label className={styles.label} htmlFor="password">
+                  пароль
+                </label>
+                <button
+                  type="button"
+                  className={styles.eyeButton}
+                  onClick={togglePassword}
+                  aria-label={
+                    showPassword ? "Скрыть пароль" : "Показать пароль"
+                  }
+                >
+                  {showPassword ? "●" : "○"}
+                </button>
+              </div>
               <input
                 id="password"
                 name="password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 placeholder="введите пароль"
                 required
                 className={styles.input}
