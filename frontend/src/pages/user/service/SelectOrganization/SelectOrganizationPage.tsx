@@ -27,7 +27,6 @@ const SelectOrganizationPage = () => {
 
   const [isProgrammaticChange, setIsProgrammaticChange] = useState(false)
 
-  /* debounce */
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -37,7 +36,6 @@ const SelectOrganizationPage = () => {
     return () => clearTimeout(timer)
   }, [search])
 
-  /* поиск */
 
   useEffect(() => {
   if (isProgrammaticChange) {
@@ -60,7 +58,6 @@ const SelectOrganizationPage = () => {
   setSuggestions(filtered)
 }, [debouncedSearch])
 
-  /* закрытие dropdown */
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -76,7 +73,6 @@ const SelectOrganizationPage = () => {
     }
   }, [])
 
-  /* esc закрывает список */
 
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
@@ -90,7 +86,6 @@ const SelectOrganizationPage = () => {
     return () => document.removeEventListener("keydown", handleEsc)
   }, [])
 
-  /* перемещение карты */
 
   const moveMapTo = (coords: number[]) => {
     if (!mapRef.current) return
@@ -100,7 +95,6 @@ const SelectOrganizationPage = () => {
     })
   }
 
-  /* выбор из списка */
 
   const selectOrganization = (org: Organization) => {
   setIsProgrammaticChange(true)
@@ -111,7 +105,6 @@ const SelectOrganizationPage = () => {
   setSuggestions([])
 }
 
-  /* клик по карте */
 
   const handleMarkerClick = (org: Organization) => {
   setIsProgrammaticChange(true)

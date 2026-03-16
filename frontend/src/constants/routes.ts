@@ -5,8 +5,10 @@ export const ROUTES = {
   
   // для владельцев автомобилей
   USER: {
+    Profile:'/user',
     LOGIN:'/user/login',
     REGISTER: '/user/register',
+    Verify: '/user/verify',
     SERVICE: {
         SELECT: '/user/service',
         ORGANIZATION: '/user/service/select-organization',
@@ -20,6 +22,7 @@ export const ROUTES = {
   ORGANIZATION: {
     LOGIN: '/organization/login',
     REGISTER: '/organization/register',
+    EDIT_FORM: '/organization/edit-form',
     VIEW_FORM: '/organization/view-form',
   },
   

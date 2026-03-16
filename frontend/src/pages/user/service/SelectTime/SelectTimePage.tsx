@@ -146,6 +146,8 @@ const SelectTimePage = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const {
+    handleHome,
 
     if (!selectedDate || !selectedTime) {
       alert("Выберите дату и время");

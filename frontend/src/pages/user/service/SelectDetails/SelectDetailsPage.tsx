@@ -86,6 +86,8 @@ const SelectDetailsPage = () => {
     // Сохраняем в localStorage
     const currentDraft = JSON.parse(localStorage.getItem("bookingDraft") || "{}");
     const selectedServicesData = availableServices.filter(s => selectedServices.includes(s.id));
+    const {
+    handleHome
 
     const updatedDraft = {
       ...currentDraft,
