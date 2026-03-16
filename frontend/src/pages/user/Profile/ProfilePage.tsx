@@ -1,6 +1,7 @@
 import styles from "./ProfilePage.module.scss";
 
 import { useHandlesLogic } from "../../../hooks/handlesLogic";
+import { useLogout } from "../../../hooks/useLogout";
 
 const ProfilePage = () => {
 
@@ -9,6 +10,8 @@ const ProfilePage = () => {
     handleSelectService,
   } = useHandlesLogic();
 
+  const { logout } = useLogout();
+
   return (
     <div className={styles.container}>
       Профиль пользователя
@@ -16,6 +19,14 @@ const ProfilePage = () => {
       <button onClick={handleHome}>
           дом
       </button>
+
+      <button onClick={handleSelectService}>
+          оформить новый заказ
+      </button>
+
+      
+
+<button onClick={logout}>Выйти</button>
 
     </div>
   );

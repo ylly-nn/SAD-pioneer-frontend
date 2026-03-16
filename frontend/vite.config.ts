@@ -5,16 +5,18 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
-  
-  //добвил прокси, который перехватывает все запросы с префиксом /api и cам отправляет на удаленный сервер, чтобы не срабатывал cors
   server: {
     proxy: {
       '/api': {
         
-        //добавил dns запись для dev сервера, теперь можно обращаться к нему по имени
-        target: 'http://dev.pionner.ru',
-        changeOrigin: true,
-        
+        // основа
+        target: 'http://localhost:8080', // для теста
+        //target: 'http://10.129.0.3:8080', 
+        changeOrigin: true,        
+        rewrite: (path) => path.replace(/^\/api/, '')
+
+        // target: 'https://dev.pionner.ru/',
+        // changeOrigin: true,
         
       },
     },
