@@ -112,6 +112,23 @@
   color: #f7f7f7;
 }
 
+.eyeButton {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: #666;
+  transition: color 0.2s;
+
+  &:hover {
+    color: #333;
+  }
+}
+
+.b {
+  display: flex;
+  align-items: flex-start;
+}
+
 .input {
   box-sizing: border-box;
   height: 45px;
