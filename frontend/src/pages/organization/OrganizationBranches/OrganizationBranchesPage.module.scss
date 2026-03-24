@@ -1,0 +1,383 @@
+// OrganizationBranchesPage.module.scss
+
+.page {
+  background: #f3f4f6;
+  min-height: 100vh;
+  padding: 30px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 24px;
+  padding: 32px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+// Заголовок
+.header {
+  margin-bottom: 32px;
+}
+
+.headerTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.totalBranches {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: #f0f8f8;
+  border-radius: 30px;
+  border: 1px solid rgba(84, 146, 147, 0.2);
+}
+
+.totalLabel {
+  font-size: 14px;
+  color: #4b5563;
+}
+
+.totalValue {
+  font-size: 18px;
+  font-weight: 700;
+  color: #549293;
+}
+
+.addButton {
+  background: #549293;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(84, 146, 147, 0.2);
+}
+
+.addButton:hover {
+  background: #447c7d;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(84, 146, 147, 0.3);
+}
+
+.addIcon {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+// Поиск
+.searchSection {
+  margin-bottom: 24px;
+}
+
+.searchWrapper {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  color: #9ca3af;
+}
+
+.searchInput {
+  width: 100%;
+  height: 48px;
+  padding: 0 16px 0 44px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  font-size: 15px;
+  color: #1f2937;
+  transition: all 0.2s ease;
+  background: white;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #549293;
+  box-shadow: 0 0 0 3px rgba(84, 146, 147, 0.1);
+}
+
+.searchInput::placeholder {
+  color: #9ca3af;
+}
+
+// Удаляем старый блок статистики
+.stats {
+  display: none;
+}
+
+// Список филиалов
+.branchesList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 20px;
+}
+
+.branchCard {
+  background: #f9fafb;
+  border-radius: 16px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+.branchCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  border-color: #549293;
+}
+
+.branchCard.inactive {
+  opacity: 0.7;
+  background: #f3f4f6;
+}
+
+.branchCard.inactive:hover {
+  opacity: 0.8;
+}
+
+// Заголовок карточки
+.branchHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.branchTitle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.branchName {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0;
+}
+
+.status {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: 20px;
+}
+
+.status.active {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.status.inactive {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+// Действия с карточкой
+.branchActions {
+  display: flex;
+  gap: 8px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.branchCard:hover .branchActions {
+  opacity: 1;
+}
+
+.actionButton {
+  width: 36px;
+  height: 36px;
+  border: 1px solid #e5e7eb;
+  background: white;
+  border-radius: 8px;
+  color: #6b7280;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.actionButton:hover {
+  border-color: #549293;
+  color: #549293;
+  transform: scale(1.05);
+}
+
+// Информация о филиале
+.branchAddress,
+.branchSchedule,
+.branchPhone {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  color: #4b5563;
+  font-size: 14px;
+}
+
+.branchAddress svg,
+.branchSchedule svg,
+.branchPhone svg {
+  color: #9ca3af;
+  flex-shrink: 0;
+}
+
+.branchAddress span,
+.branchSchedule span,
+.branchPhone span {
+  line-height: 1.4;
+}
+
+.branchPhone {
+  margin-bottom: 0;
+  padding-top: 8px;
+  border-top: 1px dashed #e5e7eb;
+}
+
+// Пустое состояние
+.emptyState {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 20px;
+  background: #f9fafb;
+  border-radius: 16px;
+  color: #6b7280;
+}
+
+.emptyState svg {
+  color: #d1d5db;
+  margin-bottom: 20px;
+}
+
+.emptyState h3 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 8px;
+}
+
+.emptyState p {
+  font-size: 15px;
+  color: #6b7280;
+  margin-bottom: 24px;
+}
+
+.createFirstButton {
+  background: #549293;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 32px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.createFirstButton:hover {
+  background: #447c7d;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(84, 146, 147, 0.2);
+}
+
+// Адаптивность
+@media (max-width: 768px) {
+  .page {
+    padding: 16px;
+  }
+
+  .container {
+    padding: 20px;
+  }
+
+  .title {
+    font-size: 24px;
+  }
+
+  .headerTop {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .headerActions {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .totalBranches {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .addButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .searchWrapper {
+    max-width: 100%;
+  }
+
+  .branchesList {
+    grid-template-columns: 1fr;
+  }
+
+  .branchActions {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 16px;
+  }
+
+  .branchHeader {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .branchActions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
