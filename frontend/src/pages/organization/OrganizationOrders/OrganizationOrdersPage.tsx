@@ -1,4 +1,3 @@
-// OrganizationOrdersPage.tsx - упрощенная версия
 import { useState } from "react";
 import styles from "./OrganizationOrdersPage.module.scss";
 
@@ -41,8 +40,8 @@ const OrganizationOrdersPage = () => {
       order_id: "550e8400-e29b-41d4-a716-446655440000",
       branch_id: "1",
       branch_name: "Филиал 1",
-      branch_city: "слэйград",
-      branch_address: "ул. убийственных котов",
+      branch_city: "Москва",
+      branch_address: "ул. Ленина, 15",
       service: "Шиномонтаж",
       details: "Сезонная смена шин, балансировка",
       start_time: "2024-01-20T10:00:00",
@@ -56,8 +55,8 @@ const OrganizationOrdersPage = () => {
       order_id: "660e8400-e29b-41d4-a716-446655440001",
       branch_id: "1",
       branch_name: "Филиал 1",
-      branch_city: "слэйград",
-      branch_address: "ул. убийственных котов 2",
+      branch_city: "Москва",
+      branch_address: "ул. Ленина, 15",
       service: "Автомойка",
       details: "Комплексная мойка кузова, химчистка салона",
       start_time: "2024-01-20T14:00:00",
@@ -104,7 +103,7 @@ const OrganizationOrdersPage = () => {
     };
   };
 
-  const updateOrderStatus = async (orderId: string, status: string) => {
+  const updateOrderStatus = async () => {
     setLoading(true);
     await new Promise(resolve => setTimeout(resolve, 500));
     setLoading(false);
@@ -124,12 +123,10 @@ const OrganizationOrdersPage = () => {
   const handleConfirmStatusChange = async () => {
     if (!selectedOrder || !newStatus) return;
     
-    // Если статус изменился
     if (newStatus !== selectedOrder.status) {
-      const success = await updateOrderStatus(selectedOrder.order_id, newStatus);
+      const success = await updateOrderStatus();
       
       if (success) {
-        // Обновляем статус в списке
         setOrders(orders.map(order => 
           order.id === selectedOrder.id 
             ? { ...order, status: newStatus as Order["status"] }
