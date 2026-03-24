@@ -1,0 +1,331 @@
+.page {
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(22, 71, 71, 0.3);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.container {
+  position: relative;
+  z-index: 2;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 3%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  margin-top: 20px;
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.title {
+  font-size: clamp(60px, 10vw, 140px);
+  font-weight: 900;
+  color: #F7F7F7;
+  line-height: 1;
+  margin: 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.subtitle {
+  font-size: clamp(16px, 2vw, 20px);
+  color: #549293;
+  font-weight: bold;
+  text-align: right;
+  margin: 0;
+  margin-left: 20px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+// Информация об организации
+.orgInfo {
+  margin-top: 40px;
+  padding: 20px;
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.orgName {
+  font-size: clamp(24px, 4vw, 32px);
+  color: #F7F7F7;
+  margin: 0 0 10px 0;
+  font-weight: 700;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.orgContacts {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 16px;
+}
+
+.orgEmail,
+.orgPhone {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.orgEmail::before {
+  content: "✉";
+  color: #549293;
+}
+
+.orgPhone::before {
+  content: "📱";
+  color: #549293;
+}
+
+.section {
+  margin-top: 60px;
+  flex: 1;
+}
+
+.sectionTitle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #F7F7F7;
+  font-size: clamp(18px, 2.5vw, 24px);
+  margin-bottom: 40px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.cards {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+}
+
+.card {
+  width: 100%;
+  height: 100%;
+}
+
+.cardButton {
+  border-radius: 16px;
+  padding: 30px 25px;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.3s ease;
+
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.12) 0%,
+    rgba(33, 33, 33, 0.3) 80%,
+    rgba(21, 21, 21, 0.1) 100%
+  );
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 
+    0 8px 20px rgba(0, 0, 0, 0.25),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1),
+    inset 0 -2px 5px rgba(0, 0, 0, 0.15);
+}
+
+.cardButton:hover {
+  transform: translateY(-5px);
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.2) 0%,
+    rgba(255, 255, 255, 0.1) 80%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  backdrop-filter: blur(15px);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 
+    0 15px 30px rgba(0, 0, 0, 0.35),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.2),
+    inset 0 -2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.cardIcon {
+  font-size: 48px;
+  margin-bottom: 20px;
+  color: #549293;
+  filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.3));
+}
+
+.cardTitle {
+  font-size: clamp(20px, 2.5vw, 28px);
+  color: #F7F7F7;
+  margin: 0 0 15px 0;
+  font-weight: 600;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.cardTitle::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 2px;
+  background: #549293;
+  margin-top: 12px;
+  transition: width 0.3s ease;
+}
+
+.cardButton:hover .cardTitle::after {
+  width: 100px;
+}
+
+.cardDescription {
+  font-size: 14px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 20px;
+}
+
+.cardStats {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.stat {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.stat strong {
+  font-size: 18px;
+  color: #549293;
+  margin-right: 5px;
+  font-weight: 700;
+}
+
+// Футер
+.footer {
+  margin-top: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.backButton,
+.settingsButton {
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  padding: 10px 20px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.backButton:hover,
+.settingsButton:hover {
+  color: #F7F7F7;
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+// Адаптивность
+@media (max-width: 768px) {
+  .container {
+    padding: 5%;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .subtitle {
+    text-align: left;
+    margin-left: 0;
+  }
+
+  .orgInfo {
+    padding: 15px;
+  }
+
+  .orgContacts {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .cards {
+    grid-template-columns: 1fr;
+  }
+
+  .cardStats {
+    flex-wrap: wrap;
+  }
+
+  .footer {
+    flex-direction: column;
+    gap: 15px;
+    align-items: stretch;
+  }
+
+  .backButton,
+  .settingsButton {
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .cardButton {
+    padding: 20px;
+  }
+
+  .cardIcon {
+    font-size: 36px;
+  }
+
+  .cardTitle {
+    font-size: 22px;
+  }
+}
