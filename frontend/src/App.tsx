@@ -28,6 +28,9 @@ import OrganizationBranchForm from "./pages/organization/brabch/BranchForm/Branc
 import AdminFormsList from "./pages/admin/FormsList/FormsListPage";
 import AdminFormView from "./pages/admin/FormView/FormViewPage";
 
+import AdminDashboardPage from "./pages/admin/AdminDashboard/AdminDashboardPage";
+import AdminRequestsPage from "./pages/admin/AdminRequests/AdminRequestsPage";
+
 const App = () => {
   
   return (
@@ -62,7 +65,14 @@ const App = () => {
         <Route path="/admin">
           <Route path="forms" element={<ProtectedRoute> <AdminFormsList /> </ProtectedRoute>} />
           <Route path="form/:id" element={<ProtectedRoute> <AdminFormView /> </ProtectedRoute>} />
+
+
+          <Route path="requests" element={<ProtectedRoute> <AdminRequestsPage /> </ProtectedRoute>} />
+          <Route path="panelka" element={<ProtectedRoute> <AdminDashboardPage /> </ProtectedRoute>} />
         </Route>
+
+
+        
         
         <Route path="*" element={<NotFound />} />
       </Routes>
