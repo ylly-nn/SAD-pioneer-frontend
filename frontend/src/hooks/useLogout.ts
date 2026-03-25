@@ -1,4 +1,4 @@
-import { authService } from "../api/authService";
+import { auth } from "../api/authService";
 import { tokenService } from "../api/tokenService";
 import { useNavigation } from "./useNavigation";
 
@@ -10,7 +10,7 @@ export const useLogout = () => {
 
     try {
       if (refreshToken) {
-        await authService.logout({
+        await auth.logout({
           refresh_token: refreshToken
         });
       }

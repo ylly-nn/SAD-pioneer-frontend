@@ -59,14 +59,14 @@ const EditFormPage = () => {
               <input name="name" placeholder="Имя"
                 value={formData.name} onChange={handleChange} />
 
-              <input name="middle_name" placeholder="Отчество"
-                value={formData.middle_name} onChange={handleChange} />
+              <input name="patronymic" placeholder="Отчество"
+                 value={formData.patronymic} onChange={handleChange} /> {/**/}
 
               <input name="email" type="email" placeholder="Email"
                 value={formData.email} onChange={handleChange} />
 
-              <input name="phone_number" placeholder="Телефон"
-                value={formData.phone_number} onChange={handleChange} />
+              <input name="phone" placeholder="Телефон"
+                value={formData.phone} onChange={handleChange} />
             </div>
 
           </div>

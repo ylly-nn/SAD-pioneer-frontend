@@ -1,14 +1,15 @@
 import axiosInstance from './axios';
 
-import type { LoginRequest, AuthResponse, RegisterRequest, VerifyRequest } from '../types/user';
+import type { LoginRequest, AuthResponse, RegisterRequest, VerifyRequest } from '../types/auth';
 
 // сервис авторизации 
-export const authService = {
+export const auth = {
   login: async (data: LoginRequest): Promise<AuthResponse> => {
 
     const response = await axiosInstance.post('auth/login', data);
     return response.data;
   },
+  
   register: async (data: RegisterRequest): Promise<AuthResponse> => {
     const response = await axiosInstance.post('auth/register', data);
     return response.data;

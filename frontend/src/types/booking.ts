@@ -1,6 +1,7 @@
 export type BookingDraft = {
   service?: string;
   address?: string;
-  organizationId?: number | null;
+  organizationId?: string | null
   rememberCity?: boolean;
 };
+// временно

@@ -1,0 +1,116 @@
+.page {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f5f5;
+}
+
+.card {
+  width: 100%;
+  max-width: 300px;
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.close {
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: #777;
+
+  &:hover {
+    color: #000;
+  }
+}
+
+/* form */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* field */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  font-size: 14px;
+  color: #555;
+}
+
+/* inputs */
+input {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+
+  &:focus {
+    outline: none;
+    border-color: #549293;
+    box-shadow: 0 0 0 2px rgba(84, 146, 147, 0.15);
+  }
+}
+
+/* время */
+.timeRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.timeDivider {
+  color: #999;
+}
+
+/* кнопка */
+.submit {
+  margin-top: 8px;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  background: #549293;
+  color: white;
+  cursor: pointer;
+  font-size: 15px;
+
+  &:hover {
+    background: #3f6f70;
+  }
+
+  &:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+  }
+}
+
+/* ошибка */
+.error {
+  color: red;
+  font-size: 14px;
+}

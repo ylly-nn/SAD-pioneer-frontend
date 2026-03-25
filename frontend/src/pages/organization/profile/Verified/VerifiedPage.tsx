@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
-import styles from "./OrganizationPage.module.scss";
-import backgroundImage from "../../../assets/33.jpg"; // Исправленный путь
+import styles from "./VerifiedPage.module.scss";
+import backgroundImage from "../../../../assets/33.jpg";
 
-const OrganizationHomePage = () => {
+const VerifiedPage = () => {
   const navigate = useNavigate();
 
   // Временные данные организации
@@ -122,4 +122,4 @@ const OrganizationHomePage = () => {
   );
 };
 
-export default OrganizationHomePage;
+export default VerifiedPage;

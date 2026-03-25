@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { authService } from "../api/authService";
+import { auth } from "../api/authService";
 import { useNavigation } from "./useNavigation";
 import { tokenService } from "../api/tokenService";
 
@@ -21,7 +21,7 @@ export const useLoginForm = () => {
     setIsLoading(true);
     try {
 
-      const response = await authService.login(formData);
+      const response = await auth.login(formData);
 
       tokenService.setTokens(
         response.access_token,

@@ -1,0 +1,342 @@
+.page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #f5f5f5;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  max-width: 1300px;
+  width: 100%;
+  margin: 20px auto;
+
+  background-color: white;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e0e0e0;
+
+  h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+  }
+}
+
+.toggleModalButton {
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: #666;
+
+  &:hover {
+    color: #000;
+  }
+}
+.modal{
+  display: flex;
+  flex-direction: column;
+}
+
+.modalButton {
+
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+
+  &:hover {
+    background: #3f6f70;
+  }
+}
+
+.scrollableArea {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 24px;
+}
+
+.columns {
+  display: flex;
+  gap: 24px;
+  height: 100%;
+}
+
+.section {
+  flex: 1;
+  min-width: 280px;
+  padding: 20px;
+  border-radius: 12px;
+  background: #fafafa;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.cardTitle {
+  margin-bottom: 16px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.infoRow {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+
+  span {
+    color: #777;
+  }
+}
+
+.serviceList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+  overflow: auto;
+  margin-bottom: 20px;
+}
+
+.serviceItemWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.serviceItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.serviceName {
+  font-weight: 500;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.detailsButton {
+  background-color: #549293;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #3f6f70;
+  }
+}
+
+.iconButton {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: #777;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background: #f0f0f0;
+    color: #000;
+  }
+}
+
+.active {
+  background: #e6f4f4;
+  color: #549293;
+}
+
+.serviceDetails {
+  padding: 12px;
+  border-radius: 8px;
+  background: #f3f3f3;
+  color:#666;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.detailItem {
+  display: flex;
+  justify-content: space-between;
+}
+
+.detailRight {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.deleteButton {
+  border: none;
+  background: transparent;
+  color: #999;
+  cursor: pointer;
+
+  &:hover {
+    color: red;
+  }
+}
+
+.summary {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid #ddd;
+  padding-top: 6px;
+  font-weight: 500;
+  color: #549293;
+}
+
+.noDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  p {
+    margin: 0;
+    color: #777;
+  }
+}
+
+.addDetailButton {
+  align-self: flex-start;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: none;
+  background: #549293;
+  color: white;
+  cursor: pointer;
+
+  &:hover {
+    background: #3f6f70;
+  }
+}
+
+.addService {
+  margin-top: auto;
+  padding: 10px;
+  border: 1px dashed #aaa;
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+
+  &:hover {
+    background: #f0f0f0;
+  }
+}
+
+
+.form {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.mainCard {
+  flex: 2;
+  max-width: 500px;
+
+  background: #f9fbfb;
+  border-radius: 16px;
+  padding: 32px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+
+.statusIcon {
+  font-size: 40px;
+}
+
+.mainTitle {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.mainText {
+  margin: 0;
+  color: #666;
+  line-height: 1.5;
+}
+
+.statusBadge {
+  margin-top: 10px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: #e6f4f4;
+  color: #549293;
+  font-weight: 500;
+}
+
+.card {
+  flex: 1;
+  max-width: 320px;
+
+  background: #fafafa;
+  border-radius: 12px;
+  padding: 20px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.subText {
+  margin: 0;
+  color: #777;
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+
+
+/* адаптив */
+@media (max-width: 768px) {
+  .content {
+    margin: 10px;
+  }
+
+  .columns {
+    flex-direction: column;
+  }
+
+  .scrollableArea {
+    padding: 0 16px;
+  }
+}

@@ -20,10 +20,16 @@ export const ROUTES = {
 
   // для организаций
   ORGANIZATION: {
+    PROFILE:'/organization',
     LOGIN: '/organization/login',
     REGISTER: '/organization/register',
     EDIT_FORM: '/organization/edit-form',
     VIEW_FORM: '/organization/view-form',
+    BRANCH:{
+      PROFILE: '/organization/branch',
+      FORM: '/organization/branch/form',
+      SERVICE: '/organization/branch/service',
+    },
   },
   
   // для администраторов

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { authService } from "../api/authService";
+import { auth } from "../api/authService";
 import { ROUTES } from "../constants/routes";
 
 export const useRegisterForm = () => {
@@ -40,7 +40,7 @@ export const useRegisterForm = () => {
 
     setIsLoading(true);
     try {
-      const response = await authService.register(formData);
+      const response = await auth.register(formData);
       console.log("Успешная регистрация:", response);
       navigate(ROUTES.USER.Verify, { state: { email: formData.email } });
     } catch (err: any) {

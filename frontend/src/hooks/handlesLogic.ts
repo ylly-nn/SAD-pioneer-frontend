@@ -64,16 +64,7 @@ export const useHandlesLogic = () => {
   // для администраторов
   const handleAdminFormView = () => navigate(ROUTES.ADMIN.FORMS);
   const handleAdminFormList = () => navigate(ROUTES.ADMIN.FORM_DETAIL);
-  
-  /*const handleLogout = () => {
-    logoutUser();
-    setUserData({
-      email: "",
-      id: null,
-      token: null,
-    });
-    window.location.href = '/';
-  };*/
+
 
   return {
     handleHome,

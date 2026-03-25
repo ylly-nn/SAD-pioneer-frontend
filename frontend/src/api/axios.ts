@@ -1,5 +1,5 @@
 import { tokenService } from "./tokenService";
-import { authService } from "./authService";
+import { auth } from "./authService";
 
 import axios from 'axios';
 
@@ -33,7 +33,7 @@ axiosInstance.interceptors.response.use(
 
         if (!refreshToken) throw error;
 
-        const response = await authService.refresh({
+        const response = await auth.refresh({
           refresh_token: refreshToken
         });
 

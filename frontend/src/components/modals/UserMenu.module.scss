@@ -1,0 +1,75 @@
+.wrapper {
+  position: absolute;
+  top: 60px;
+  right: 24px;
+  z-index: 1000;
+}
+
+.menu {
+  min-width: 220px;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 8px;
+
+  box-shadow: 
+    0 10px 25px rgba(0, 0, 0, 0.08),
+    0 4px 10px rgba(0, 0, 0, 0.04);
+
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  animation: dropdown 0.15s ease;
+}
+
+.item {
+  padding: 10px 12px;
+  border: none;
+  background: transparent;
+  text-align: left;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+
+  transition: background 0.15s ease;
+
+  &:hover {
+    background: #f5f7f7;
+  }
+
+  &:active {
+    background: #e6f4f4;
+  }
+}
+
+.divider {
+  height: 1px;
+  background: #eee;
+  margin: 6px 0;
+}
+
+.logout {
+  padding: 10px 12px;
+  border: none;
+  background: transparent;
+  text-align: left;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #d11a2a;
+
+  &:hover {
+    background: #fff1f1;
+  }
+}
+
+@keyframes dropdown {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

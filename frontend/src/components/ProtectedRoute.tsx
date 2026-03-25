@@ -15,6 +15,14 @@ export const HomeRouteUsers = ({ children }: Props) => {
   return <>{children}</>;
 };
 
+export const HomeRouteOrganizations = ({ children }: Props) => {
+  if (isAuthenticated()) {
+    return <Navigate to={ROUTES.ORGANIZATION.PROFILE} replace />;
+  }
+
+  return <>{children}</>;
+};
+
 export const ProtectedRoute = ({ children }: Props) => {
   if (!isAuthenticated()) {
     return <Navigate to={ROUTES.HOME} replace />;

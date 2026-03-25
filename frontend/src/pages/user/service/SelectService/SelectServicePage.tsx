@@ -2,19 +2,35 @@ import { useState } from "react";
 import styles from "./SelectServicePage.module.scss";
 
 import { useHandlesLogic } from "../../../../hooks/handlesLogic";
+import { useServices } from "../../../../hooks/useServices";
+import { useNavigation } from "../../../../hooks/useNavigation";
 
 import washImg from "../../../../assets/wash.jpg";
 import tireImg from "../../../../assets/tire.jpg";
 
 const SelectServicePage = () => {
-  const { handleHome, handleSubmitService } = useHandlesLogic();
-
-  const [selectedService, setSelectedService] = useState("wash");
+  const { goHome } = useNavigation();
+  const { services } = useServices();
+  const [selectedService, setSelectedService] = useState<string | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!selectedService) return;
+
+    localStorage.setItem("serviceId", selectedService);
+
     handleSubmitService(selectedService);
   };
+
+  const { handleSubmitService } = useHandlesLogic();
+
+  //const [selectedService, setSelectedService] = useState("wash");
+
+  /*const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    handleSubmitService(selectedService);
+  };*/
 
   return (
     <div className={styles.page}>
@@ -31,29 +47,17 @@ const SelectServicePage = () => {
                 <h2 className={styles.sectionTitle}>Выберите услугу</h2>
 
                 <div className={styles.serviceGrid}>
-                  <div
-                    className={`${styles.serviceCard} ${
-                      selectedService === "wash" ? styles.active : ""
-                    }`}
-                    onClick={() => setSelectedService("wash")}
-                  >
-                    <div className={styles.cardTitle}>Мойка</div>
-                    <div className={styles.cardDescription}>
-                      Быстрая и качественная мойка автомобиля
+                  {services.map((service) => (
+                    <div
+                      key={service.id}
+                      className={`${styles.serviceCard} ${
+                        selectedService === service.id ? styles.active : ""
+                      }`}
+                      onClick={() => setSelectedService(service.id)}
+                    >
+                      <div className={styles.cardTitle}>{service.name}</div>
                     </div>
-                  </div>
-
-                  <div
-                    className={`${styles.serviceCard} ${
-                      selectedService === "tire" ? styles.active : ""
-                    }`}
-                    onClick={() => setSelectedService("tire")}
-                  >
-                    <div className={styles.cardTitle}>Шиномонтаж</div>
-                    <div className={styles.cardDescription}>
-                      Замена и балансировка шин
-                    </div>
-                  </div>
+                  ))}
                 </div>
 
                 <button type="submit" className={styles.submit}>
@@ -63,7 +67,7 @@ const SelectServicePage = () => {
             </div>
 
             <div className={styles.footer}>
-              <button className={styles.backButton} onClick={handleHome}>
+              <button className={styles.backButton} onClick={goHome}>
                 Назад
               </button>
 

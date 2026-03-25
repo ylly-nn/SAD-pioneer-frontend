@@ -1,25 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../constants/routes";
-
-type EditFormData = {
-  inn: string;
-  kpp: string;
-  ogrn: string;
-  org_name: string;
-  org_short_name: string;
-
-  name: string;
-  surname: string;
-  middle_name: string;
-  email: string;
-  phone_number: string;
-
-  info: string;
-};
+import { organizationRequest } from "../api/organizationRequest";
+import { type PartnerRequest } from "../types/partnerRequest"
 
 export const useEditForm = () => {
-  const [formData, setFormData] = useState<EditFormData>({
+  const [formData, setFormData] = useState<PartnerRequest>({
     inn: "",
     kpp: "",
     ogrn: "",
@@ -28,9 +14,9 @@ export const useEditForm = () => {
 
     name: "",
     surname: "",
-    middle_name: "",
+    patronymic: "",
     email: "",
-    phone_number: "",
+    phone: "",
 
     info: ""
   });
@@ -69,13 +55,25 @@ export const useEditForm = () => {
 
     try {
       console.log("Отправка формы:", formData);
+      
+      // ОТПРАВЛЯЕМ ДАННЫЕ НА СЕРВЕР
+      const response = await organizationRequest.create(formData);
 
+      //console.log("представим, что отправились...")
+      
+      console.log("Ответ от сервера:", response);
+      
+      // ТОЛЬКО после успешной отправки переходим на страницу просмотра
       navigate(ROUTES.ORGANIZATION.VIEW_FORM, {
-        state: { email: formData.email }
+        state: { 
+          email: formData.email,
+          message: "Данные успешно отправлены!" 
+        }
       });
 
     } catch (err: any) {
-      setError(err?.response?.data?.message || "Ошибка отправки");
+      console.error("Ошибка при отправке:", err);
+      setError(err.response?.data?.message || err.message || "Ошибка отправки");
     } finally {
       setIsLoading(false);
     }
@@ -89,9 +87,9 @@ export const useEditForm = () => {
   formData.ogrn.trim() !== "" &&
   formData.surname.trim() !== "" &&
   formData.name.trim() !== "" &&
-  formData.middle_name.trim() !== "" &&
+  formData.patronymic.trim() !== "" &&
   formData.email.trim() !== "" &&
-  formData.phone_number.trim() !== "" &&
+  formData.phone.trim() !== "" &&
   termsAccepted;
 
   return {

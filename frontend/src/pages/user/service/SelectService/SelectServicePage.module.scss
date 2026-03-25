@@ -24,6 +24,7 @@
   min-height: 0;
 }
 
+
 /* левая сторона */
 
 .leftSection {
@@ -62,6 +63,9 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  max-height: 200px; /* или любую другую высоту */
+  overflow-y: auto; /* добавляет скролл при необходимости */
+  
 }
 
 .serviceCard {

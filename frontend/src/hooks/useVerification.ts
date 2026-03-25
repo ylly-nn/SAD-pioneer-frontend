@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { authService } from '../api/authService';
+import { auth } from '../api/authService';
 import { useNavigation } from "./useNavigation";
 
 export const useVerification = (email: string) => {
@@ -18,7 +18,7 @@ export const useVerification = (email: string) => {
     setIsLoading(true);
 
     try {
-      const response = await authService.verify({ email, code });
+      const response = await auth.verify({ email, code });
       console.log('Успех:', response.message);
       // Перенаправление на страницу входа с сообщением
       //navigate('/login', { state: { message: 'Регистрация подтверждена, войдите' } });

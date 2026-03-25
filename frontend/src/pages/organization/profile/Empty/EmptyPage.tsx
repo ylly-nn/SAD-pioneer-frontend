@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import styles from "./UserNoOrganizationPage.module.scss";
+import styles from "./EmptyPage.module.scss";
 
-const UserNoOrganizationPage = () => {
+const EmptyPage = () => {
   const navigate = useNavigate();
 
   const handleRequestApplication = () => {
@@ -39,4 +39,4 @@ const UserNoOrganizationPage = () => {
   );
 };
 
-export default UserNoOrganizationPage;
+export default EmptyPage;
