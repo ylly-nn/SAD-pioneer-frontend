@@ -1,38 +1,29 @@
-// AdminRequestsPage.tsx
+//очень криво работает фильтр по заявкам = белый экран
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./AdminRequestsPage.module.scss";
-
-interface Request {
-  id: string;
-  title: string;
-  details: string;
-  status: "pending" | "in_progress" | "approved" | "rejected";
-  date: string;
-}
+import { useAdminRequests } from "../../../hooks/adminHooks/useAdminRequests";
+import type { RequestStatus } from "../../../types/admin";
 
 const AdminRequestsPage = () => {
   const navigate = useNavigate();
-  const [filter, setFilter] = useState<"all" | "pending" | "in_progress" | "approved" | "rejected">("all");
-
-  // Моковые данные заявок с 4 статусами
-  const requests: Request[] = [
-    { id: "1", title: "ООО Мойка", details: "Иванов Иван, тел: +7 999 123-45-67", status: "pending", date: "2024-03-20" },
-    { id: "2", title: "Шиномонтаж Профи", details: "Петров Петр, тел: +7 999 234-56-78", status: "in_progress", date: "2024-03-19" },
-    { id: "3", title: "Автоцентр", details: "Сидоров Сидор, тел: +7 999 345-67-89", status: "rejected", date: "2024-03-18" },
-    { id: "4", title: "Мойка №1", details: "Кузнецова Анна, тел: +7 999 456-78-90", status: "pending", date: "2024-03-17" },
-    { id: "5", title: "Шины 24/7", details: "Смирнов Алексей, тел: +7 999 567-89-01", status: "in_progress", date: "2024-03-16" },
-    { id: "6", title: "Автомойка Люкс", details: "Козлова Мария, тел: +7 999 678-90-12", status: "approved", date: "2024-03-15" },
-  ];
-
-  const filteredRequests = filter === "all" 
-    ? requests 
-    : requests.filter(r => r.status === filter);
+  const [selectedRequest, setSelectedRequest] = useState<string | null>(null);
+  
+  const {
+    requests,
+    status,
+    loading,
+    error,
+    changeStatus,
+    takeRequest,
+    approveRequest,
+    rejectRequest,
+  } = useAdminRequests('all');
 
   const getStatusText = (status: string) => {
     switch (status) {
-      case "pending": return "Новая заявка";
-      case "in_progress": return "В работе";
+      case "new": return "Новая заявка";
+      case "pending": return "В работе";
       case "approved": return "Принята";
       case "rejected": return "Отклонена";
       default: return status;
@@ -41,17 +32,108 @@ const AdminRequestsPage = () => {
 
   const getStatusClass = (status: string) => {
     switch (status) {
-      case "pending": return styles.statusPending;
-      case "in_progress": return styles.statusInProgress;
+      case "new": return styles.statusPending;
+      case "pending": return styles.statusInProgress;
       case "approved": return styles.statusApproved;
       case "rejected": return styles.statusRejected;
       default: return "";
     }
   };
 
-  const handleViewRequest = (id: string) => {
-    navigate(`/admin/requests/${id}`);
+  const handleViewRequest = (inn: string) => {
+    navigate(`/admin/requests/${inn}`);
   };
+
+  const handleTakeRequest = async (inn: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (window.confirm('Взять заявку в работу?')) {
+      try {
+        await takeRequest(inn);
+        alert('Заявка взята в работу');
+      } catch (err) {
+        alert('Ошибка при взятии заявки');
+      }
+    }
+  };
+
+  const handleApproveRequest = async (inn: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (window.confirm('Одобрить заявку? Будет создана организация и пользователь.')) {
+      try {
+        await approveRequest(inn);
+        alert('Заявка одобрена');
+      } catch (err) {
+        alert('Ошибка при одобрении заявки');
+      }
+    }
+  };
+
+  const handleRejectRequest = async (inn: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (window.confirm('Отклонить заявку?')) {
+      try {
+        await rejectRequest(inn);
+        alert('Заявка отклонена');
+      } catch (err) {
+        alert('Ошибка при отклонении заявки');
+      }
+    }
+  };
+
+  const renderActionButtons = (request: any) => {
+    if (request.status === 'new') {
+      return (
+        <button 
+          className={styles.actionButton}
+          onClick={(e) => handleTakeRequest(request.inn, e)}
+        >
+          Взять в работу
+        </button>
+      );
+    }
+    
+    if (request.status === 'pending') {
+      return (
+        <div className={styles.actionGroup}>
+          <button 
+            className={`${styles.actionButton} ${styles.approveButton}`}
+            onClick={(e) => handleApproveRequest(request.inn, e)}
+          >
+            Одобрить
+          </button>
+          <button 
+            className={`${styles.actionButton} ${styles.rejectButton}`}
+            onClick={(e) => handleRejectRequest(request.inn, e)}
+          >
+            Отклонить
+          </button>
+        </div>
+      );
+    }
+    
+    return null;
+  };
+
+  if (loading) {
+    return (
+      <div className={styles.page}>
+        <div className={styles.container}>
+          <div className={styles.loader}>Загрузка...</div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className={styles.page}>
+        <div className={styles.container}>
+          <div className={styles.error}>{error}</div>
+          <button onClick={() => window.location.reload()}>Повторить</button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.page}>
@@ -66,58 +148,54 @@ const AdminRequestsPage = () => {
         <div className={styles.filterSection}>
           <p className={styles.filterTitle}>Фильтр по статусу</p>
           <div className={styles.filterButtons}>
-            <button 
-              className={`${styles.filterButton} ${filter === "all" ? styles.active : ""}`}
-              onClick={() => setFilter("all")}
-            >
-              Все
-            </button>
-            <button 
-              className={`${styles.filterButton} ${filter === "pending" ? styles.active : ""}`}
-              onClick={() => setFilter("pending")}
-            >
-              Новые
-            </button>
-            <button 
-              className={`${styles.filterButton} ${filter === "in_progress" ? styles.active : ""}`}
-              onClick={() => setFilter("in_progress")}
-            >
-              В работе
-            </button>
-            <button 
-              className={`${styles.filterButton} ${filter === "approved" ? styles.active : ""}`}
-              onClick={() => setFilter("approved")}
-            >
-              Принятые
-            </button>
-            <button 
-              className={`${styles.filterButton} ${filter === "rejected" ? styles.active : ""}`}
-              onClick={() => setFilter("rejected")}
-            >
-              Отклоненные
-            </button>
+            {(['all', 'new', 'pending', 'approved', 'rejected'] as const).map((filterStatus) => (
+              <button 
+                key={filterStatus}
+                className={`${styles.filterButton} ${status === filterStatus ? styles.active : ""}`}
+                onClick={() => changeStatus(filterStatus)}
+              >
+                {filterStatus === 'all' && 'Все'}
+                {filterStatus === 'new' && 'Новые'}
+                {filterStatus === 'pending' && 'В работе'}
+                {filterStatus === 'approved' && 'Принятые'}
+                {filterStatus === 'rejected' && 'Отклоненные'}
+              </button>
+            ))}
           </div>
         </div>
 
         <div className={styles.requestsList}>
-          {filteredRequests.map((request) => (
-            <div key={request.id} className={styles.requestItem}>
-              <div className={styles.requestInfo}>
-                <h3 className={styles.requestTitle}>{request.title}</h3>
-                <p className={styles.requestDetails}>{request.details}</p>
-                <p className={styles.requestDate}>Дата: {request.date}</p>
+          {requests.length === 0 ? (
+            <div className={styles.emptyState}>Нет заявок</div>
+          ) : (
+            requests.map((request) => (
+              <div key={request.inn} className={styles.requestItem}>
+                <div className={styles.requestInfo}>
+                  <h3 className={styles.requestTitle}>{request.org_name}</h3>
+                  <p className={styles.requestDetails}>
+                    {request.surname} {request.name} {request.patronymic}, 
+                    тел: {request.phone}, email: {request.email}
+                  </p>
+                  <p className={styles.requestDetails}>ИНН: {request.inn}</p>
+                  {request.info && (
+                    <p className={styles.requestDetails}>Доп. информация: {request.info}</p>
+                  )}
+                </div>
+                <div className={`${styles.requestStatus} ${getStatusClass(request.status)}`}>
+                  {getStatusText(request.status)}
+                </div>
+                <div className={styles.actions}>
+                  {renderActionButtons(request)}
+                  <button 
+                    className={styles.viewButton}
+                    onClick={() => handleViewRequest(request.inn)}
+                  >
+                    Просмотр
+                  </button>
+                </div>
               </div>
-              <div className={`${styles.requestStatus} ${getStatusClass(request.status)}`}>
-                {getStatusText(request.status)}
-              </div>
-              <button 
-                className={styles.viewButton}
-                onClick={() => handleViewRequest(request.id)}
-              >
-                Просмотр
-              </button>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
     </div>
