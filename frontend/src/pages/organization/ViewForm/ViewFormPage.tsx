@@ -1,11 +1,11 @@
 import styles from "./ViewFormPage.module.scss";
 import { useNavigation } from "../../../hooks/useNavigation";
-import { useEditForm } from "../../../hooks/useEditForm";
+import { useViewForm } from "../../../hooks/useViewForm";
 
 const CreateFormPage = () => {
   const { goHome } = useNavigation();
 
-  const { formData, handleSubmit } = useEditForm();
+  const { formData } = useViewForm();
 
   return (
     <div className={styles.page}>
@@ -15,14 +15,14 @@ const CreateFormPage = () => {
           <button onClick={goHome}>✕</button>
         </div>
 
-        <form onSubmit={handleSubmit} className={styles.form}>
+        <form className={styles.form}>
           
             {/* статус */}
             <div className={styles.status}>
               <div className={styles.field}>
                 <label className={styles.label}>Статус заявки:</label>
                 <p className={styles.fieldValue}>
-                  {formData.org_name || "Не указано"}
+                  {formData.status || "Не указано"}
                 </p>
               </div>
 

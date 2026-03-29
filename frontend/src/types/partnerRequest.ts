@@ -19,6 +19,7 @@ export interface PartnerRequestResponse extends PartnerRequest {
 
 export interface PartnerRequestStatus {
   inn: string
+  //id: string
   message: string
   status: string
 }

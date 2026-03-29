@@ -22,13 +22,13 @@ export const organizationRequest = {
   },
 
   // получение конкретной заявки на создание компании
-  getByInn: async (inn: string): Promise<PartnerRequest> => {
+  getByInn: async (inn: string): Promise<PartnerRequestResponse> => {
     const response = await axiosInstance.get(`partner/request/${inn}`)
     return response.data
   },
 
   // получение заявки пользователя на создание компании
-  get: async (): Promise<PartnerRequest> => {
+  get: async (): Promise<PartnerRequestResponse> => {
     const response = await axiosInstance.get("partner/request")
     return response.data
   },

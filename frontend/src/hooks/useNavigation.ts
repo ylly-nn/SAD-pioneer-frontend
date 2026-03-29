@@ -19,6 +19,8 @@ export const useNavigation = () => {
     goToSelectTime: () => navigate(ROUTES.USER.SERVICE.TIME),
     goToConfirmBooking: () => navigate(ROUTES.USER.SERVICE.CONFIRM),
 
+    goToOrderDetails: (id: string) => navigate(`${ROUTES.USER.SERVICE.CONFIRM}/${id}`),
+
     // организации
     goToOrganization: () => navigate(ROUTES.ORGANIZATION.PROFILE),
 
