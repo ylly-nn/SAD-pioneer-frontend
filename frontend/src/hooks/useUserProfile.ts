@@ -26,7 +26,7 @@ export const useUserProfile = () => {
     loadOrders();
   }, []);
 
-  /*
+  
   // разделение заказов на текущие и прошлые
   const { currentOrders, pastOrders } = useMemo(() => {
     const now = new Date();
@@ -48,9 +48,10 @@ export const useUserProfile = () => {
       currentOrders: current,
       pastOrders: past,
     };
-  }, [orders]);*/
+  }, [orders]);
 
 
+  /*
     // данные для проверки UI
   const currentOrders: UserOrder[] = [
     {
@@ -94,6 +95,7 @@ export const useUserProfile = () => {
   },
   
   ];
+  
 
   const pastOrders: UserOrder[] = [
     {
@@ -109,7 +111,7 @@ export const useUserProfile = () => {
         "Полировка": 75
     }
   },
-  ];
+  ];*/
 
   // формат даты
   const formatDate = (date: string) =>
