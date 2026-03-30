@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useAdminRequests } from '../../../hooks/adminHooks/useAdminRequests';
 import styles from './AdminRequestsPage.module.scss';
 import { useNavigate } from 'react-router-dom';
@@ -9,7 +9,7 @@ const AdminRequestsPage = () => {
   const [activeFilter, setActiveFilter] = useState('all');
   
   // Передаем activeFilter в хук
-  const { requests, loading, error, changeRequestStatus, refreshRequests } = useAdminRequests(activeFilter);
+  const { requests, loading, error, changeRequestStatus} = useAdminRequests(activeFilter);
   
   const safeRequests = requests || [];
 
