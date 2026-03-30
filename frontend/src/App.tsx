@@ -11,7 +11,7 @@ import UserProfile from "./pages/user/Profile/ProfilePage";
 import UserLogin from "./pages/user/Login/LoginPage";
 import UserRegister from "./pages/user/Register/RegisterPage";
 import UserVerify from "./pages/user/Register/VerifyPage";
-import UserSelectService from "./pages/user/service/SelectService/SelectServicePage";
+//import UserSelectService from "./pages/user/service/SelectService/SelectServicePage";
 import UserSelectOrganization from "./pages/user/service/SelectOrganization/SelectOrganizationPage";
 import UserSelectDetails from "./pages/user/service/SelectDetails/SelectDetailsPage";
 import UserSelectTime from "./pages/user/service/SelectTime/SelectTimePage";
@@ -24,12 +24,15 @@ import OrganizationEditForm from "./pages/organization/EditForm/EditFormPage";
 import OrganizationViewForm from "./pages/organization/ViewForm/ViewFormPage";
 import OrganizationBranch from "./pages/organization/brabch/Branch/BranchPage";
 import OrganizationBranchForm from "./pages/organization/brabch/BranchForm/BranchFormPage";
+import OrganizationBranchesPage from "./pages/organization/OrganizationBranches/OrganizationBranchesPage";
+import UserNoOrganizationPage from "./pages/organization/profile/Empty/EmptyPage";
 
 import AdminFormsList from "./pages/admin/FormsList/FormsListPage";
 import AdminFormView from "./pages/admin/FormView/FormViewPage";
 
 import AdminDashboardPage from "./pages/admin/AdminDashboard/AdminDashboardPage";
 import AdminRequestsPage from "./pages/admin/AdminRequests/AdminRequestsPage";
+import AddAdmin from "./pages/admin/AddAdminPage/AddAdminPage";
 
 const App = () => {
   
@@ -44,7 +47,7 @@ const App = () => {
           <Route path="register" element={<HomeRouteUsers> <UserRegister /> </HomeRouteUsers>} />
           <Route path="verify" element={<HomeRouteUsers> <UserVerify /> </HomeRouteUsers>} />
           <Route path="service"> 
-            <Route index element={<ProtectedRouteUsers> <UserSelectService /> </ProtectedRouteUsers>}/>
+            
             <Route path="select-organization" element={<ProtectedRouteUsers> <UserSelectOrganization /> </ProtectedRouteUsers>} />
             <Route path="details" element={<ProtectedRouteUsers> <UserSelectDetails /> </ProtectedRouteUsers>} />
             <Route path="select-time" element={<ProtectedRouteUsers> <UserSelectTime /> </ProtectedRouteUsers>} />
@@ -58,9 +61,13 @@ const App = () => {
           <Route path="register" element={<HomeRouteOrganizations> <OrganizationRegister /> </HomeRouteOrganizations>} />
           <Route path="create-form" element={<ProtectedRouteOrganizations> <OrganizationEditForm /> </ProtectedRouteOrganizations>} />
           <Route path="view-form" element={<ProtectedRouteOrganizations> <OrganizationViewForm /> </ProtectedRouteOrganizations>} />
+          <Route path="edit-form" element={<ProtectedRouteOrganizations> <OrganizationEditForm /> </ProtectedRouteOrganizations>} />
           <Route path="branch" element={<ProtectedRouteOrganizations> <OrganizationBranch /> </ProtectedRouteOrganizations>} />
           <Route path="branch-form" element={<ProtectedRouteOrganizations> <OrganizationBranchForm /> </ProtectedRouteOrganizations>} />
+           <Route path="no-org" element={<ProtectedRouteOrganizations> <UserNoOrganizationPage /> </ProtectedRouteOrganizations>} />
+          <Route path="branches" element={<ProtectedRouteOrganizations> <OrganizationBranchesPage /> </ProtectedRouteOrganizations>} />
         </Route>
+
 
         <Route path="/admin">
           <Route path="forms" element={<ProtectedRoute> <AdminFormsList /> </ProtectedRoute>} />
@@ -69,6 +76,8 @@ const App = () => {
 
           <Route path="requests" element={<ProtectedRoute> <AdminRequestsPage /> </ProtectedRoute>} />
           <Route path="panelka" element={<ProtectedRoute> <AdminDashboardPage /> </ProtectedRoute>} />
+          <Route path="view-form" element={<ProtectedRouteOrganizations> <OrganizationViewForm /> </ProtectedRouteOrganizations>} />
+          <Route path="add-admin" element={<ProtectedRoute> <AddAdmin /> </ProtectedRoute>} />
         </Route>
 
 

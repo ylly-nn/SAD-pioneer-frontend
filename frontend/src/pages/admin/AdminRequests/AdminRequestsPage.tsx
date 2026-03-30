@@ -1,203 +1,193 @@
-//очень криво работает фильтр по заявкам = белый экран
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import styles from "./AdminRequestsPage.module.scss";
-import { useAdminRequests } from "../../../hooks/adminHooks/useAdminRequests";
-import type { RequestStatus } from "../../../types/admin";
+import React, { useState, useEffect } from 'react';
+import { useAdminRequests } from '../../../hooks/adminHooks/useAdminRequests';
+import styles from './AdminRequestsPage.module.scss';
+import { useNavigate } from 'react-router-dom';
+import { getPartnerRequestsByStatus } from '../../../api/admin';
 
 const AdminRequestsPage = () => {
   const navigate = useNavigate();
-  const [selectedRequest, setSelectedRequest] = useState<string | null>(null);
+  const [activeFilter, setActiveFilter] = useState('all');
   
-  const {
-    requests,
-    status,
-    loading,
-    error,
-    changeStatus,
-    takeRequest,
-    approveRequest,
-    rejectRequest,
-  } = useAdminRequests('all');
+  // Передаем activeFilter в хук
+  const { requests, loading, error, changeRequestStatus, refreshRequests } = useAdminRequests(activeFilter);
+  
+  const safeRequests = requests || [];
+
+  const [allRequests, setAllRequests] = useState<any[]>([]);
+
+  useEffect(() => {
+    const loadAllRequests = async () => {
+      try {
+        const allData = await getPartnerRequestsByStatus('all');
+        setAllRequests(allData || []);
+      } catch (err) {
+        console.error('Failed to load all requests:', err);
+      }
+    };
+    
+    loadAllRequests();
+  }, []);
+
+  useEffect(() => {
+    if (activeFilter === 'all' && requests) {
+      setAllRequests(requests);
+    }
+  }, [requests, activeFilter]);
+
+  const handleStatusChange = async (id: string, newStatus: string) => {
+    try {
+      await changeRequestStatus(id, newStatus);
+      if (activeFilter === 'all') {
+        const updatedAllRequests = await getPartnerRequestsByStatus('all');
+        setAllRequests(updatedAllRequests || []);
+      }
+    } catch (err) {
+      console.error('Failed to change status:', err);
+      alert('Ошибка при изменении статуса');
+    }
+  };
 
   const getStatusText = (status: string) => {
     switch (status) {
-      case "new": return "Новая заявка";
-      case "pending": return "В работе";
-      case "approved": return "Принята";
-      case "rejected": return "Отклонена";
+      case 'new': return 'Новая';
+      case 'pending': return 'В работе';
+      case 'approved': return 'Одобрена';
+      case 'rejected': return 'Отклонена';
       default: return status;
     }
   };
 
   const getStatusClass = (status: string) => {
     switch (status) {
-      case "new": return styles.statusPending;
-      case "pending": return styles.statusInProgress;
-      case "approved": return styles.statusApproved;
-      case "rejected": return styles.statusRejected;
-      default: return "";
+      case 'new': return styles.statusNew;
+      case 'pending': return styles.statusPending;
+      case 'approved': return styles.statusApproved;
+      case 'rejected': return styles.statusRejected;
+      default: return '';
     }
   };
 
-  const handleViewRequest = (inn: string) => {
-    navigate(`/admin/requests/${inn}`);
+  const getCountByStatus = (status: string) => {
+    if (status === 'all') {
+      return allRequests.length;
+    }
+    return allRequests.filter(r => r.status === status).length;
   };
 
-  const handleTakeRequest = async (inn: string, e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (window.confirm('Взять заявку в работу?')) {
-      try {
-        await takeRequest(inn);
-        alert('Заявка взята в работу');
-      } catch (err) {
-        alert('Ошибка при взятии заявки');
-      }
-    }
-  };
-
-  const handleApproveRequest = async (inn: string, e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (window.confirm('Одобрить заявку? Будет создана организация и пользователь.')) {
-      try {
-        await approveRequest(inn);
-        alert('Заявка одобрена');
-      } catch (err) {
-        alert('Ошибка при одобрении заявки');
-      }
-    }
-  };
-
-  const handleRejectRequest = async (inn: string, e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (window.confirm('Отклонить заявку?')) {
-      try {
-        await rejectRequest(inn);
-        alert('Заявка отклонена');
-      } catch (err) {
-        alert('Ошибка при отклонении заявки');
-      }
-    }
-  };
-
-  const renderActionButtons = (request: any) => {
-    if (request.status === 'new') {
-      return (
-        <button 
-          className={styles.actionButton}
-          onClick={(e) => handleTakeRequest(request.inn, e)}
-        >
-          Взять в работу
-        </button>
-      );
-    }
-    
-    if (request.status === 'pending') {
-      return (
-        <div className={styles.actionGroup}>
-          <button 
-            className={`${styles.actionButton} ${styles.approveButton}`}
-            onClick={(e) => handleApproveRequest(request.inn, e)}
-          >
-            Одобрить
-          </button>
-          <button 
-            className={`${styles.actionButton} ${styles.rejectButton}`}
-            onClick={(e) => handleRejectRequest(request.inn, e)}
-          >
-            Отклонить
-          </button>
-        </div>
-      );
-    }
-    
-    return null;
-  };
-
-  if (loading) {
-    return (
-      <div className={styles.page}>
-        <div className={styles.container}>
-          <div className={styles.loader}>Загрузка...</div>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className={styles.page}>
-        <div className={styles.container}>
-          <div className={styles.error}>{error}</div>
-          <button onClick={() => window.location.reload()}>Повторить</button>
-        </div>
-      </div>
-    );
-  }
+  if (loading) return <div className={styles.loader}>Загрузка...</div>;
+  if (error) return <div className={styles.error}>Ошибка: {error}</div>;
 
   return (
-    <div className={styles.page}>
-      <div className={styles.container}>
-        <div className={styles.header}>
-          <h1 className={styles.title}>Заявки партнеров</h1>
-          <button className={styles.backButton} onClick={() => navigate("/admin")}>
-            ← Назад
-          </button>
-        </div>
-
-        <div className={styles.filterSection}>
-          <p className={styles.filterTitle}>Фильтр по статусу</p>
-          <div className={styles.filterButtons}>
-            {(['all', 'new', 'pending', 'approved', 'rejected'] as const).map((filterStatus) => (
-              <button 
-                key={filterStatus}
-                className={`${styles.filterButton} ${status === filterStatus ? styles.active : ""}`}
-                onClick={() => changeStatus(filterStatus)}
-              >
-                {filterStatus === 'all' && 'Все'}
-                {filterStatus === 'new' && 'Новые'}
-                {filterStatus === 'pending' && 'В работе'}
-                {filterStatus === 'approved' && 'Принятые'}
-                {filterStatus === 'rejected' && 'Отклоненные'}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className={styles.requestsList}>
-          {requests.length === 0 ? (
-            <div className={styles.emptyState}>Нет заявок</div>
-          ) : (
-            requests.map((request) => (
-              <div key={request.inn} className={styles.requestItem}>
-                <div className={styles.requestInfo}>
-                  <h3 className={styles.requestTitle}>{request.org_name}</h3>
-                  <p className={styles.requestDetails}>
-                    {request.surname} {request.name} {request.patronymic}, 
-                    тел: {request.phone}, email: {request.email}
-                  </p>
-                  <p className={styles.requestDetails}>ИНН: {request.inn}</p>
-                  {request.info && (
-                    <p className={styles.requestDetails}>Доп. информация: {request.info}</p>
-                  )}
-                </div>
-                <div className={`${styles.requestStatus} ${getStatusClass(request.status)}`}>
-                  {getStatusText(request.status)}
-                </div>
-                <div className={styles.actions}>
-                  {renderActionButtons(request)}
-                  <button 
-                    className={styles.viewButton}
-                    onClick={() => handleViewRequest(request.inn)}
-                  >
-                    Просмотр
-                  </button>
-                </div>
-              </div>
-            ))
-          )}
-        </div>
+    <div className={styles.container}>
+      <div className={styles.header}>
+        <h1>Заявки партнеров</h1>
       </div>
+
+      <div className={styles.filters}>
+        <button 
+          className={activeFilter === 'all' ? styles.active : ''}
+          onClick={() => setActiveFilter('all')}
+        >
+          Все ({getCountByStatus('all')})
+        </button>
+        <button 
+          className={activeFilter === 'new' ? styles.active : ''}
+          onClick={() => setActiveFilter('new')}
+        >
+          Новые ({getCountByStatus('new')})
+        </button>
+        <button 
+          className={activeFilter === 'pending' ? styles.active : ''}
+          onClick={() => setActiveFilter('pending')}
+        >
+          В работе ({getCountByStatus('pending')})
+        </button>
+        <button 
+          className={activeFilter === 'approved' ? styles.active : ''}
+          onClick={() => setActiveFilter('approved')}
+        >
+          Одобренные ({getCountByStatus('approved')})
+        </button>
+        <button 
+          className={activeFilter === 'rejected' ? styles.active : ''}
+          onClick={() => setActiveFilter('rejected')}
+        >
+          Отклоненные ({getCountByStatus('rejected')})
+        </button>
+      </div>
+
+      {safeRequests.length === 0 ? (
+        <div className={styles.emptyState}>Нет заявок</div>
+      ) : (
+        <div className={styles.tableWrapper}>
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                <th>Организация</th>
+                <th>ИНН</th>
+                <th>Контактное лицо</th>
+                <th>Email</th>
+                <th>Телефон</th>
+                <th>Статус</th>
+                <th>Действия</th>
+              </tr>
+            </thead>
+            <tbody>
+              {safeRequests.map((request) => (
+                <tr key={request.id}>
+                  <td>
+                    <div>{request.org_name}</div>
+                    <div className={styles.orgShortName}>{request.org_short_name}</div>
+                  </td>
+                  <td>{request.inn}</td>
+                  <td>{`${request.surname} ${request.name} ${request.patronymic}`}</td>
+                  <td>{request.email}</td>
+                  <td>{request.phone}</td>
+                  <td>
+                    <span className={`${styles.statusBadge} ${getStatusClass(request.status)}`}>
+                      {getStatusText(request.status)}
+                    </span>
+                  </td>
+                  <td>
+                    <div className={styles.actions}>
+                      {request.status === 'new' && (
+                        <button
+                          className={styles.takeButton}
+                          onClick={() => handleStatusChange(request.id, 'pending')}
+                        >
+                          Взять в работу
+                        </button>
+                      )}
+                      {request.status === 'pending' && (
+                        <>
+                          <button
+                            className={styles.approveButton}
+                            onClick={() => handleStatusChange(request.id, 'approved')}
+                          >
+                            Одобрить
+                          </button>
+                          <button
+                            className={styles.rejectButton}
+                            onClick={() => handleStatusChange(request.id, 'rejected')}
+                          >
+                            Отклонить
+                          </button>
+                        </>
+                      )}
+                      <button
+                        className={styles.viewButton}
+                        onClick={() => navigate(`/admin/requests/${request.id}`)}
+                      >
+                        Просмотр
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 };
