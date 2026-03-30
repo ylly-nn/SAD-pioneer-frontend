@@ -1,7 +1,15 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./AddAdminPage.module.scss";
-import api from "../../../api/axios"; 
+import api from "../../../api/axios";
+import {
+  validateEmail,
+  validateName,
+  validateForm,
+  hasErrors,
+  isFormValid,
+  type FormErrors
+} from "../../../utils/validation";
 
 const AddAdmin = () => {
   const navigate = useNavigate();
@@ -9,25 +17,38 @@ const AddAdmin = () => {
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState("");
+  const [errors, setErrors] = useState<FormErrors>({
+    email: "",
+    name: "",
+    surname: ""
+  });
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setEmail(value);
+    setErrors(prev => ({ ...prev, email: validateEmail(value) }));
+  };
+
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setName(value);
+    setErrors(prev => ({ ...prev, name: validateName(value, "Имя") }));
+  };
+
+  const handleSurnameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSurname(value);
+    setErrors(prev => ({ ...prev, surname: validateName(value, "Фамилия") }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      setError("Введите корректный email адрес");
-      return;
-    }
+    // Валидация всех полей перед отправкой
+    const validationErrors = validateForm({ email, name, surname });
+    setErrors(validationErrors);
 
-    if (!name.trim()) {
-      setError("Введите имя");
-      return;
-    }
-
-    if (!surname.trim()) {
-      setError("Введите фамилию");
+    if (hasErrors(validationErrors)) {
       return;
     }
 
@@ -47,7 +68,10 @@ const AddAdmin = () => {
       });
     } catch (err: any) {
       console.error("Ошибка при добавлении админа:", err);
-      setError(err.response?.data?.message || "Произошла ошибка при добавлении админа");
+      setErrors(prev => ({ 
+        ...prev, 
+        email: err.response?.data?.message || "Произошла ошибка при добавлении админа" 
+      }));
     } finally {
       setIsSubmitting(false);
     }
@@ -56,6 +80,8 @@ const AddAdmin = () => {
   const handleBack = () => {
     navigate("/admin");
   };
+
+  const formValid = isFormValid({ email, name, surname }, errors);
 
   return (
     <div className={styles.page}>
@@ -79,63 +105,65 @@ const AddAdmin = () => {
           <form className={styles.form} onSubmit={handleSubmit}>
             <div className={styles.field}>
               <label className={styles.label} htmlFor="surname">
-                Фамилия
+                Фамилия <span style={{ color: '#ff6b6b' }}>*</span>
               </label>
               <input
                 id="surname"
                 name="surname"
                 type="text"
-                placeholder="введите фамилию"
+                placeholder="введите фамилию (от 2 до 100 символов)"
                 required
-                className={`${styles.input} ${error ? styles.inputError : ''}`}
+                className={`${styles.input} ${errors.surname ? styles.inputError : ''}`}
                 autoComplete="family-name"
                 value={surname}
-                onChange={(e) => setSurname(e.target.value)}
+                onChange={handleSurnameChange}
                 disabled={isSubmitting}
               />
+              {errors.surname && <div className={styles.error}>{errors.surname}</div>}
             </div>
 
             <div className={styles.field}>
               <label className={styles.label} htmlFor="name">
-                Имя
+                Имя <span style={{ color: '#ff6b6b' }}>*</span>
               </label>
               <input
                 id="name"
                 name="name"
                 type="text"
-                placeholder="введите имя"
+                placeholder="введите имя (от 2 до 100 символов)"
                 required
-                className={`${styles.input} ${error ? styles.inputError : ''}`}
+                className={`${styles.input} ${errors.name ? styles.inputError : ''}`}
                 autoComplete="given-name"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={handleNameChange}
                 disabled={isSubmitting}
               />
+              {errors.name && <div className={styles.error}>{errors.name}</div>}
             </div>
 
             <div className={styles.field}>
               <label className={styles.label} htmlFor="email">
-                Email
+                Email <span style={{ color: '#ff6b6b' }}>*</span>
               </label>
               <input
                 id="email"
                 name="email"
                 type="email"
-                placeholder="введите email"
+                placeholder="example@domain.ru"
                 required
-                className={`${styles.input} ${error ? styles.inputError : ''}`}
+                className={`${styles.input} ${errors.email ? styles.inputError : ''}`}
                 autoComplete="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={handleEmailChange}
                 disabled={isSubmitting}
               />
-              {error && <div className={styles.error}>{error}</div>}
+              {errors.email && <div className={styles.error}>{errors.email}</div>}
             </div>
 
             <button
               type="submit"
               className={styles.submit}
-              disabled={isSubmitting || !email || !name || !surname}
+              disabled={isSubmitting || !formValid}
             >
               {isSubmitting ? "Добавление..." : "Добавить администратора"}
             </button>
@@ -156,7 +184,7 @@ const AddAdmin = () => {
               />
             </svg>
             <p>
-              Администратору будет отправлено приглашение на указанный email
+              Администратору будет отправлено приглашение на указанный email.<br />
             </p>
           </div>
         </div>
