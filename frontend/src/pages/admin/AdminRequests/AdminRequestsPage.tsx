@@ -176,7 +176,7 @@ const AdminRequestsPage = () => {
                       )}
                       <button
                         className={styles.viewButton}
-                        onClick={() => navigate(`/admin/requests/${request.id}`)}
+                        onClick={() => navigate(`/admin/form/${request.id}`)}
                       >
                         Просмотр
                       </button>

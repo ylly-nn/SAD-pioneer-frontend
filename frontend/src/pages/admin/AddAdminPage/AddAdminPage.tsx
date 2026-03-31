@@ -169,24 +169,7 @@ const AddAdmin = () => {
             </button>
           </form>
 
-          <div className={styles.infoBox}>
-            <svg className={styles.infoIcon} viewBox="0 0 24 24" fill="none">
-              <path 
-                d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" 
-                stroke="currentColor" 
-                strokeWidth="1.5"
-              />
-              <path 
-                d="M12 16V12M12 8H12.01" 
-                stroke="currentColor" 
-                strokeWidth="1.5" 
-                strokeLinecap="round"
-              />
-            </svg>
-            <p>
-              Администратору будет отправлено приглашение на указанный email.<br />
-            </p>
-          </div>
+          
         </div>
       </div>
     </div>
