@@ -141,3 +141,134 @@ export const isFormValid = (
     !hasErrors(errors)
   );
 };
+
+/**
+ * Валидация названия организации
+ * @param value - значение для проверки
+ * @returns строку с ошибкой или пустую строку, если ошибок нет
+ */
+export const validateOrgName = (value: string): string => {
+  if (!value) {
+    return "Название организации обязательно для заполнения";
+  }
+
+  if (value.length < 3 || value.length > 100) {
+    return "Название организации должно быть от 3 до 100 символов";
+  }
+
+  const regex = /^[a-zA-Zа-яА-ЯёЁ\s-]+$/;
+  if (!regex.test(value)) {
+    return "Название организации может содержать только буквы (рус/лат), дефис и пробел";
+  }
+
+  return "";
+};
+
+/**
+ * Валидация краткого названия организации
+ * @param value - значение для проверки
+ * @returns строку с ошибкой или пустую строку, если ошибок нет
+ */
+export const validateShortOrgName = (value: string): string => {
+  if (!value) {
+    return "Краткое название организации обязательно для заполнения";
+  }
+
+  if (value.length < 3 || value.length > 50) {
+    return "Краткое название организации должно быть от 3 до 50 символов";
+  }
+
+  const regex = /^[a-zA-Zа-яА-ЯёЁ\s-]+$/;
+  if (!regex.test(value)) {
+    return "Краткое название организации может содержать только буквы (рус/лат), дефис и пробел";
+  }
+
+  return "";
+};
+
+/**
+ * Валидация ИНН
+ * @param value - значение для проверки
+ * @returns строку с ошибкой или пустую строку, если ошибок нет
+ */
+export const validateINN = (value: string): string => {
+  if (!value) {
+    return "ИНН обязателен для заполнения";
+  }
+
+  const digitsRegex = /^\d+$/;
+  if (!digitsRegex.test(value)) {
+    return "ИНН должен содержать только цифры";
+  }
+
+  if (value.length !== 10 && value.length !== 12) {
+    return "ИНН должен быть ровно 10 или 12 символов";
+  }
+
+  return "";
+};
+
+/**
+ * Валидация КПП
+ * @param value - значение для проверки
+ * @returns строку с ошибкой или пустую строку, если ошибок нет
+ */
+export const validateKPP = (value: string): string => {
+  if (!value) {
+    return "КПП обязателен для заполнения";
+  }
+
+  const digitsRegex = /^\d+$/;
+  if (!digitsRegex.test(value)) {
+    return "КПП должен содержать только цифры";
+  }
+
+  if (value.length !== 9) {
+    return "КПП должен быть ровно 9 символов";
+  }
+
+  return "";
+};
+
+/**
+ * Валидация ОГРН
+ * @param value - значение для проверки
+ * @returns строку с ошибкой или пустую строку, если ошибок нет
+ */
+export const validateOGRN = (value: string): string => {
+  if (!value) {
+    return "ОГРН обязателен для заполнения";
+  }
+
+  const digitsRegex = /^\d+$/;
+  if (!digitsRegex.test(value)) {
+    return "ОГРН должен содержать только цифры";
+  }
+
+  if (value.length !== 13) {
+    return "ОГРН должен быть ровно 13 символов";
+  }
+
+  return "";
+};
+/**
+ * Валидация телефона
+ * @param phone - телефон для проверки (10 цифр без +7)
+ * @returns строку с ошибкой или пустую строку, если ошибок нет
+ */
+export const validatePhone = (phone: string): string => {
+  if (!phone) {
+    return "Телефон обязателен для заполнения";
+  }
+
+  const digitsRegex = /^\d+$/;
+  if (!digitsRegex.test(phone)) {
+    return "Телефон должен содержать только цифры";
+  }
+
+  if (phone.length !== 10) {
+    return "Телефон должен быть ровно 10 символов (без +7, 7 или 8)";
+  }
+
+  return "";
+};

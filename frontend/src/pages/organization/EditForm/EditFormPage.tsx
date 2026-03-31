@@ -13,7 +13,8 @@ const EditFormPage = () => {
     handleChange,
     handleTermsChange,
     handleSubmit,
-    isFormValid
+    isFormValid,
+    fieldErrors
   } = useEditForm();
 
   return (
@@ -35,18 +36,23 @@ const EditFormPage = () => {
 
               <input name="org_name" placeholder="Полное название"
                 value={formData.org_name} onChange={handleChange} />
+              {fieldErrors.org_name && <div className={styles.error}>{fieldErrors.org_name}</div>}
 
               <input name="org_short_name" placeholder="Краткое название"
                 value={formData.org_short_name} onChange={handleChange} />
-
+              {fieldErrors.org_short_name && <div className={styles.error}>{fieldErrors.org_short_name}</div>}
+              
               <input name="inn" placeholder="ИНН"
                 value={formData.inn} onChange={handleChange} />
-
+              {fieldErrors.inn && <div className={styles.error}>{fieldErrors.inn}</div>}
+              
               <input name="kpp" placeholder="КПП"
                 value={formData.kpp} onChange={handleChange} />
-
+              {fieldErrors.kpp && <div className={styles.error}>{fieldErrors.kpp}</div>}
+              
               <input name="ogrn" placeholder="ОГРН"
                 value={formData.ogrn} onChange={handleChange} />
+              {fieldErrors.ogrn && <div className={styles.error}>{fieldErrors.ogrn}</div>}
             </div>
 
             {/* контакт */}
@@ -55,18 +61,23 @@ const EditFormPage = () => {
 
               <input name="surname" placeholder="Фамилия"
                 value={formData.surname} onChange={handleChange} />
+              {fieldErrors.surname && <div className={styles.error}>{fieldErrors.surname}</div>}
 
               <input name="name" placeholder="Имя"
                 value={formData.name} onChange={handleChange} />
+              {fieldErrors.name && <div className={styles.error}>{fieldErrors.name}</div>}
 
               <input name="patronymic" placeholder="Отчество"
                  value={formData.patronymic} onChange={handleChange} /> {/**/}
+              {fieldErrors.patronymic && <div className={styles.error}>{fieldErrors.patronymic}</div>}
 
               <input name="email" type="email" placeholder="Email"
                 value={formData.email} onChange={handleChange} />
+              {fieldErrors.email && <div className={styles.error}>{fieldErrors.email}</div>}
 
               <input name="phone" placeholder="Телефон"
                 value={formData.phone} onChange={handleChange} />
+              {fieldErrors.phone && <div className={styles.error}>{fieldErrors.phone}</div>}
             </div>
 
           </div>
