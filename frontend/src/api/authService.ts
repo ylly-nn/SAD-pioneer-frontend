@@ -1,4 +1,4 @@
-import axiosInstance from './axios';
+import axiosInstance, { plainAxios } from './axios';
 
 import type { LoginRequest, AuthResponse, RegisterRequest, VerifyRequest } from '../types/auth';
 
@@ -26,7 +26,7 @@ export const auth = {
   },
 
   refresh: async (data: { refresh_token: string }): Promise<AuthResponse> => {
-    const response = await axiosInstance.post('auth/refresh', data);
+    const response = await plainAxios.post('auth/refresh', data);
     return response.data;
   }
 }
