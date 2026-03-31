@@ -1,6 +1,7 @@
 import api from './axios';
 
 export interface PartnerRequest {
+  reviewed_at?: string | null;
   id: string;
   status: 'new' | 'pending' | 'approved' | 'rejected';
   user_email: string;

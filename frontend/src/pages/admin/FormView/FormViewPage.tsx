@@ -1,16 +1,30 @@
 import styles from "./FormViewPage.module.scss";
 import { useNavigation } from "../../../hooks/useNavigation";
 import { useEditFormAdmin } from "../../../hooks/useEditFormAdmin";
-import { useLocation } from "react-router-dom";
 
 const FormViewPage = () => {
   const { goHome } = useNavigation();
+  const { formData, loading, status, reviewedAt, handleStatusChange, handleSubmit } = useEditFormAdmin();
 
-  const location = useLocation();
-  const formData = location.state?.formData || {};
+  if (loading) {
+    return (
+      <div className={styles.page}>
+        <div className={styles.card}>
+          <div style={{ textAlign: "center", padding: "40px" }}>Загрузка...</div>
+        </div>
+      </div>
+    );
+  }
 
-  const { status, reviewedAt, handleStatusChange, handleSubmit } =
-    useEditFormAdmin(formData);
+  if (!formData) {
+    return (
+      <div className={styles.page}>
+        <div className={styles.card}>
+          <div style={{ textAlign: "center", padding: "40px" }}>Заявка не найдена</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.page}>
@@ -21,8 +35,6 @@ const FormViewPage = () => {
         </div>
 
         <div className={styles.form}>
-          
-
           <div className={styles.columns}>
             {/* организация */}
             <div className={styles.section}>
@@ -89,8 +101,7 @@ const FormViewPage = () => {
               <div className={styles.field}>
                 <label className={styles.label}>Отчество</label>
                 <p className={styles.fieldValue}>
-                  {/*formData.middle_name || "Не указано"*/}
-                  {"Не указано"}
+                  {formData.patronymic || "Не указано"}
                 </p>
               </div>
 
@@ -104,14 +115,13 @@ const FormViewPage = () => {
               <div className={styles.field}>
                 <label className={styles.label}>Телефон</label>
                 <p className={styles.fieldValue}>
-                  {formData.phone_number || "Не указано"}
+                  {formData.phone || "Не указано"}
                 </p>
               </div>
             </div>
           </div>
 
           {/* дополнительная информация */}
-
           <div className={styles.infoBlock}>
             <h3>Дополнительная информация</h3>
             <div className={styles.textAreaValue}>
@@ -121,51 +131,49 @@ const FormViewPage = () => {
 
           {/* статус */}
           <div className={styles.statusSubmit}>
-          <div className={styles.status}>
-            <div className={styles.field}>
-              <label className={styles.label}>Статус заявки:</label>
+            <div className={styles.status}>
+              <div className={styles.field}>
+                <label className={styles.label}>Статус заявки:</label>
 
-              <select
-                className={styles.select}
-                value={status}
-                onChange={(e) => handleStatusChange(e.target.value)}
-              >
-                {/* нельзя вернуться в "новая" */}
-                <option value="новая" disabled>
-                  Новая
-                </option>
-
-                <option
-                  value="в работе"
-                  disabled={status === "исполнена" || status === "отклонена"}
+                <select
+                  className={styles.select}
+                  value={status}
+                  onChange={(e) => handleStatusChange(e.target.value)}
                 >
-                  В работе
-                </option>
+                  {/* нельзя вернуться в "новая" */}
+                  <option value="новая" disabled>
+                    Новая
+                  </option>
 
-                <option value="исполнена">Исполнена</option>
+                  <option
+                    value="в работе"
+                    disabled={status === "одобрена" || status === "отклонена"}
+                  >
+                    В работе
+                  </option>
 
-                <option value="отклонена">Отклонена</option>
-              </select>
+                  <option value="одобрена">Одобрена</option>
+
+                  <option value="отклонена">Отклонена</option>
+                </select>
+              </div>
+
+              <div className={styles.field}>
+                <label className={styles.label}>Дата подачи заявки:</label>
+                <p className={styles.fieldValue}>
+                  {formData.created_at || "Не указано"}
+                </p>
+              </div>
+
+              <div className={styles.field}>
+                <label className={styles.label}>Дата рассмотрения заявки:</label>
+                <p className={styles.fieldValue}>
+                  {reviewedAt || "Не рассмотрена"}
+                </p>
+              </div>
             </div>
-
-            <div className={styles.field}>
-              <label className={styles.label}>Дата подачи заявки:</label>
-              <p className={styles.fieldValue}>
-                {formData.created_at || "Не указано"}
-              </p>
-            </div>
-
-            <div className={styles.field}>
-              <label className={styles.label}>Дата рассмотрения заявки:</label>
-              <p className={styles.fieldValue}>
-                {reviewedAt || "Не рассмотрена"}
-              </p>
-            </div>
-            
+            <button className={styles.submitButton} onClick={handleSubmit}>Сохранить изменения</button>
           </div>
-          <button className={styles.submitButton} onClick={handleSubmit}>Сохранить изменения</button>
-          </div>
-          
         </div>
       </div>
     </div>

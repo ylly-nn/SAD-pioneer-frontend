@@ -4,6 +4,7 @@ import styles from './AdminRequestsPage.module.scss';
 import { useNavigate } from 'react-router-dom';
 import { getPartnerRequestsByStatus } from '../../../api/admin';
 
+
 const AdminRequestsPage = () => {
   const navigate = useNavigate();
   const [activeFilter, setActiveFilter] = useState('all');
@@ -176,7 +177,7 @@ const AdminRequestsPage = () => {
                       )}
                       <button
                         className={styles.viewButton}
-                        onClick={() => navigate(`/admin/form/${request.id}`)}
+                        onClick={() => navigate(`/admin/form/${request.id}`, { state: { formData: request } })}
                       >
                         Просмотр
                       </button>
