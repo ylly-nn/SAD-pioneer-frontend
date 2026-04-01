@@ -1,10 +1,32 @@
 import styles from "./FormViewPage.module.scss";
 import { useNavigation } from "../../../hooks/useNavigation";
 import { useEditFormAdmin } from "../../../hooks/useEditFormAdmin";
+import { useState } from "react";
 
 const FormViewPage = () => {
   const { goHome } = useNavigation();
   const { formData, loading, status, reviewedAt, handleStatusChange, handleSubmit } = useEditFormAdmin();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const onSubmit = async () => {
+    if (isSubmitting) return;
+    
+    setIsSubmitting(true);
+    try {
+      // При сохранении изменений, handleSubmit должен отправить на бэк
+      // статус и текущую дату рассмотрения
+      await handleSubmit();
+      
+      // Если статус изменился на "одобрена" или "отклонена",
+      // дата рассмотрения автоматически установится на бэке
+      // или здесь можно передать явно
+    } catch (error) {
+      console.error("Ошибка при сохранении:", error);
+      alert("Произошла ошибка при сохранении изменений");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -25,6 +47,16 @@ const FormViewPage = () => {
       </div>
     );
   }
+
+  const handleLocalStatusChange = (newStatus: string) => {
+    handleStatusChange(newStatus);
+    
+    // Если статус меняется на "одобрена" или "отклонена",
+    // можно показать уведомление, что дата рассмотрения будет установлена
+    if (newStatus === "одобрена" || newStatus === "отклонена") {
+      console.log(`Статус изменен на ${newStatus}, дата рассмотрения будет установлена при сохранении`);
+    }
+  };
 
   return (
     <div className={styles.page}>
@@ -138,7 +170,7 @@ const FormViewPage = () => {
                 <select
                   className={styles.select}
                   value={status}
-                  onChange={(e) => handleStatusChange(e.target.value)}
+                  onChange={(e) => handleLocalStatusChange(e.target.value)}
                 >
                   {/* нельзя вернуться в "новая" */}
                   <option value="новая" disabled>
@@ -172,7 +204,13 @@ const FormViewPage = () => {
                 </p>
               </div>
             </div>
-            <button className={styles.submitButton} onClick={handleSubmit}>Сохранить изменения</button>
+            <button 
+              className={styles.submitButton} 
+              onClick={onSubmit}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Сохранение..." : "Сохранить изменения"}
+            </button>
           </div>
         </div>
       </div>

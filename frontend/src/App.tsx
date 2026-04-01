@@ -3,7 +3,7 @@ import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import { ProtectedRoute, ProtectedRouteUsers, ProtectedRouteOrganizations, HomeRouteUsers, HomeRouteOrganizations } from "./components/ProtectedRoute";
-
+import ProtectedAdminRoute from "./components/ProtectedAdminRoute"
 import Home from "./pages/Home/HomePage";
 import NotFound from "./pages/NotFound/NotFoundPage";
 
@@ -70,14 +70,33 @@ const App = () => {
 
 
         <Route path="/admin">
-          <Route path="forms" element={<ProtectedRoute> <AdminFormsList /> </ProtectedRoute>} />
-          <Route path="form/:id" element={<ProtectedRoute> <AdminFormView /> </ProtectedRoute>} />
+          <Route path="forms" element={
+            <ProtectedAdminRoute> 
+            <AdminFormsList /> 
+            </ProtectedAdminRoute>} />
+          
+          <Route path="form/:id" element={
+            <ProtectedAdminRoute> 
+            <AdminFormView /> 
+            </ProtectedAdminRoute>} />
 
 
-          <Route path="requests" element={<ProtectedRoute> <AdminRequestsPage /> </ProtectedRoute>} />
-          <Route path="panelka" element={<ProtectedRoute> <AdminDashboardPage /> </ProtectedRoute>} />
+          <Route path="requests" element={
+            <ProtectedAdminRoute> 
+            <AdminRequestsPage /> 
+            </ProtectedAdminRoute>} />
+          
+          <Route path="panelka" element={
+            <ProtectedAdminRoute> 
+            <AdminDashboardPage /> 
+            </ProtectedAdminRoute>} />
+          
           <Route path="view-form" element={<ProtectedRouteOrganizations> <OrganizationViewForm /> </ProtectedRouteOrganizations>} />
-          <Route path="add-admin" element={<ProtectedRoute> <AddAdmin /> </ProtectedRoute>} />
+          
+          <Route path="add-admin" element={
+            <ProtectedAdminRoute> 
+            <AddAdmin /> 
+            </ProtectedAdminRoute>} />
         </Route>
 
 
