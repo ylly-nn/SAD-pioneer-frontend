@@ -3,6 +3,18 @@ import { useNavigation } from "../../../hooks/useNavigation";
 import { useEditFormAdmin } from "../../../hooks/useEditFormAdmin";
 import { useState } from "react";
 
+const formatDate = (date: string | null) => {
+  if (!date) return "Не указано";
+
+  return new Date(date).toLocaleString("ru-RU", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+};
+
 const FormViewPage = () => {
   const { goHome } = useNavigation();
   const { formData, loading, status, reviewedAt, handleStatusChange, handleSubmit } = useEditFormAdmin();
@@ -53,7 +65,7 @@ const FormViewPage = () => {
     
     // Если статус меняется на "одобрена" или "отклонена",
     // можно показать уведомление, что дата рассмотрения будет установлена
-    if (newStatus === "одобрена" || newStatus === "отклонена") {
+    if (newStatus === "approved" || newStatus === "rejected"){
       console.log(`Статус изменен на ${newStatus}, дата рассмотрения будет установлена при сохранении`);
     }
   };
@@ -173,34 +185,24 @@ const FormViewPage = () => {
                   onChange={(e) => handleLocalStatusChange(e.target.value)}
                 >
                   {/* нельзя вернуться в "новая" */}
-                  <option value="новая" disabled>
-                    Новая
-                  </option>
-
-                  <option
-                    value="в работе"
-                    disabled={status === "одобрена" || status === "отклонена"}
-                  >
-                    В работе
-                  </option>
-
-                  <option value="одобрена">Одобрена</option>
-
-                  <option value="отклонена">Отклонена</option>
+                  <option value="new" disabled>Новая</option>
+                  <option value="pending" disabled={status === "approved" || status === "rejected"}>В работе</option>
+                  <option value="approved">Одобрена</option>
+                  <option value="rejected">Отклонена</option>
                 </select>
               </div>
 
               <div className={styles.field}>
                 <label className={styles.label}>Дата подачи заявки:</label>
                 <p className={styles.fieldValue}>
-                  {formData.created_at || "Не указано"}
+                  {formatDate(formData.created_at) || "Не указано"}
                 </p>
               </div>
 
               <div className={styles.field}>
                 <label className={styles.label}>Дата рассмотрения заявки:</label>
                 <p className={styles.fieldValue}>
-                  {reviewedAt || "Не рассмотрена"}
+                  {reviewedAt ? formatDate(reviewedAt) : "Не рассмотрена"}
                 </p>
               </div>
             </div>
