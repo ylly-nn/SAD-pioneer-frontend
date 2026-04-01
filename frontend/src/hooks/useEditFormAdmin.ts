@@ -28,7 +28,7 @@ export const useEditFormAdmin = () => {
 
         setStatus(data.status);
 
-        setReviewedAt(data.reviewed_at || null);
+        setReviewedAt(data.last_used || null);
 
       } catch (error) {
         console.error("Ошибка загрузки заявки:", error);
