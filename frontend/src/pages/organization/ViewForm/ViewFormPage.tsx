@@ -1,18 +1,18 @@
 import styles from "./ViewFormPage.module.scss";
-import { useNavigation } from "../../../hooks/useNavigation";
 import { useViewForm } from "../../../hooks/useViewForm";
+import { useNavigate } from "react-router-dom";
 
 const CreateFormPage = () => {
-  const { goHome } = useNavigation();
 
   const { formData } = useViewForm();
+  const navigate = useNavigate();
 
   return (
     <div className={styles.page}>
       <div className={styles.card}>
         <div className={styles.header}>
           <h1>Подключение организации</h1>
-          <button onClick={goHome}>✕</button>
+          <button onClick={() => navigate("/admin/requests")}>✕</button>
         </div>
 
         <form className={styles.form}>

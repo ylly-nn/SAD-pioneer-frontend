@@ -1,7 +1,8 @@
 import styles from "./FormViewPage.module.scss";
-import { useNavigation } from "../../../hooks/useNavigation";
 import { useEditFormAdmin } from "../../../hooks/useEditFormAdmin";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 
 const formatDate = (date: string | null) => {
   if (!date) return "Не указано";
@@ -16,9 +17,9 @@ const formatDate = (date: string | null) => {
 };
 
 const FormViewPage = () => {
-  const { goHome } = useNavigation();
   const { formData, loading, status, reviewedAt, handleStatusChange, handleSubmit } = useEditFormAdmin();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
 
   const onSubmit = async () => {
     if (isSubmitting) return;
@@ -75,7 +76,7 @@ const FormViewPage = () => {
       <div className={styles.card}>
         <div className={styles.header}>
           <h1>Подключение организации</h1>
-          <button onClick={goHome}>✕</button>
+          <button onClick={() => navigate("/admin/requests")}>✕</button>
         </div>
 
         <div className={styles.form}>
