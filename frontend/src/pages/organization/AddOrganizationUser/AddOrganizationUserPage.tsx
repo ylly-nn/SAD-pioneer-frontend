@@ -1,39 +1,100 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./AddOrganizationUserPage.module.scss";
+import axiosInstance from "../../../api/axios";
 
 const AddOrganizationUserPage = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [emailError, setEmailError] = useState("");
+
+  const validateEmail = (emailValue: string): string => {
+    if (!emailValue) return "Email обязателен";
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(emailValue)) {
+      return "Введите корректный email адрес (например: user@domain.com)";
+    }
+    return "";
+  };
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setEmail(value);
+    
+    const validationError = validateEmail(value);
+    setEmailError(validationError);
+    
+    if (error) setError("");
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
-    // Валидация email
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      setError("Введите корректный email адрес");
+    const validationError = validateEmail(email);
+    if (validationError) {
+      setEmailError(validationError);
       return;
     }
 
     setIsSubmitting(true);
 
     try {
-      // Здесь будет API запрос для добавления пользователя
-      console.log("Добавление пользователя:", email);
+      console.log("Отправка запроса на добавление пользователя:", { email });
       
-      // Имитация задержки запроса
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Успешное добавление - возврат на страницу организации
-      navigate("/organization", { 
-        state: { message: "Пользователь успешно добавлен" } 
+      const response = await axiosInstance.post("/company/users", {
+        email: email
       });
-    } catch (err) {
-      setError("Произошла ошибка при добавлении пользователя");
+
+      console.log("Пользователь добавлен:", response.data);
+      
+      navigate("/organization", {
+        state: { message: "Пользователь успешно добавлен" }
+      });
+
+    } catch (err: any) {
+      console.error("Ошибка при добавлении пользователя:", err);
+      
+      if (err.response) {
+        console.log("Данные ошибки от сервера:", err.response.data);
+        console.log("Статус ошибки:", err.response.status);
+        console.log("Заголовки ошибки:", err.response.headers);
+        
+        const errorMessage = err.response.data?.message || 
+                            err.response.data?.error || 
+                            JSON.stringify(err.response.data) ||
+                            "Неизвестная ошибка сервера";
+        
+        if (err.response.status === 400) {
+          if (errorMessage.includes("already") || errorMessage.includes("уже")) {
+            setError("Пользователь уже добавлен в эту организацию");
+          } else if (errorMessage.includes("not found") || errorMessage.includes("не найден")) {
+            setError("Пользователь с таким email не зарегистрирован в системе");
+          } else if (errorMessage.includes("invalid") || errorMessage.includes("некорректный")) {
+            setError("Некорректный email адрес");
+          } else {
+            setError(`Ошибка: ${errorMessage}`);
+          }
+        } else if (err.response.status === 401) {
+          setError("Сессия истекла. Пожалуйста, войдите снова");
+        } else if (err.response.status === 403) {
+          setError("У вас нет прав для добавления пользователей");
+        } else if (err.response.status === 404) {
+          setError("Сервис не найден. Проверьте настройки API");
+        } else if (err.response.status === 409) {
+          setError("Пользователь уже добавлен в компанию");
+        } else {
+          setError(errorMessage);
+        }
+      } else if (err.request) {
+        console.error("Нет ответа от сервера:", err.request);
+        setError("Сервер не отвечает. Проверьте подключение к интернету");
+      } else {
+        console.error("Ошибка при настройке запроса:", err.message);
+        setError("Произошла ошибка при отправке запроса");
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -59,10 +120,12 @@ const AddOrganizationUserPage = () => {
 
         <div className={styles.formContainer}>
           <p className={styles.description}>
-            Введите почту пользователя которого хотите добавить
+            Введите почту пользователя, которого хотите добавить в организацию
           </p>
           
-         
+          <p className={styles.note}>
+            Примечание: пользователь должен быть зарегистрирован в системе
+          </p>
 
           <form className={styles.form} onSubmit={handleSubmit}>
             <div className={styles.field}>
@@ -73,48 +136,40 @@ const AddOrganizationUserPage = () => {
                 id="email"
                 name="email"
                 type="email"
-                placeholder="введите email"
+                placeholder="example@company.com"
                 required
-                className={`${styles.input} ${error ? styles.inputError : ''}`}
+                className={`${styles.input} ${(emailError || error) ? styles.inputError : ''}`}
                 autoComplete="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={handleEmailChange}
                 disabled={isSubmitting}
               />
-              {error && <div className={styles.error}>{error}</div>}
+              {emailError && <div className={styles.error}>{emailError}</div>}
+              {error && !emailError && (
+                <div className={styles.error}>
+                  {error}
+                  {error.includes("Пользователь уже добавлен")}
+                </div>
+              )}
             </div>
 
             <button
               type="submit"
               className={styles.submit}
-              disabled={isSubmitting || !email}
+              disabled={isSubmitting || !email || !!emailError}
             >
               {isSubmitting ? "Добавление..." : "Добавить"}
             </button>
           </form>
 
-          <div className={styles.infoBox}>
-            <svg className={styles.infoIcon} viewBox="0 0 24 24" fill="none">
-              <path 
-                d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" 
-                stroke="currentColor" 
-                strokeWidth="1.5"
-              />
-              <path 
-                d="M12 16V12M12 8H12.01" 
-                stroke="currentColor" 
-                strokeWidth="1.5" 
-                strokeLinecap="round"
-              />
-            </svg>
-            <p>
-              Пользователь получит уведомление на указанную почту 
-              и сможет присоединиться к организации
-            </p>
-          </div>
-
           <div className={styles.footer}>
-           
+            <button 
+              className={styles.backLink} 
+              onClick={handleBack}
+              type="button"
+            >
+              ← Вернуться к профилю организации
+            </button>
           </div>
         </div>
       </div>

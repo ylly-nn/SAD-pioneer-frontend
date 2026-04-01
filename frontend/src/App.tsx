@@ -35,6 +35,7 @@ import AdminRequestsPage from "./pages/admin/AdminRequests/AdminRequestsPage";
 import AddAdmin from "./pages/admin/AddAdminPage/AddAdminPage";
 import ForgotPasswordPage from "./pages/user/ForgotPassword/ForgotPasswordPage";
 import NewPasswordPage from "./pages/user/NewPasswordPage/NewPasswordPage";
+import AddOrganizationUserPage from "./pages/organization/AddOrganizationUser/AddOrganizationUserPage";
 
 const App = () => {
   
@@ -70,6 +71,7 @@ const App = () => {
           <Route path="branch-form" element={<ProtectedRouteOrganizations> <OrganizationBranchForm /> </ProtectedRouteOrganizations>} />
            <Route path="no-org" element={<ProtectedRouteOrganizations> <UserNoOrganizationPage /> </ProtectedRouteOrganizations>} />
           <Route path="branches" element={<ProtectedRouteOrganizations> <OrganizationBranchesPage /> </ProtectedRouteOrganizations>} />
+          <Route path="add-user" element={<ProtectedRouteOrganizations> <AddOrganizationUserPage /> </ProtectedRouteOrganizations>} />
         </Route>
 
 

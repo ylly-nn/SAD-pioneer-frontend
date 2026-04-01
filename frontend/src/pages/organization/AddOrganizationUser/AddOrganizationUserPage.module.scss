@@ -179,11 +179,11 @@
 }
 
 .inputError {
-  border-color: #ff6b6b;
+  border-color: #7c415b;
 }
 
 .inputError:focus {
-  border-color: #ff6b6b;
+  border-color: #7c415b;
 }
 
 .input:disabled {
@@ -192,7 +192,7 @@
 }
 
 .error {
-  color: #ff6b6b;
+  color: #7c415b;
   font-size: 14px;
   margin-top: 5px;
 }
@@ -304,4 +304,17 @@
   .note {
     font-size: 12px;
   }
+}
+
+.errorGeneral {
+  color: #7c415b;
+  font-size: 14px;
+  margin: 10px 0;
+  text-align: center;
+  padding: 8px;
+  background: rgba(255, 107, 107, 0.1);
+  border-radius: 4px;
+}
+.error.includes{
+  color: #7c415b;
 }
