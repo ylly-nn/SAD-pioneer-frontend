@@ -33,6 +33,8 @@ import AdminFormView from "./pages/admin/FormView/FormViewPage";
 import AdminDashboardPage from "./pages/admin/AdminDashboard/AdminDashboardPage";
 import AdminRequestsPage from "./pages/admin/AdminRequests/AdminRequestsPage";
 import AddAdmin from "./pages/admin/AddAdminPage/AddAdminPage";
+import ForgotPasswordPage from "./pages/user/ForgotPassword/ForgotPasswordPage";
+import NewPasswordPage from "./pages/user/NewPasswordPage/NewPasswordPage";
 
 const App = () => {
   
@@ -45,7 +47,9 @@ const App = () => {
         <Route index element={<ProtectedRoute> <UserProfile /> </ProtectedRoute>}/>
           <Route path="login" element={<HomeRouteUsers> <UserLogin /> </HomeRouteUsers>} />
           <Route path="register" element={<HomeRouteUsers> <UserRegister /> </HomeRouteUsers>} />
+          <Route path="forgot-password" element={<ForgotPasswordPage />}/>
           <Route path="verify" element={<HomeRouteUsers> <UserVerify /> </HomeRouteUsers>} />
+          <Route path="new-password" element={<NewPasswordPage />} />
           <Route path="service"> 
             
             <Route path="select-organization" element={<ProtectedRouteUsers> <UserSelectOrganization /> </ProtectedRouteUsers>} />

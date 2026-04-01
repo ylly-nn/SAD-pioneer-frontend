@@ -8,6 +8,7 @@ export const ROUTES = {
     Profile:'/user',
     LOGIN:'/user/login',
     REGISTER: '/user/register',
+    RESET_PASSWORD: "/user/forgot-password",
     Verify: '/user/verify',
     SERVICE: {
         SELECT: '/user/service',
@@ -23,6 +24,7 @@ export const ROUTES = {
     PROFILE:'/organization',
     LOGIN: '/organization/login',
     REGISTER: '/organization/register',
+     
     EDIT_FORM: '/organization/edit-form',
     VIEW_FORM: '/organization/view-form',
     BRANCH:{
