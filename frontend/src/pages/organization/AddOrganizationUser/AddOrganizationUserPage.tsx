@@ -2,8 +2,12 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./AddOrganizationUserPage.module.scss";
 import axiosInstance from "../../../api/axios";
+import { useNavigation } from "../../../hooks/useNavigation";
+import { ROUTES } from "../../../constants/routes";
 
 const AddOrganizationUserPage = () => {
+  const { goToOrganization }= useNavigation();
+
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -50,7 +54,7 @@ const AddOrganizationUserPage = () => {
 
       console.log("Пользователь добавлен:", response.data);
       
-      navigate("/organization", {
+      navigate(ROUTES.ORGANIZATION.PROFILE, {
         state: { message: "Пользователь успешно добавлен" }
       });
 
@@ -100,10 +104,6 @@ const AddOrganizationUserPage = () => {
     }
   };
 
-  const handleBack = () => {
-    navigate("/organization");
-  };
-
   return (
     <div className={styles.page}>
       <div className={styles.card}>
@@ -111,7 +111,7 @@ const AddOrganizationUserPage = () => {
           <h1 className={styles.title}>Добавление пользователя</h1>
           <button
             className={styles.close}
-            onClick={handleBack}
+            onClick={goToOrganization}
             aria-label="Закрыть"
           >
             ✕
@@ -161,16 +161,6 @@ const AddOrganizationUserPage = () => {
               {isSubmitting ? "Добавление..." : "Добавить"}
             </button>
           </form>
-
-          <div className={styles.footer}>
-            <button 
-              className={styles.backLink} 
-              onClick={handleBack}
-              type="button"
-            >
-              ← Вернуться к профилю организации
-            </button>
-          </div>
         </div>
       </div>
     </div>

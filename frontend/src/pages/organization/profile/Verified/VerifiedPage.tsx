@@ -1,15 +1,12 @@
-import { useNavigate } from "react-router-dom";
 import styles from "./VerifiedPage.module.scss";
 import backgroundImage from "../../../../assets/33.jpg";
 import { useOrganizationData } from "../../../../hooks/useOrganizationData";
+import { useNavigation } from "../../../../hooks/useNavigation";
 
 const VerifiedPage = () => {
-  const navigate = useNavigate();
+  const { goToOrganizationOrders, goToOrganizationBranches, goToOrganizationAddUser }= useNavigation();
+  
   const { org, branchesCount, loading } = useOrganizationData();
-
-  const handleNavigate = (path: string) => {
-    navigate(path);
-  };
 
   if (loading) {
     return <div className={styles.page}>Загрузка...</div>;
@@ -49,7 +46,7 @@ const VerifiedPage = () => {
             {/* Заказы */}
             <div className={styles.card}>
               <button
-                onClick={() => handleNavigate("/organization/orders")}
+                onClick={goToOrganizationOrders}
                 className={styles.cardButton}
                 aria-label="Управление заказами"
               >
@@ -63,7 +60,7 @@ const VerifiedPage = () => {
             {/* Филиалы */}
             <div className={styles.card}>
               <button
-                onClick={() => handleNavigate("/organization/branches")}
+                onClick={goToOrganizationBranches}
                 className={styles.cardButton}
                 aria-label="Управление филиалами"
               >
@@ -77,36 +74,20 @@ const VerifiedPage = () => {
             {/* Пользователи */}
             <div className={styles.card}>
               <button
-                onClick={() => handleNavigate("/organization/users")}
+                onClick={goToOrganizationAddUser}
                 className={styles.cardButton}
                 aria-label="Управление пользователями"
               >
                 <h3 className={styles.cardTitle}>
-                  Добавить пользователя организации
+                  Добавить пользователя
                 </h3>
                 <p className={styles.cardDescription}>
-                  Приглашение сотрудников, управление ролями и правами доступа
+                  Приглашение сотрудников
                 </p>
               </button>
             </div>
           </div>
         </section>
-
-        <div className={styles.footer}>
-          <button
-            className={styles.backButton}
-            onClick={() => navigate("/")}
-          >
-            ← На главную
-          </button>
-
-          <button
-            className={styles.settingsButton}
-            onClick={() => handleNavigate("/organization/settings")}
-          >
-            ⚙️ Настройки
-          </button>
-        </div>
       </div>
     </div>
   );

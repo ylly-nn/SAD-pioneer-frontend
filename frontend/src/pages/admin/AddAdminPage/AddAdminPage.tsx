@@ -63,7 +63,7 @@ const AddAdmin = () => {
 
       console.log("Админ успешно добавлен:", response.data);
       
-      navigate("/admin/panelka", { 
+      navigate("/admin", { 
         state: { message: "Администратор успешно добавлен" } 
       });
     } catch (err: any) {

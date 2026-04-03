@@ -2,7 +2,7 @@ import "./App.css";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import { ProtectedRoute, ProtectedRouteUsers, ProtectedRouteOrganizations, HomeRouteUsers, HomeRouteOrganizations } from "./components/ProtectedRoute";
+import { ProtectedRoute, HomeRouteUsers, HomeRouteOrganizations, ProtectedRouteOrganizations, ProtectedRouteOrganizationsRequest } from "./components/ProtectedRoute";
 import ProtectedAdminRoute from "./components/ProtectedAdminRoute"
 import Home from "./pages/Home/HomePage";
 import NotFound from "./pages/NotFound/NotFoundPage";
@@ -31,7 +31,6 @@ import OrganizationBranchForm from "./pages/organization/branch/BranchForm/Branc
 import OrganizationBranches from "./pages/organization/OrganizationBranches/OrganizationBranchesPage";
 import OrganizationOrders from "./pages/organization/OrganizationOrders/OrganizationOrdersPage";
 
-import AdminFormsList from "./pages/admin/FormsList/FormsListPage";
 import AdminFormView from "./pages/admin/FormView/FormViewPage";
 
 import AdminDashboardPage from "./pages/admin/AdminDashboard/AdminDashboardPage";
@@ -53,14 +52,14 @@ const App = () => {
           <Route path="register" element={<HomeRouteUsers> <UserRegister /> </HomeRouteUsers>} />
           <Route path="forgot-password" element={<ForgotPasswordPage />}/>
           <Route path="verify" element={<HomeRouteUsers> <UserVerify /> </HomeRouteUsers>} />
-          <Route path="order/:id" element={<ProtectedRouteUsers> <UserOrder /> </ProtectedRouteUsers>} />
+          <Route path="order/:id" element={<ProtectedRoute> <UserOrder /> </ProtectedRoute>} />
 
           <Route path="service"> 
             <Route index element={<ProtectedRoute> <UserSelectService /> </ProtectedRoute>}/>
-            <Route path="select-organization" element={<ProtectedRouteUsers> <UserSelectOrganization /> </ProtectedRouteUsers>} />
-            <Route path="details" element={<ProtectedRouteUsers> <UserSelectDetails /> </ProtectedRouteUsers>} />
-            <Route path="select-time" element={<ProtectedRouteUsers> <UserSelectTime /> </ProtectedRouteUsers>} />
-            <Route path="confirm" element={<ProtectedRouteUsers> <UserConfirm /> </ProtectedRouteUsers>} />
+            <Route path="select-organization" element={<ProtectedRoute> <UserSelectOrganization /> </ProtectedRoute>} />
+            <Route path="details" element={<ProtectedRoute> <UserSelectDetails /> </ProtectedRoute>} />
+            <Route path="select-time" element={<ProtectedRoute> <UserSelectTime /> </ProtectedRoute>} />
+            <Route path="confirm" element={<ProtectedRoute> <UserConfirm /> </ProtectedRoute>} />
           </Route>
 
         </Route>
@@ -69,12 +68,11 @@ const App = () => {
         <Route index element={<ProtectedRoute> <OrganizationProfile /> </ProtectedRoute>}/>
           <Route path="login" element={<HomeRouteOrganizations> <OrganizationLogin /> </HomeRouteOrganizations>} />
           <Route path="register" element={<HomeRouteOrganizations> <OrganizationRegister /> </HomeRouteOrganizations>} />
-          <Route path="forgot-password" element={<ForgotPasswordPage />}/>
-          <Route path="create-form" element={<ProtectedRouteOrganizations> <OrganizationEditForm /> </ProtectedRouteOrganizations>} />
-          <Route path="view-form" element={<ProtectedRouteOrganizations> <OrganizationViewForm /> </ProtectedRouteOrganizations>} />
+          <Route path="forgot-password" element={<HomeRouteOrganizations> <ForgotPasswordPage /> </HomeRouteOrganizations>}/>
+          <Route path="create-form" element={<ProtectedRoute> <OrganizationEditForm /> </ProtectedRoute>} />
+          <Route path="view-form" element={<ProtectedRouteOrganizationsRequest> <OrganizationViewForm /> </ProtectedRouteOrganizationsRequest>} />
 
           <Route path="orders" element={<ProtectedRouteOrganizations> <OrganizationOrders /> </ProtectedRouteOrganizations>} />
-
 
           <Route path="branches" element={<ProtectedRouteOrganizations> <OrganizationBranches /> </ProtectedRouteOrganizations>} />
           <Route path="branch/:id" element={<ProtectedRouteOrganizations> <OrganizationBranch /> </ProtectedRouteOrganizations>} />
@@ -87,10 +85,12 @@ const App = () => {
 
 
         <Route path="/admin">
-          <Route path="forms" element={
+
+        <Route index element={
             <ProtectedAdminRoute> 
-            <AdminFormsList /> 
+            <AdminDashboardPage /> 
             </ProtectedAdminRoute>} />
+            
           
           <Route path="form/:id" element={
             <ProtectedAdminRoute> 
@@ -101,11 +101,6 @@ const App = () => {
           <Route path="requests" element={
             <ProtectedAdminRoute> 
             <AdminRequestsPage /> 
-            </ProtectedAdminRoute>} />
-          
-          <Route path="panelka" element={
-            <ProtectedAdminRoute> 
-            <AdminDashboardPage /> 
             </ProtectedAdminRoute>} />
           
           <Route path="view-form" element={<ProtectedRouteOrganizations> <OrganizationViewForm /> </ProtectedRouteOrganizations>} />

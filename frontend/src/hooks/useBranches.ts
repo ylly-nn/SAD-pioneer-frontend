@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 import { type Branch } from "../types/organization";
 import { branches as branchesApi } from "../api/organization";
-import { useNavigation } from "./useNavigation";
 
 export const useBranches = () => {
-  const { goToOrganization } = useNavigation();
 
   const [items, setItems] = useState<Branch[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -19,9 +17,6 @@ export const useBranches = () => {
       const message = err.response?.data?.message || "Ошибка загрузки данных";
       setError(message);
 
-      if (err.response?.status === 403) {
-        goToOrganization();
-      }
     } finally {
       setIsLoading(false);
     }

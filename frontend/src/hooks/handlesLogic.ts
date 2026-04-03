@@ -55,15 +55,7 @@ export const useHandlesLogic = () => {
     console.log('Выбрана услуга:', selectedService);
     navigate(ROUTES.USER.SERVICE.ORGANIZATION);
 };
-  
-  // для организаций
-  const handleOrganizationLogin = () => navigate(ROUTES.ORGANIZATION.LOGIN);
-  const handleOrganizationRegister = () => navigate(ROUTES.ORGANIZATION.REGISTER);
-  const handleViewForm = () => navigate(ROUTES.ORGANIZATION.VIEW_FORM);
 
-  // для администраторов
-  const handleAdminFormView = () => navigate(ROUTES.ADMIN.FORMS);
-  const handleAdminFormList = () => navigate(ROUTES.ADMIN.FORM_DETAIL);
 
 
   return {
@@ -78,14 +70,5 @@ export const useHandlesLogic = () => {
 
     handleServiceChange,
     handleSubmitService,
-
-    handleOrganizationLogin,
-    handleOrganizationRegister,
-    handleViewForm,
-
-    handleAdminFormView,
-    handleAdminFormList,
-
-    //handleLogout
   };
 };

@@ -38,13 +38,13 @@ export const ROUTES = {
       }
     },
     USERS:{
-      FORM: '/organization/users/form',
+      FORM: '/organization/add-user',
     }
   },
   
   // для администраторов
   ADMIN: {
-    FORMS: '/admin/forms',
-    FORM_DETAIL: '/admin/form/:id'
+    PROFILE: '/admin',
+    FORM_DETAIL: '/admin/form/id',
   }
 };

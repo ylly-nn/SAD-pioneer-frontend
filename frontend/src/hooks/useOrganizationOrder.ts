@@ -1,10 +1,8 @@
 import { useState, useEffect, useMemo } from "react";
 import { order } from "../api/order";
 import type { CompanyOrders } from "../types/orders";
-import { useNavigation } from "./useNavigation";
 
 export const useOrganizationOrder = () => {
-    const { goToOrganization } = useNavigation();
     
   const [rawData, setRawData] = useState<CompanyOrders[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -35,10 +33,6 @@ export const useOrganizationOrder = () => {
           : err?.message || "Ошибка загрузки";
 
       setError(message);
-
-      if (err.response?.status === 403) {
-        goToOrganization();
-      }
 
     } finally {
       setIsLoading(false);

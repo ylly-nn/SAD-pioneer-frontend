@@ -29,7 +29,6 @@ export const tokenService = {
     localStorage.removeItem(REFRESH_TOKEN_KEY);
   },
 
-  // 🔥 осталось ли время жизни токена
   getAccessTokenExpiration: () => {
     const token = localStorage.getItem(ACCESS_TOKEN_KEY);
     if (!token) return null;

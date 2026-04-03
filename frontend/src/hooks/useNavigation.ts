@@ -57,7 +57,6 @@ export const useNavigation = () => {
     goToOrganizationAddUser: () => navigate(ROUTES.ORGANIZATION.USERS.FORM),
 
     // администраторы
-    goToAdminForms: () => navigate(ROUTES.ADMIN.FORMS),
     goToAdminFormDetail: () => navigate(ROUTES.ADMIN.FORM_DETAIL),
   };
 };
