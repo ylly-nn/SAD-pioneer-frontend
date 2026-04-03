@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../api/authService";
 import { ROUTES } from "../constants/routes";
+import { roleService } from "../services/roleService";
 
 export const useRegisterForm = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -28,6 +29,14 @@ export const useRegisterForm = () => {
     e.preventDefault();
     setError(null);
 
+    const role = roleService.getRole();
+
+    if (!role) {
+      setError("Не выбрана роль");
+      return;
+    }
+
+
     // Валидация
     if (formData.password !== confirmPassword) {
       setError("Пароли не совпадают");
@@ -40,9 +49,12 @@ export const useRegisterForm = () => {
 
     setIsLoading(true);
     try {
+
       const response = await auth.register(formData);
+
       console.log("Успешная регистрация:", response);
-      navigate(ROUTES.USER.VERIFY, { state: { email: formData.email } });
+      navigate(ROUTES.VERIFY, {state: { email: formData.email },});
+      //navigate(ROUTES.USER.VERIFY, { state: { email: formData.email } });
     } catch (err: any) {
       const message = err.response?.data?.message || "Ошибка регистрации";
       setError(message);

@@ -2,15 +2,15 @@ import "./App.css";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import { ProtectedRoute, HomeRouteUsers, HomeRouteOrganizations, ProtectedRouteOrganizations, ProtectedRouteOrganizationsRequest } from "./components/ProtectedRoute";
+import { HomeRoute, ProtectedRoute, ProtectedRouteOrganizations, ProtectedRouteOrganizationsRequest } from "./components/ProtectedRoute";
 import ProtectedAdminRoute from "./components/ProtectedAdminRoute"
 import Home from "./pages/Home/HomePage";
 import NotFound from "./pages/NotFound/NotFoundPage";
 
 import UserProfile from "./pages/user/Profile/ProfilePage";
-import UserLogin from "./pages/user/Login/LoginPage";
-import UserRegister from "./pages/user/Register/RegisterPage";
-import UserVerify from "./pages/user/Register/VerifyPage";
+import UserLogin from "./pages/auth/Login/LoginPage";
+import UserRegister from "./pages/auth/Register/RegisterPage";
+import UserVerify from "./pages/auth/Register/VerifyPage";
 import UserSelectService from "./pages/user/service/SelectService/SelectServicePage";
 import UserSelectOrganization from "./pages/user/service/SelectOrganization/SelectOrganizationPage";
 import UserSelectDetails from "./pages/user/service/SelectDetails/SelectDetailsPage";
@@ -19,8 +19,6 @@ import UserConfirm from "./pages/user/service/Confirm/ConfirmPage";
 import UserOrder from "./pages/user/Order/OrderPage";
 
 import OrganizationProfile from "./pages/organization/profile/ProfilePage";
-import OrganizationLogin from "./pages/organization/Login/LoginPage";
-import OrganizationRegister from "./pages/organization/Register/RegisterPage";
 import OrganizationEditForm from "./pages/organization/EditForm/EditFormPage";
 import OrganizationViewForm from "./pages/organization/ViewForm/ViewFormPage";
 import OrganizationBranch from "./pages/organization/branch/Branch/BranchPage";
@@ -36,7 +34,7 @@ import AdminFormView from "./pages/admin/FormView/FormViewPage";
 import AdminDashboardPage from "./pages/admin/AdminDashboard/AdminDashboardPage";
 import AdminRequestsPage from "./pages/admin/AdminRequests/AdminRequestsPage";
 import AddAdmin from "./pages/admin/AddAdminPage/AddAdminPage";
-import ForgotPasswordPage from "./pages/user/ForgotPassword/ForgotPasswordPage";
+import ForgotPasswordPage from "./pages/auth/ForgotPassword/ForgotPasswordPage";
 import AddOrganizationUserPage from "./pages/organization/AddOrganizationUser/AddOrganizationUserPage";
 
 const App = () => {
@@ -46,12 +44,15 @@ const App = () => {
       <Routes>
         <Route path="/" element={ <Home /> } />
 
+        <Route path="login" element={<HomeRoute> <UserLogin /> </HomeRoute>} />
+        <Route path="register" element={<HomeRoute> <UserRegister /> </HomeRoute>} />
+
+        <Route path="verify" element={<HomeRoute> <UserVerify /> </HomeRoute>} />
+        <Route path="forgot-password" element={<HomeRoute> <ForgotPasswordPage /> </HomeRoute>}/>
+
+
         <Route path="/user">
         <Route index element={<ProtectedRoute> <UserProfile /> </ProtectedRoute>}/>
-          <Route path="login" element={<HomeRouteUsers> <UserLogin /> </HomeRouteUsers>} />
-          <Route path="register" element={<HomeRouteUsers> <UserRegister /> </HomeRouteUsers>} />
-          <Route path="forgot-password" element={<ForgotPasswordPage />}/>
-          <Route path="verify" element={<HomeRouteUsers> <UserVerify /> </HomeRouteUsers>} />
           <Route path="order/:id" element={<ProtectedRoute> <UserOrder /> </ProtectedRoute>} />
 
           <Route path="service"> 
@@ -66,9 +67,7 @@ const App = () => {
 
         <Route path="/organization">
         <Route index element={<ProtectedRoute> <OrganizationProfile /> </ProtectedRoute>}/>
-          <Route path="login" element={<HomeRouteOrganizations> <OrganizationLogin /> </HomeRouteOrganizations>} />
-          <Route path="register" element={<HomeRouteOrganizations> <OrganizationRegister /> </HomeRouteOrganizations>} />
-          <Route path="forgot-password" element={<HomeRouteOrganizations> <ForgotPasswordPage /> </HomeRouteOrganizations>}/>
+          
           <Route path="create-form" element={<ProtectedRoute> <OrganizationEditForm /> </ProtectedRoute>} />
           <Route path="view-form" element={<ProtectedRouteOrganizationsRequest> <OrganizationViewForm /> </ProtectedRouteOrganizationsRequest>} />
 

@@ -2,15 +2,17 @@ export const ROUTES = {
 
   // общие
   HOME: '/',
+  LOGIN:'/login',
+  REGISTER: '/register',
+  VERIFY: '/verify',
+  RESET_PASSWORD: "/forgot-password",
+
+
   
   // для владельцев автомобилей
   USER: {
     PROFILE:'/user',
-    LOGIN:'/user/login',
-    REGISTER: '/user/register',
-    VERIFY: '/user/verify',
     ORDER: '/user/order',
-    RESET_PASSWORD: "/user/forgot-password",
     SERVICE: {
         SELECT: '/user/service',
         ORGANIZATION: '/user/service/select-organization',
@@ -23,8 +25,6 @@ export const ROUTES = {
   // для организаций
   ORGANIZATION: {
     PROFILE:'/organization',
-    LOGIN: '/organization/login',
-    REGISTER: '/organization/register',
     EDIT_FORM: '/organization/create-form',
     VIEW_FORM: '/organization/view-form',
     ORDERS: '/organization/orders',

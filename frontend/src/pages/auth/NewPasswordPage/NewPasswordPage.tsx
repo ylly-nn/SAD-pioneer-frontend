@@ -60,7 +60,7 @@ const NewPasswordPage = () => {
 
   // Если email не передан, перенаправляем обратно
   if (!email) {
-    navigate("/user/forgot-password");
+    navigate("/forgot-password");
     return null;
   }
 

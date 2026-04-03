@@ -2,37 +2,53 @@ import { useState } from "react";
 import { auth } from "../api/authService";
 import { useNavigation } from "./useNavigation";
 import { tokenService } from "../api/tokenService";
+import { roleService } from "../services/roleService";
+import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export const useLoginForm = () => {
-  
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from;
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const { goToUser/*, goToOrganization*/ } = useNavigation();
+
+  const { goToUser, goToOrganization } = useNavigation();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    setIsLoading(true);
-    try {
 
+    const role = roleService.getRole();
+
+    if (!role) {
+      setError("Не выбрана роль");
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
       const response = await auth.login(formData);
 
-      tokenService.setTokens(
-        response.access_token,
-        response.refresh_token
-      );
+      tokenService.setTokens(response.access_token, response.refresh_token);
 
-      console.log("Успешный вход:", response);
+      if (from) {
+        navigate(from);
+        return;
+      }
 
-      goToUser();
-      //goToOrganization();
-
+      if (role === "organization") {
+        goToOrganization();
+      } else {
+        goToUser();
+      }
     } catch (err: any) {
       const message = err.response?.data?.message || "Ошибка авторизации";
       setError(message);

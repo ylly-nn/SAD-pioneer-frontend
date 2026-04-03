@@ -3,7 +3,7 @@ import styles from "./HomePage.module.scss";
 import { useNavigation } from "../../hooks/useNavigation";
 
 const HomePage = () => {
-  const { goToUserLogin, goToOrganizationLogin } = useNavigation();
+  const { goToUser, goToOrganization} = useNavigation();
 
   return (
     <div className={styles.page}>
@@ -20,7 +20,9 @@ const HomePage = () => {
           <ul className={styles.cards}>
             <li className={styles.card}>
               <button
-                onClick={goToUserLogin}
+              
+              // onClick={() => goToLogin("user")}
+                onClick={() => goToUser()}
                 className={styles.cardButton}
                 aria-label="Войти как владелец ТС"
               >
@@ -33,7 +35,8 @@ const HomePage = () => {
 
             <li className={styles.card}>
               <button
-                onClick={goToOrganizationLogin}
+              // onClick={() => goToLogin("organization")}
+                onClick={() => goToOrganization()}
                 className={styles.cardButton}
                 aria-label="Войти как организация"
               >

@@ -18,8 +18,6 @@ export const useHandlesLogic = () => {
   // для владельцев автомобилей
   // /user/ будет вести на профиль пользователя думаю. сейчас такого функционала нет, но в будущем плнируется
 
-  const handleUserLogin = () => navigate(ROUTES.USER.LOGIN);
-  const handleUserRegister = () => navigate(ROUTES.USER.REGISTER);
 
   const handleSelectService = () => navigate(ROUTES.USER.SERVICE.SELECT);
   const handleSelectOrganization = () => navigate(ROUTES.USER.SERVICE.ORGANIZATION);
@@ -60,8 +58,6 @@ export const useHandlesLogic = () => {
 
   return {
     handleHome,
-    handleUserLogin,
-    handleUserRegister,
     handleSelectService,
     handleSelectOrganization,
     handleSelectDetails,

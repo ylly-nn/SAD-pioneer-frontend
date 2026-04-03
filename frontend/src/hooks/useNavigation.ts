@@ -2,6 +2,8 @@ import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../constants/routes";
 import { generatePath } from "react-router-dom";
 import { type UserOrder } from "../types/orders";
+import { type Role } from "../types/auth";
+import { roleService } from "../services/roleService";
 
 export const useNavigation = () => {
   const navigate = useNavigate();
@@ -10,12 +12,32 @@ export const useNavigation = () => {
     goHome: () => navigate("/"),
     goBack: () => navigate(-1),
 
-    // владельцы тс
-    goToUser: () => navigate(ROUTES.USER.PROFILE),
+    goToLogin: (role: Role) => {
+      roleService.setRole(role);
+      navigate("/login");
+    },
 
-    goToUserLogin: () => navigate(ROUTES.USER.LOGIN),
-    goToUserRegister: () => navigate(ROUTES.USER.REGISTER),
-    goToUserVerify: () => navigate(ROUTES.USER.VERIFY),
+    goToRegister: (role: Role) => {
+      roleService.setRole(role);
+      navigate("/register");
+    },
+
+    goToProfile: () => {
+  const role = roleService.getRole();
+
+  if (role === "organization") {
+    navigate(ROUTES.ORGANIZATION.PROFILE);
+  } else {
+    navigate(ROUTES.USER.PROFILE);
+  }
+},
+
+    // владельцы тс
+    goToUser: () => {
+  roleService.setRole("user");
+  navigate(ROUTES.USER.PROFILE);
+},
+
 
     goToSelectService: () => navigate(ROUTES.USER.SERVICE.SELECT),
     goToSelectOrganization: () => navigate(ROUTES.USER.SERVICE.ORGANIZATION),
@@ -29,10 +51,10 @@ export const useNavigation = () => {
       }),
 
     // организации
-    goToOrganization: () => navigate(ROUTES.ORGANIZATION.PROFILE),
-
-    goToOrganizationLogin: () => navigate(ROUTES.ORGANIZATION.LOGIN),
-    goToOrganizationRegister: () => navigate(ROUTES.ORGANIZATION.REGISTER),
+    goToOrganization: () => {
+  roleService.setRole("organization");
+  navigate(ROUTES.ORGANIZATION.PROFILE);
+},
 
     goToCreateForm: () => navigate(ROUTES.ORGANIZATION.EDIT_FORM),
     goToViewForm: () => navigate(ROUTES.ORGANIZATION.VIEW_FORM),

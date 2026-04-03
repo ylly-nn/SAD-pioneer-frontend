@@ -37,7 +37,7 @@ const VerifyPage = () => {
         </form>
 
         <p className={styles.footer}>
-            <Link to={ROUTES.USER.REGISTER} className={styles.link}>вернуться к регистрации</Link>
+            <Link to={ROUTES.REGISTER} className={styles.link}>вернуться к регистрации</Link>
           </p>
 
         </div>

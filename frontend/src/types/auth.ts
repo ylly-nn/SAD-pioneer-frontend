@@ -19,3 +19,5 @@ export interface AuthResponse {
   token_type: string
   expires_in: number
 }
+
+export type Role = "user" | "organization";

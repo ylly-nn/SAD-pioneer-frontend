@@ -6,14 +6,20 @@ import { useState } from "react";
 import { ROUTES } from "../../../constants/routes";
 import { useNavigation } from "../../../hooks/useNavigation";
 import { useLoginForm } from "../../../hooks/useLoginForm";
+import { roleService } from "../../../services/roleService";
 
 const LoginPage = () => {
-
   const { goHome } = useNavigation();
-  const { formData, error, isLoading, handleChange, handleSubmit } = useLoginForm();
+  const { formData, error, isLoading, handleChange, handleSubmit } =
+    useLoginForm();
 
   const [showPassword, setShowPassword] = useState(false);
   const togglePassword = () => setShowPassword(!showPassword);
+
+  const role = roleService.getRole();
+  if (!role) {
+    goHome;
+  }
 
   return (
     <div className={styles.page}>
@@ -76,10 +82,9 @@ const LoginPage = () => {
                 onChange={handleChange}
               />
               <div className={styles.forgotPassword}>
-                  <Link to={ROUTES.USER.RESET_PASSWORD} className={styles.link}>
-                  
+                <Link to={ROUTES.RESET_PASSWORD} className={styles.link}>
                   Забыли пароль?
-                  </Link>
+                </Link>
               </div>
             </div>
 
@@ -96,7 +101,7 @@ const LoginPage = () => {
 
           <p className={styles.footer}>
             Ещё нет аккаунта?{" "}
-            <Link to={ROUTES.USER.REGISTER} className={styles.link}>
+            <Link to={ROUTES.REGISTER} className={styles.link}>
               Зарегистрироваться
             </Link>
           </p>

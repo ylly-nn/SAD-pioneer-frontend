@@ -7,6 +7,8 @@ import { useRegisterForm } from "../../../hooks/useRegisterForm";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
+import { roleService } from "../../../services/roleService";
+
 const RegisterPage = () => {
   const { goHome } = useNavigation();
   const {
@@ -21,7 +23,13 @@ const RegisterPage = () => {
   } = useRegisterForm();
 
   const [showPassword, setShowPassword] = useState(false);
+  
   const togglePassword = () => setShowPassword(!showPassword);
+
+  const role = roleService.getRole();
+    if (!role) {
+      goHome;
+    }
 
   return (
     <div className={styles.page}>
@@ -132,7 +140,7 @@ const RegisterPage = () => {
 
           <p className={styles.footer}>
             уже есть аккаунт?
-            <Link to={ROUTES.ORGANIZATION.LOGIN} className={styles.link}>
+            <Link to={ROUTES.LOGIN} className={styles.link}>
               войти
             </Link>
           </p>
