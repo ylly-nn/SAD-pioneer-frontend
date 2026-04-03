@@ -96,6 +96,7 @@
 .form {
   display: flex;
   flex-direction: column;
+  margin-top:6px;
 }
 
 .field {
@@ -203,4 +204,26 @@ input:hover {
 
 .link:hover {
   color: #7c415b;
+}
+
+.forgotWrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.forgot {
+  font-size: 13px;
+  color: #6b6b6b;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.forgot:hover {
+  color: #000;
+  text-decoration: underline;
+}
+.forgotPassword {
+  margin-top: 8px; /* или любое нужное значение, например 1px */
+  text-align: right;
 }

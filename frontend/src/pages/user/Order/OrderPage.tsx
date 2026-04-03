@@ -1,8 +1,11 @@
 import styles from "./OrderPage.module.scss";
 import { useNavigation } from "../../../hooks/useNavigation";
 import { useUserOrderDetails } from "../../../hooks/useUserOrderDetails";
+import { useOrderStatus } from "../../../hooks/useOrderStatus";
 
 const OrderPage = () => {
+  const { getStatusLabel } = useOrderStatus();
+
   const { goToUser } = useNavigation();
 
   const {
@@ -40,7 +43,10 @@ const OrderPage = () => {
                   <div className={styles.detailItem}>
                     <span className={styles.detailLabel}>Статус</span>
                     <span className={styles.detailValue}>
-                      {order.status}
+                      <div
+                      className={styles.statusBadge}>
+                        {getStatusLabel(order.status)}
+                      </div>
                     </span>
                   </div>
 

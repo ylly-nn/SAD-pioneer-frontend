@@ -26,7 +26,6 @@ export const useUserProfile = () => {
     loadOrders();
   }, []);
 
-
   // разделение заказов на текущие и прошлые
   const { currentOrders, pastOrders } = useMemo(() => {
     const now = new Date();

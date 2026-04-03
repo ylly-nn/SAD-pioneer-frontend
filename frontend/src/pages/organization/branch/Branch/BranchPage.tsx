@@ -203,7 +203,7 @@ const BranchPage = () => {
       <UserMenu
   isOpen={isModalOpen}
   onClose={closeModal}
-  variant="organization"
+  variant="mixed"
 />
     </div>
   )

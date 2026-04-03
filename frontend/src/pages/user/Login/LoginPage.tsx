@@ -75,6 +75,12 @@ const LoginPage = () => {
                 value={formData.password}
                 onChange={handleChange}
               />
+              <div className={styles.forgotPassword}>
+                  <Link to={ROUTES.USER.RESET_PASSWORD} className={styles.link}>
+                  
+                  Забыли пароль?
+                  </Link>
+              </div>
             </div>
 
             {error && <div className={styles.error}>{error}</div>}

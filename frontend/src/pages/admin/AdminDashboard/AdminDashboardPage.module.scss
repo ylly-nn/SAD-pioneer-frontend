@@ -116,7 +116,6 @@
   max-width: 280px;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .page {
     padding: 24px;
@@ -139,4 +138,140 @@
   .title {
     font-size: 36px;
   }
+}
+
+.statusNew {
+  background: #fff3e0;
+  color: #ed6c02;
+}
+
+.statusPending {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+
+.statusApproved {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.statusRejected {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.statusContainer {
+  min-width: 140px;
+}
+
+.statusSelect {
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid #e5e7eb;
+  cursor: pointer;
+  background: white;
+  transition: all 0.2s;
+  
+  &:hover {
+    border-color: #549293;
+  }
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.statusSelect.statusNew {
+  background: #fff3e0;
+  color: #ed6c02;
+  border-color: #ffb74d;
+}
+
+.statusSelect.statusPending {
+  background: #e3f2fd;
+  color: #1976d2;
+  border-color: #90caf9;
+}
+
+// Добавить стили для actions
+.actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.actionButton {
+  padding: 8px 16px;
+  background: #f3f4f6;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #4b5563;
+  
+  &:hover {
+    background: #e5e7eb;
+  }
+}
+
+.approveButton {
+  background: #e8f5e9;
+  color: #2e7d32;
+  
+  &:hover {
+    background: #c8e6c9;
+  }
+}
+
+.rejectButton {
+  background: #ffebee;
+  color: #c62828;
+  
+  &:hover {
+    background: #ffcdd2;
+  }
+}
+
+.viewButton {
+  padding: 8px 16px;
+  background: #f3f4f6;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #4b5563;
+  
+  &:hover {
+    background: #549293;
+    color: white;
+  }
+}
+
+.emptyState {
+  text-align: center;
+  padding: 48px;
+  background: white;
+  border-radius: 12px;
+  color: #6b7280;
+  font-size: 16px;
+}
+
+.loader {
+  text-align: center;
+  padding: 48px;
+  color: #6b7280;
+}
+
+.error {
+  text-align: center;
+  padding: 48px;
+  color: #c62828;
+  background: #ffebee;
+  border-radius: 12px;
+  margin-bottom: 16px;
 }

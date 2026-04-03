@@ -10,6 +10,7 @@ export const ROUTES = {
     REGISTER: '/user/register',
     VERIFY: '/user/verify',
     ORDER: '/user/order',
+    RESET_PASSWORD: "/user/forgot-password",
     SERVICE: {
         SELECT: '/user/service',
         ORGANIZATION: '/user/service/select-organization',
