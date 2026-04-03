@@ -1,48 +1,35 @@
-import { useEffect, useState } from "react"
-import type { Branch } from "../types/branch"
+import { useEffect, useState } from "react";
+import type { Branch } from "../types/branch";
 
-export const useOrganizationSearch = (branches: Branch[]) => {
-  const [search, setSearch] = useState("")
-  const [debouncedSearch, setDebouncedSearch] = useState("")
-  const [suggestions, setSuggestions] = useState<Branch[]>([])
-  const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null)
+export const useOrganizationSearch = (branches: Branch[], search: string) => {
+  const [suggestions, setSuggestions] = useState<string[]>([]);
 
-  // debounce
+  const normalize = (s: string) => s.toLowerCase().replace(/\s+/g, "");
+
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedSearch(search)
-    }, 250)
+    const value = normalize(search);
 
-    return () => clearTimeout(timer)
-  }, [search])
-
-  // фильтр
-  useEffect(() => {
-    if (!debouncedSearch) {
-      setSuggestions([])
-      return
+    if (!value) {
+      setSuggestions([]);
+      return;
     }
 
-    const filtered = branches.filter((b) =>
-      b.address.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
-      b.org_short_name.toLowerCase().includes(debouncedSearch.toLowerCase())
-    )
+    const starts: string[] = [];
+    const includes: string[] = [];
 
-    setSuggestions(filtered)
-  }, [debouncedSearch, branches])
+    for (const b of branches) {
+      const addr = normalize(b.address);
 
-  const selectBranch = (branch: Branch) => {
-    setSelectedBranch(branch)
-    setSearch(branch.address)
-    setSuggestions([])
-  }
+      if (addr.startsWith(value)) {
+        starts.push(b.address);
+      } else if (addr.includes(value)) {
+        includes.push(b.address);
+      }
+    }
 
-  return {
-    search,
-    setSearch,
-    suggestions,
-    selectedBranch,
-    setSelectedBranch,
-    selectBranch,
-  }
-}
+    const unique = Array.from(new Set([...starts, ...includes]));
+    setSuggestions(unique);
+  }, [search, branches]);
+
+  return suggestions;
+};

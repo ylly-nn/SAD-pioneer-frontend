@@ -42,7 +42,7 @@ export const useRegisterForm = () => {
     try {
       const response = await auth.register(formData);
       console.log("Успешная регистрация:", response);
-      navigate(ROUTES.USER.Verify, { state: { email: formData.email } });
+      navigate(ROUTES.USER.VERIFY, { state: { email: formData.email } });
     } catch (err: any) {
       const message = err.response?.data?.message || "Ошибка регистрации";
       setError(message);

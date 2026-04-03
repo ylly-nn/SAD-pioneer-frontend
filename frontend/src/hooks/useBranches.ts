@@ -1,26 +1,40 @@
-import { useEffect, useState } from "react"
-import { forOrderService } from "../api/order"
-import type { Branch } from "../types/branch"
-
-// для страницы с картой
+import { useEffect, useState } from "react";
+import { type Branch } from "../types/organization";
+import { branches as branchesApi } from "../api/organization";
+import { useNavigation } from "./useNavigation";
 
 export const useBranches = () => {
-  const [branches, setBranches] = useState<Branch[]>([])
-  const [loading, setLoading] = useState(true)
+  const { goToOrganization } = useNavigation();
+
+  const [items, setItems] = useState<Branch[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchBranches = async () => {
+    try {
+      setIsLoading(true);
+      const data = await branchesApi.getAll();
+      setItems(data ?? []);
+    } catch (err: any) {
+      const message = err.response?.data?.message || "Ошибка загрузки данных";
+      setError(message);
+
+      if (err.response?.status === 403) {
+        goToOrganization();
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const serviceId = localStorage.getItem("serviceId")
-    const city = localStorage.getItem("city") || "Москва"
+    fetchBranches();
+  }, []);
 
-    if (!serviceId) {
-      setLoading(false)
-      return
-    }
-
-    forOrderService.getBranches({ city, serviceId })
-      .then(setBranches)
-      .finally(() => setLoading(false))
-  }, [])
-
-  return { branches, loading }
-}
+  return {
+    branches: items,
+    isLoading,
+    error,
+    refetch: fetchBranches,
+  };
+};

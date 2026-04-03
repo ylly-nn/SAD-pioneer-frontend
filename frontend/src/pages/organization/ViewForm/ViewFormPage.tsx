@@ -1,11 +1,22 @@
 import styles from "./ViewFormPage.module.scss";
 import { useNavigation } from "../../../hooks/useNavigation";
-import { useEditForm } from "../../../hooks/useEditForm";
+import { useViewForm } from "../../../hooks/useViewForm";
+import { useOrderStatus } from "../../../hooks/useOrderStatus";
 
-const CreateFormPage = () => {
+const ViewFormPage = () => {
+  const { getStatusLabel } = useOrderStatus();
   const { goHome } = useNavigation();
+  const { formData } = useViewForm();
 
-  const { formData, handleSubmit } = useEditForm();
+  const formatDateTime = (date?: string) => {
+  if (!date) return "Не указано";
+
+  return new Date(date).toLocaleString("ru-RU", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+};
 
   return (
     <div className={styles.page}>
@@ -15,21 +26,24 @@ const CreateFormPage = () => {
           <button onClick={goHome}>✕</button>
         </div>
 
-        <form onSubmit={handleSubmit} className={styles.form}>
+        <form className={styles.form}>
           
             {/* статус */}
             <div className={styles.status}>
               <div className={styles.field}>
                 <label className={styles.label}>Статус заявки:</label>
-                <p className={styles.fieldValue}>
-                  {formData.org_name || "Не указано"}
-                </p>
+                <div className={styles.fieldValue}>
+                  <div
+                      className={styles.statusBadge}>
+                        {getStatusLabel(formData.status)}
+                      </div>
+                </div>
               </div>
 
               <div className={styles.field}>
                 <label className={styles.label}>Дата подачи заявки:</label>
                 <p className={styles.fieldValue}>
-                  {formData.org_name || "Не указано"}
+                  {formatDateTime(formData.created_at)  || "Не указано"}
                 </p>
               </div>
 
@@ -38,7 +52,7 @@ const CreateFormPage = () => {
                   Дата рассмотрения заявки:
                 </label>
                 <p className={styles.fieldValue}>
-                  {formData.org_name || "Не указано"}
+                  {formatDateTime(formData.last_used) || "Не указано"}
                 </p>
               </div>
             </div>
@@ -109,7 +123,6 @@ const CreateFormPage = () => {
               <div className={styles.field}>
                 <label className={styles.label}>Отчество</label>
                 <p className={styles.fieldValue}>
-                  {/*formData.patronymic || "Не указано"*/}
                   {formData.patronymic || "Не указано"}
                 </p>
               </div>
@@ -144,4 +157,4 @@ const CreateFormPage = () => {
   );
 };
 
-export default CreateFormPage;
+export default ViewFormPage;

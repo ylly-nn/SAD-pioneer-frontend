@@ -8,7 +8,7 @@ export const useLoginForm = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const { goToUser } = useNavigation();
+  const { goToUser/*, goToOrganization*/ } = useNavigation();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -31,10 +31,8 @@ export const useLoginForm = () => {
       console.log("Успешный вход:", response);
 
       goToUser();
+      //goToOrganization();
 
-      //const response = await authService.login(formData);
-      //console.log("Успешный вход:", response);
-      //goToUser();
     } catch (err: any) {
       const message = err.response?.data?.message || "Ошибка авторизации";
       setError(message);

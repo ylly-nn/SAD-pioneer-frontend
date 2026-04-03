@@ -1,122 +1,68 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import styles from "./SelectDetailsPage.module.scss";
-//import { useHandlesLogic } from "../../../../hooks/handlesLogic";
-import washImg from "../../../../assets/wash.jpg";
+import { useEffect } from "react"
+import styles from "./SelectDetailsPage.module.scss"
+import { useNavigation } from "../../../../hooks/useNavigation"
+import { useBooking } from "../../../../hooks/useBooking"
+import { useBranchDetails } from "../../../../hooks/useBranchDetails"
 
-interface Service {
-  id: string;
-  name: string;
-  price: number;
-  duration: number; 
-}
-
-interface Organization {
-  name: string;
-  address: string;
-}
+import washImg from "../../../../assets/wash.jpg"
 
 const SelectDetailsPage = () => {
-  const navigate = useNavigate();
-  //const { handleSelectOrganization } = useHandlesLogic();
+  const { goToSelectOrganization, goToSelectTime } = useNavigation()
+  const { booking, isLoaded, updateBooking } = useBooking()
 
-  const [selectedServices, setSelectedServices] = useState<string[]>([]);
-  const [organization, setOrganization] = useState<Organization>({
-    name: "Мойка, Авангард",
-    address: "ул. Авангардная, 15"
-  });
-
-  const generateServices = (): Service[] => {
-    const services: Service[] = [];
-    
-    for (let i = 1; i <= 30; i++) {
-      services.push({
-        id: `${i}`,
-        name: `Услуга ${i}`,
-        price: Math.floor(Math.random() * 1000) + 300,
-        duration: Math.floor(Math.random() * 90) + 15,
-      });
-    }
-    
-    return services.sort((a, b) => a.price - b.price);
-  };
-
-  const [availableServices] = useState<Service[]>(generateServices);
+  const {
+    details,
+    selected,
+    toggle,
+    isSelected,
+    totalDuration,
+    totalPrice,
+    loading,
+    error,
+  } = useBranchDetails(booking.serviceByBranchId, booking) // ✅ передаём booking
 
   useEffect(() => {
-    const draft = localStorage.getItem("bookingDraft");
-    if (draft) {
-      const parsed = JSON.parse(draft);
-      if (parsed.organization) {
-        setOrganization(parsed.organization);
-      }
-      if (parsed.selectedServices) {
-        setSelectedServices(parsed.selectedServices);
-      }
+    if (!isLoaded) return
+
+    if (!booking.serviceByBranchId) {
+      goToSelectOrganization()
     }
-  }, []);
-
-  const toggleService = (serviceId: string) => {
-    setSelectedServices(prev => {
-      if (prev.includes(serviceId)) {
-        return prev.filter(id => id !== serviceId);
-      } else {
-        return [...prev, serviceId];
-      }
-    });
-  };
-
-  const calculateTotal = () => {
-    const selected = availableServices.filter(s => selectedServices.includes(s.id));
-    const totalPrice = selected.reduce((sum, s) => sum + s.price, 0);
-    const totalDuration = selected.reduce((sum, s) => sum + s.duration, 0);
-    return { totalPrice, totalDuration };
-  };
-
-  const { totalPrice, totalDuration } = calculateTotal();
+  }, [booking.serviceByBranchId, isLoaded])
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
 
-    if (selectedServices.length === 0) {
-      alert("Выберите хотя бы одну услугу");
-      return;
+    if (selected.length === 0) {
+      alert("Выберите хотя бы одну услугу")
+      return
     }
 
-    // Сохраняем в localStorage
-    const currentDraft = JSON.parse(localStorage.getItem("bookingDraft") || "{}");
-    const selectedServicesData = availableServices.filter(s => selectedServices.includes(s.id));
+    updateBooking({
+      details: {
+        items: selected.map((i) => ({
+          name: i.detail,
+          duration: i.duration_min,
+          price: i.price,
+        })),
+        totalDuration,
+        totalPrice,
+      },
+    })
 
-    const updatedDraft = {
-      ...currentDraft,
-      selectedServices: selectedServices,
-      selectedServicesData: selectedServicesData,
-      totalPrice,
-      totalDuration,
-    };
-
-    localStorage.setItem("bookingDraft", JSON.stringify(updatedDraft));
-
-    navigate("/user/service/select-time");
-  };
-
-  const handleBack = () => {
-    navigate("/user/service/select-organization");
-  };
+    goToSelectTime()
+  }
 
   const formatDuration = (minutes: number) => {
-    const hours = Math.floor(minutes / 60);
-    const mins = minutes % 60;
-    if (hours > 0) {
-      return `${hours} ч ${mins > 0 ? `${mins} мин` : ''}`;
-    }
-    return `${mins} мин`;
-  };
+    const h = Math.floor(minutes / 60)
+    const m = minutes % 60
+    return h > 0 ? `${h} ч ${m} мин` : `${m} мин`
+  }
 
   return (
     <div className={styles.page}>
       <div className={styles.content}>
         <section className={styles.columns}>
+          {/* LEFT */}
           <div className={styles.leftSection}>
             <div className={styles.header}>
               <h1 className={styles.title}>Запись на услугу</h1>
@@ -124,39 +70,36 @@ const SelectDetailsPage = () => {
 
             <div className={styles.formContent}>
               <form className={styles.form} onSubmit={handleSubmit}>
-                <h2 className={styles.sectionTitle}>Уточните детали услуги</h2>
+                <h2 className={styles.sectionTitle}>
+                  Уточните детали услуги
+                </h2>
 
-                <div className={styles.organizationInfo}>
-                  <div className={styles.orgName}>{organization.name}</div>
-                  <div className={styles.orgAddress}>
-                    📍 {organization.address}
+                {booking.organization && (
+                  <div className={styles.organizationInfo}>
+                    <div className={styles.orgName}>
+                      {booking.organization.name}
+                    </div>
+                    <div className={styles.orgAddress}>
+                      📍 {booking.organization.address}
+                    </div>
                   </div>
-                  <div className={styles.orgTotal}>
-                    Итог: {totalPrice} RUB
-                  </div>
-                </div>
+                )}
 
                 <div className={styles.totalSection}>
                   <div className={styles.totalRow}>
-                    <span>Сумма:</span>
-                    <span className={styles.totalPrice}>{totalPrice} RUB</span>
+                    <span>Время:</span>
+                    <span>{formatDuration(totalDuration)}</span>
                   </div>
+
                   <div className={styles.totalRow}>
-                    <span>Общее время:</span>
-                    <span className={styles.totalDuration}>
-                      ⏱️ {formatDuration(totalDuration)}
-                    </span>
-                  </div>
-                  <div className={styles.totalRow}>
-                    <span>Итого к оплате:</span>
-                    <span className={styles.totalPrice}>{totalPrice} RUB</span>
+                    <span>Стоимость:</span>
+                    <span>{totalPrice.toFixed(2)} ₽</span>
                   </div>
                 </div>
 
-                <button 
-                  type="submit" 
+                <button
+                  type="submit"
                   className={styles.submit}
-                  disabled={selectedServices.length === 0}
                 >
                   Далее
                 </button>
@@ -164,65 +107,76 @@ const SelectDetailsPage = () => {
             </div>
 
             <div className={styles.footer}>
-              <button className={styles.backButton} onClick={handleBack}>
+              <button
+                className={styles.backButton}
+                onClick={goToSelectOrganization}
+              >
                 Назад
               </button>
               <p className={styles.step}>3 / 5</p>
             </div>
           </div>
 
+          {/* RIGHT */}
           <div className={styles.rightSection}>
             <h2 className={styles.rightTitle}>
               Выберите услуги
-              {selectedServices.length > 0 && (
-                <span style={{ fontSize: '14px', color: '#549293', marginLeft: '8px' }}>
-                  (выбрано: {selectedServices.length})
-                </span>
-              )}
+              {selected.length > 0 && <span> ({selected.length})</span>}
             </h2>
-            
+
             <div className={styles.servicesContainer}>
               <div className={styles.servicesList}>
-                {availableServices.map((service) => (
-                  <div
-                    key={service.id}
-                    className={`${styles.serviceItem} ${
-                      selectedServices.includes(service.id) ? styles.selected : ''
-                    }`}
-                    onClick={() => toggleService(service.id)}
-                  >
-                    <div className={styles.serviceInfo}>
-                      <div className={`${styles.checkbox} ${
-                        selectedServices.includes(service.id) ? styles.checked : ''
-                      }`}>
-                        {selectedServices.includes(service.id) && "✓"}
-                      </div>
-                      <div className={styles.serviceDetails}>
-                        <div className={styles.serviceName}>{service.name}</div>
-                        <div className={styles.serviceMeta}>
-                          <span className={styles.servicePrice}>
-                            {service.price} RUB
-                          </span>
-                          <span className={styles.serviceDuration}>
-                            ⏱️ {formatDuration(service.duration)}
-                          </span>
+                {loading && <p>Загрузка...</p>}
+                {error && <p>{error}</p>}
+                {!loading && details.length === 0 && (
+                  <p>Нет доступных услуг</p>
+                )}
+
+                {details.map((d) => {
+                  const active = isSelected(d)
+
+                  return (
+                    <div
+                      key={d.detail}
+                      className={`${styles.serviceItem} ${
+                        active ? styles.selected : ""
+                      }`}
+                      onClick={() => toggle(d)}
+                    >
+                      <div className={styles.serviceInfo}>
+                        <div
+                          className={`${styles.checkbox} ${
+                            active ? styles.checked : ""
+                          }`}
+                        >
+                          {active && "✓"}
+                        </div>
+
+                        <div className={styles.serviceDetails}>
+                          <div className={styles.serviceName}>
+                            {d.detail}
+                          </div>
+
+                          <div className={styles.serviceMeta}>
+                            ⏱️ {formatDuration(d.duration_min)} • 💰{" "}
+                            {d.price.toFixed(2)} ₽
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  )
+                })}
               </div>
             </div>
 
             <div className={styles.imageSection}>
-              <img src={washImg} alt="Автомойка" className={styles.image} />
-              <div className={styles.imageOverlay} />
+              <img src={washImg} className={styles.image} />
             </div>
           </div>
         </section>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default SelectDetailsPage;
+export default SelectDetailsPage

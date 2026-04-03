@@ -14,7 +14,7 @@ export const service = {
   
   // создание новой услуги
   create: async (name: string): Promise<Service> => {
-    const response = await axiosInstance.post("services", name);
+    const response = await axiosInstance.post("services", { name });
     return response.data
   },
 

@@ -60,7 +60,7 @@ const EditFormPage = () => {
                 value={formData.name} onChange={handleChange} />
 
               <input name="patronymic" placeholder="Отчество"
-                 value={formData.patronymic} onChange={handleChange} /> {/**/}
+                 value={formData.patronymic} onChange={handleChange} />
 
               <input name="email" type="email" placeholder="Email"
                 value={formData.email} onChange={handleChange} />

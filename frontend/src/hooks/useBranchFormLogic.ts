@@ -1,6 +1,15 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { ROUTES } from "../constants/routes";
+import { branches as branchesApi } from "../api/organization";
+import { useNavigation } from "./useNavigation";
+import type { BranchRequest } from "../types/organization";
+
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+import tzLookup from "tz-lookup";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 type FormData = {
   city: string;
@@ -9,7 +18,9 @@ type FormData = {
   closing_time: string;
 };
 
-export const useBranchForm = () => {
+export const useBranchForm = (ymaps: any) => {
+  const { goToOrganizationBranches } = useNavigation();
+
   const [formData, setFormData] = useState<FormData>({
     city: "",
     address: "",
@@ -20,19 +31,56 @@ export const useBranchForm = () => {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const navigate = useNavigate();
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
+  const getTimezoneByCity = async (city: string) => {
+    if (!ymaps) {
+      throw new Error("ymaps не готов");
+    }
+
+    const res = await ymaps.geocode(city);
+
+    const firstGeoObject = res.geoObjects.get(0);
+
+    if (!firstGeoObject) {
+      throw new Error("Город не найден");
+    }
+
+    const coords = firstGeoObject.geometry.getCoordinates();
+
+    const timezone = tzLookup(coords[0], coords[1]);
+
+    return timezone;
+  };
+
+  const formatTime = (time: string, timezone: string) => {
+
+    const date = dayjs.tz(`2024-01-01 ${time}`, timezone);
+
+    const formatted = date.format("HH:mm:ssZ");
+
+    return formatted;
+  };
+
+  const mapToRequest = async (): Promise<BranchRequest> => {
+    const timezone = await getTimezoneByCity(formData.city);
+
+    const payload = {
+      city: formData.city,
+      address: formData.address,
+      open_time: formatTime(formData.openning_time, timezone),
+      close_time: formatTime(formData.closing_time, timezone),
+    };
+
+    return payload;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,32 +89,24 @@ export const useBranchForm = () => {
     setIsLoading(true);
 
     try {
-      console.log("Отправка формы:", formData);
-      
-      // ОТПРАВЛЯЕМ ДАННЫЕ НА СЕРВЕР
-      console.log("представим, что отправились...")
-      
-      
-      // ТОЛЬКО после успешной отправки переходим на страницу просмотра
-      navigate(ROUTES.ORGANIZATION.VIEW_FORM, {
-        state: {
-          message: "Данные успешно отправлены!" 
-        }
-      });
+      const payload = await mapToRequest();
+      await branchesApi.post(payload);
 
+      goToOrganizationBranches();
     } catch (err: any) {
-      console.error("Ошибка при отправке:", err);
-      setError(err.response?.data?.message || err.message || "Ошибка отправки");
+      console.error("error:", err);
+
+      setError(err.message || "Ошибка отправки");
     } finally {
       setIsLoading(false);
     }
   };
 
   const isFormValid =
-    formData.city.trim() !== "" &&
-    formData.address.trim() !== "" &&
-    formData.openning_time.trim() !== "" &&
-    formData.closing_time.trim() !== ""
+    formData.city &&
+    formData.address &&
+    formData.openning_time &&
+    formData.closing_time;
 
   return {
     formData,
@@ -74,6 +114,6 @@ export const useBranchForm = () => {
     isLoading,
     handleChange,
     handleSubmit,
-    isFormValid
+    isFormValid,
   };
 };

@@ -1,50 +1,80 @@
 import { useEffect, useState } from "react"
 import { forOrderService } from "../api/order"
+import { user } from "../api/user"
 import type { Branch } from "../types/branch"
+import { useBooking } from "./useBooking"
 
 export const useSelectOrganization = () => {
+  const { booking, isLoaded } = useBooking()
+
   const [branches, setBranches] = useState<Branch[]>([])
   const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null)
-  const [loading, setLoading] = useState(true)
 
-  const [city, setCity] = useState(
-    localStorage.getItem("city") || "Москва"
-  )
+  const [city, setCity] = useState<string>("")
+  const [isCityLoaded, setIsCityLoaded] = useState(false)
 
   useEffect(() => {
-    const serviceId = localStorage.getItem("serviceId")
+    const initCity = async () => {
 
-    if (!serviceId) {
-      setLoading(false)
-      return
+      // 1. попытка взять город из localStorage
+      const saved = localStorage.getItem("city")
+      if (saved) {
+        setCity(saved)
+        setIsCityLoaded(true)
+        return
+      }
+
+      // 2. попытка взять город с бека
+      try {
+        const res = await user.getCity()
+        if (res?.city) {
+
+          localStorage.setItem("city", res.city)
+          setCity(res.city)
+          setIsCityLoaded(true)
+          return
+        }
+      } catch (e) {
+      }
+
+      // 3. базовый город
+      localStorage.setItem("city", "Москва")
+      setCity("Москва")
+      setIsCityLoaded(true)
     }
 
-    forOrderService.getBranches({ city, serviceId })
-      .then(setBranches)
-      .finally(() => setLoading(false))
-  }, [city])
+    initCity()
+  }, [])
+
+  useEffect(() => {
+    if (!isLoaded || !isCityLoaded) return
+    if (!booking.serviceId) return
+
+    const load = async () => {
+      try {
+
+        const data = await forOrderService.getBranches(
+          city,
+          booking.serviceId!
+        )
+
+        setBranches(data || [])
+      } catch (e) {
+        console.error("Ошибка поиска подходящих филиалов", e)
+      }
+    }
+
+    load()
+  }, [city, booking.serviceId, isLoaded, isCityLoaded])
 
   const selectBranch = (branch: Branch) => {
     setSelectedBranch(branch)
-  }
-
-  const saveToStorage = (rememberCity: boolean) => {
-    if (!selectedBranch) return
-
-    localStorage.setItem("branchId", selectedBranch.id_branchserv)
-
-    if (rememberCity) {
-      const cityFromAddress = selectedBranch.address.split(",")[0]
-      localStorage.setItem("city", cityFromAddress)
-    }
   }
 
   return {
     branches,
     selectedBranch,
     selectBranch,
-    saveToStorage,
-    loading,
     city,
     setCity,
   }

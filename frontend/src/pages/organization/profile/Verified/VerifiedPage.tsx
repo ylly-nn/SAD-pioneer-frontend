@@ -1,22 +1,22 @@
 import { useNavigate } from "react-router-dom";
 import styles from "./VerifiedPage.module.scss";
 import backgroundImage from "../../../../assets/33.jpg";
+import { useOrganizationData } from "../../../../hooks/useOrganizationData";
 
 const VerifiedPage = () => {
   const navigate = useNavigate();
-
-  // Временные данные организации
-  const organization = {
-    name: "какой-то авто сервис",
-    email: "info@pioneer-auto.ru",
-  };
+  const { org, branchesCount, loading } = useOrganizationData();
 
   const handleNavigate = (path: string) => {
     navigate(path);
   };
 
+  if (loading) {
+    return <div className={styles.page}>Загрузка...</div>;
+  }
+
   return (
-    <div 
+    <div
       className={styles.page}
       style={{ backgroundImage: `url(${backgroundImage})` }}
     >
@@ -30,17 +30,23 @@ const VerifiedPage = () => {
         </div>
 
         <div className={styles.orgInfo}>
-          <h2 className={styles.orgName}>{organization.name}</h2>
+          <h2 className={styles.orgName}>
+            {org?.org_name || "Организация"}
+          </h2>
           <div className={styles.orgContacts}>
-            <span className={styles.orgEmail}>{organization.email}</span>
+            <span className={styles.orgEmail}>
+              {branchesCount} филиалов
+            </span>
           </div>
         </div>
 
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Управление организацией</h2>
-          
+          <h2 className={styles.sectionTitle}>
+            Управление организацией
+          </h2>
+
           <div className={styles.cards}>
-            {/* Карточка Заказы */}
+            {/* Заказы */}
             <div className={styles.card}>
               <button
                 onClick={() => handleNavigate("/organization/orders")}
@@ -51,18 +57,10 @@ const VerifiedPage = () => {
                 <p className={styles.cardDescription}>
                   Просмотр и управление заказами, отслеживание статусов, история бронирований
                 </p>
-                <div className={styles.cardStats}>
-                  <span className={styles.stat}>
-                    <strong>2</strong> активных
-                  </span>
-                  <span className={styles.stat}>
-                    <strong>4</strong> завершено
-                  </span>
-                </div>
               </button>
             </div>
 
-            {/* Карточка Филиалы */}
+            {/* Филиалы */}
             <div className={styles.card}>
               <button
                 onClick={() => handleNavigate("/organization/branches")}
@@ -73,44 +71,36 @@ const VerifiedPage = () => {
                 <p className={styles.cardDescription}>
                   Управление филиалами, добавление новых, настройка расписания и услуг
                 </p>
-                <div className={styles.cardStats}>
-                  <span className={styles.stat}>
-                    <strong>4</strong> филиала
-                  </span>
-                </div>
-              </button>
+                </button>
             </div>
 
-            {/* Карточка Пользователи организации */}
+            {/* Пользователи */}
             <div className={styles.card}>
               <button
                 onClick={() => handleNavigate("/organization/users")}
                 className={styles.cardButton}
                 aria-label="Управление пользователями"
               >
-                <h3 className={styles.cardTitle}>Добавить пользователя организации</h3>
+                <h3 className={styles.cardTitle}>
+                  Добавить пользователя организации
+                </h3>
                 <p className={styles.cardDescription}>
                   Приглашение сотрудников, управление ролями и правами доступа
                 </p>
-                <div className={styles.cardStats}>
-                  <span className={styles.stat}>
-                    <strong>8</strong> сотрудников
-                  </span>
-                </div>
               </button>
             </div>
           </div>
         </section>
 
         <div className={styles.footer}>
-          <button 
+          <button
             className={styles.backButton}
             onClick={() => navigate("/")}
           >
             ← На главную
           </button>
-          
-          <button 
+
+          <button
             className={styles.settingsButton}
             onClick={() => handleNavigate("/organization/settings")}
           >

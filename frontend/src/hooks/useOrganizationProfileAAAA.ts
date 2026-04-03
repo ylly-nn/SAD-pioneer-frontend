@@ -19,11 +19,22 @@ export const useProfile = () => {
       setProfileStatus("Verified");
     } catch (err: any) {
       // есть заявка?
+      const statusCode = err.response?.status;
+
+      if (statusCode === 403) {
+      setError(null);
+      }
+
       try {
         await organizationRequest.get();
         setProfileStatus("Pending");
       } catch (err: any) {
         setProfileStatus("Empty");
+
+        const statusCode = err.response?.status;
+        if (statusCode === 403) {
+        setError(null);
+        }
       }
     } finally {
       setIsLoading(false);

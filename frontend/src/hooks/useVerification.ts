@@ -20,8 +20,6 @@ export const useVerification = (email: string) => {
     try {
       const response = await auth.verify({ email, code });
       console.log('Успех:', response.message);
-      // Перенаправление на страницу входа с сообщением
-      //navigate('/login', { state: { message: 'Регистрация подтверждена, войдите' } });
       goToUserLogin();
     } catch (err: any) {
       setError(err.response?.data?.message || 'Ошибка подтверждения');

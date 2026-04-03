@@ -9,7 +9,7 @@ interface Props {
 
 export const HomeRouteUsers = ({ children }: Props) => {
   if (isAuthenticated()) {
-    return <Navigate to={ROUTES.USER.Profile} replace />;
+    return <Navigate to={ROUTES.USER.PROFILE} replace />;
   }
 
   return <>{children}</>;

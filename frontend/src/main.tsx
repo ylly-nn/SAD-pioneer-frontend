@@ -11,6 +11,9 @@ import '@fontsource/rubik-mono-one/index.css';
 
 import './index.css'
 import App from './App.tsx'
+import { initAuth } from "./api/authManager";
+
+initAuth();
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

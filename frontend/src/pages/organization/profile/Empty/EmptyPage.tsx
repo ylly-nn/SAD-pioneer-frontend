@@ -1,17 +1,11 @@
-import { useNavigate } from "react-router-dom";
 import styles from "./EmptyPage.module.scss";
+import { useNavigation } from "../../../../hooks/useNavigation";
 
 const EmptyPage = () => {
-  const navigate = useNavigate();
-
-  const handleRequestApplication = () => {
-    console.log("Оформить заявку");
-    navigate("/organization/view-form");
-  };
-
-  const handleBack = () => {
-    navigate(-1);
-  };
+  const {
+    goBack,
+    goToCreateForm
+  } = useNavigation();
 
   return (
     <div className={styles.page}>
@@ -24,13 +18,13 @@ const EmptyPage = () => {
         <div style={{ height: '20px' }}></div>
         <button 
           className={styles.requestButton}
-          onClick={handleRequestApplication}
+          onClick={goToCreateForm}
         >
           Оформить заявку
         </button>
 
         <div className={styles.footer}>
-          <button className={styles.backLink} onClick={handleBack}>
+          <button className={styles.backLink} onClick={goBack}>
             Назад
           </button>
         </div>

@@ -13,7 +13,6 @@ export const useBooking = () => {
   };
 
   const handleSelectDetails = (data: BookingDraft) => {
-    console.log("Черновик записи:", data);
     saveDraft(data);
     navigate(ROUTES.USER.SERVICE.DETAILS);
   };
@@ -23,7 +22,6 @@ export const useBooking = () => {
   };
 
   const handleSubmitService = () => {
-    console.log("Выбрана услуга:", selectedService);
     saveDraft({ service: selectedService });
     navigate(ROUTES.USER.SERVICE.ORGANIZATION);
   };

@@ -5,10 +5,11 @@ export const ROUTES = {
   
   // для владельцев автомобилей
   USER: {
-    Profile:'/user',
+    PROFILE:'/user',
     LOGIN:'/user/login',
     REGISTER: '/user/register',
-    Verify: '/user/verify',
+    VERIFY: '/user/verify',
+    ORDER: '/user/order',
     SERVICE: {
         SELECT: '/user/service',
         ORGANIZATION: '/user/service/select-organization',
@@ -23,13 +24,21 @@ export const ROUTES = {
     PROFILE:'/organization',
     LOGIN: '/organization/login',
     REGISTER: '/organization/register',
-    EDIT_FORM: '/organization/edit-form',
+    EDIT_FORM: '/organization/create-form',
     VIEW_FORM: '/organization/view-form',
+    ORDERS: '/organization/orders',
     BRANCH:{
+      ALL: '/organization/branches',
       PROFILE: '/organization/branch',
       FORM: '/organization/branch/form',
-      SERVICE: '/organization/branch/service',
+      SERVICE:{
+        ADD: '/organization/branch/:id/service',
+        DETAIL: '/organization/branch/:id/service/:serviceId',
+      }
     },
+    USERS:{
+      FORM: '/organization/users/form',
+    }
   },
   
   // для администраторов

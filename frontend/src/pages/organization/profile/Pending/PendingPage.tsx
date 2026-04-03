@@ -4,21 +4,16 @@ import { useProfile } from "../../../../hooks/useOrganizationProfile";
 
 import { useModal } from "../../../../hooks/useModal";
 import UserMenu from "../../../../components/modals/UserMenu";
+import { useOrderStatus } from "../../../../hooks/useOrderStatus";
 
 const PendingPage = () => {
+  const { getStatusStyle, getStatusLabel } = useOrderStatus();
+
   const { goToViewForm } = useNavigation();
 
-  const {
-    isModalOpen,
-    toggleModal,
-    closeModal,
-  } = useModal();
+  const { isModalOpen, toggleModal, closeModal } = useModal();
 
-  const {
-    name,
-    currentStatus,
-  } = useProfile();
-
+  const { name, currentStatus, currentStatusKey } = useProfile();
 
   return (
     <div className={styles.page}>
@@ -26,10 +21,7 @@ const PendingPage = () => {
         <div className={styles.header}>
           <h1>Страница организации</h1>
 
-          <button
-            className={styles.toggleModalButton}
-            onClick={toggleModal}
-          >
+          <button className={styles.toggleModalButton} onClick={toggleModal}>
             ☰
           </button>
         </div>
@@ -37,21 +29,18 @@ const PendingPage = () => {
         <div className={styles.scrollableArea}>
           <form className={styles.form}>
             <div className={styles.mainCard}>
-              <div className={styles.statusIcon}>
-                {currentStatus.icon}
-              </div>
+              <div className={styles.statusIcon}>{currentStatus.icon}</div>
 
-              <h2 className={styles.mainTitle}>
-                {currentStatus.title}
-              </h2>
+              <h2 className={styles.mainTitle}>{currentStatus.title}</h2>
 
-              <p className={styles.mainText}>
-                {currentStatus.text(name)}
-              </p>
+              <p className={styles.mainText}>{currentStatus.text(name)}</p>
 
               <div className={styles.buttons}>
-                <div className={styles.statusBadge}>
-                  {currentStatus.badge}
+                <div
+                  className={styles.statusBadge}
+                  style={getStatusStyle(currentStatusKey)}
+                >
+                  {getStatusLabel(currentStatusKey)}
                 </div>
 
                 <button
@@ -67,12 +56,11 @@ const PendingPage = () => {
         </div>
       </div>
 
-<UserMenu
-  isOpen={isModalOpen}
-  onClose={closeModal}
-  variant="organization"
-/>
-
+      <UserMenu
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        variant="organization"
+      />
     </div>
   );
 };

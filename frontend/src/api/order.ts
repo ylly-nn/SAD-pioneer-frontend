@@ -1,6 +1,6 @@
 import axiosInstance from "./axios"
-import type { Order, UserOrder, CreateOrderRequest, CreateOrderResponse } from "../types/orders"
-import type { Branch, BranchServiceDetail, FreeTimeParams, FreeTime } from "../types/branch"
+import type { Order, UserOrder, CreateOrderRequest, CreateOrderResponse, CompanyOrders } from "../types/orders"
+import type { BranchServiceDetail, FreeTimeParams, FreeTime } from "../types/branch"
 
 
 // Работа с заказами
@@ -18,26 +18,40 @@ export const order = {
     return response.data
   },
 
-  // Получение заказов конкретной компании
-  getOrganizationOrders: async (inn: string): Promise<Order> => {
-    const response = await axiosInstance.get(`company/order/${inn}`)
+  // получение компании
+  getOrganizationOrders: async (): Promise<CompanyOrders[] | null> => {
+    const response = await axiosInstance.get("company/orders")
     return response.data
   },
 
-  // Получение заказов конкретного пользователя
+  // получение заказов пользователя
   getUserOrders: async (): Promise<UserOrder[]> => {
     const response = await axiosInstance.get("client/orders")
     return response.data
   },
-}
 
+  // обновление статуса заказа
+  updateStatus: async (orderID: string, status: "approve" | "reject"): Promise<Order> => {
+  const response = await axiosInstance.put("company/order/status", null,
+    {
+      params: { orderID, status },
+    })
+  return response.data
+},
+}
 
 
 // Предназначено для использования во время оформления заказа.
 export const forOrderService = {
+
   // Получение списка филиалов по городу и id услуги
-  getBranches: async (params: { city: string; serviceId: string }): Promise<Branch[]> => {
-    const response = await axiosInstance.get("branch", { params })
+  getBranches: async (city: string, serviceId: string) => {
+    const response = await axiosInstance.get("/branch", {
+      params: {
+        city,
+        service: serviceId,
+      },
+    })
     return response.data
   },
 

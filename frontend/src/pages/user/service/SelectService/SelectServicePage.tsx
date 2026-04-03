@@ -1,41 +1,28 @@
-import { useState } from "react";
-import styles from "./SelectServicePage.module.scss";
+import styles from "./SelectServicePage.module.scss"
 
-import { useHandlesLogic } from "../../../../hooks/handlesLogic";
-import { useServices } from "../../../../hooks/useServices";
-import { useNavigation } from "../../../../hooks/useNavigation";
+import { useServices } from "../../../../hooks/useServices"
+import { useNavigation } from "../../../../hooks/useNavigation"
+import { useBooking } from "../../../../hooks/useBooking"
 
-import washImg from "../../../../assets/wash.jpg";
-import tireImg from "../../../../assets/tire.jpg";
 
 const SelectServicePage = () => {
-  const { goHome } = useNavigation();
-  const { services } = useServices();
-  const [selectedService, setSelectedService] = useState<string | null>(null);
+  const { goHome, goToSelectOrganization } = useNavigation()
+  const { services } = useServices()
+  const { updateBooking } = useBooking()
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSelect = (serviceId: string) => {
+    // 🔥 сразу сохраняем
+    updateBooking({ serviceId })
 
-    if (!selectedService) return;
-
-    localStorage.setItem("serviceId", selectedService);
-
-    handleSubmitService(selectedService);
-  };
-
-  const { handleSubmitService } = useHandlesLogic();
-
-  //const [selectedService, setSelectedService] = useState("wash");
-
-  /*const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    handleSubmitService(selectedService);
-  };*/
+    // 🔥 сразу переходим
+    goToSelectOrganization()
+  }
 
   return (
     <div className={styles.page}>
       <div className={styles.content}>
         <section className={styles.columns}>
+          
           {/* левая сторона */}
           <div className={styles.leftSection}>
             <div className={styles.header}>
@@ -43,31 +30,30 @@ const SelectServicePage = () => {
             </div>
 
             <div className={styles.formContent}>
-              <form className={styles.form} onSubmit={handleSubmit}>
-                <h2 className={styles.sectionTitle}>Выберите услугу</h2>
+              <h2 className={styles.sectionTitle}>
+                Выберите услугу
+              </h2>
 
-                <div className={styles.serviceGrid}>
-                  {services.map((service) => (
-                    <div
-                      key={service.id}
-                      className={`${styles.serviceCard} ${
-                        selectedService === service.id ? styles.active : ""
-                      }`}
-                      onClick={() => setSelectedService(service.id)}
-                    >
-                      <div className={styles.cardTitle}>{service.name}</div>
+              <div className={styles.serviceGrid}>
+                {services.map((service) => (
+                  <div
+                    key={service.id}
+                    className={styles.serviceCard}
+                    onClick={() => handleSelect(service.id)}
+                  >
+                    <div className={styles.cardTitle}>
+                      {service.name}
                     </div>
-                  ))}
-                </div>
-
-                <button type="submit" className={styles.submit}>
-                  Далее
-                </button>
-              </form>
+                  </div>
+                ))}
+              </div>
             </div>
 
             <div className={styles.footer}>
-              <button className={styles.backButton} onClick={goHome}>
+              <button
+                className={styles.backButton}
+                onClick={goHome}
+              >
                 Назад
               </button>
 
@@ -77,18 +63,13 @@ const SelectServicePage = () => {
 
           {/* правая сторона */}
           <div className={styles.rightSection}>
-            {selectedService === "wash" && (
-              <img src={washImg} alt="Автомойка" className={styles.image} />
-            )}
-
-            {selectedService === "tire" && (
-              <img src={tireImg} alt="Шиномонтаж" className={styles.image} />
-            )}
+            {/* можно потом красиво сделать превью */}
           </div>
+
         </section>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default SelectServicePage;
+export default SelectServicePage

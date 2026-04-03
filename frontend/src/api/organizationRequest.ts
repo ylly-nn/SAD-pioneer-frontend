@@ -22,13 +22,13 @@ export const organizationRequest = {
   },
 
   // получение конкретной заявки на создание компании
-  getByInn: async (inn: string): Promise<PartnerRequest> => {
+  getByInn: async (inn: string): Promise<PartnerRequestResponse> => {
     const response = await axiosInstance.get(`partner/request/${inn}`)
     return response.data
-  },
+  },// пупупу
 
   // получение заявки пользователя на создание компании
-  get: async (): Promise<PartnerRequest> => {
+  get: async (): Promise<PartnerRequestResponse> => {
     const response = await axiosInstance.get("partner/request")
     return response.data
   },
@@ -58,28 +58,28 @@ export const organizationRequest = {
   },
   
   // Смена статуса заявки с "новая" на "в работе"
-  take: async (inn: string): Promise<PartnerRequestStatus> => {
+  take: async (id: string): Promise<PartnerRequestStatus> => {
     const response = await axiosInstance.post(
       "admin/partner-requests/take",
-      { inn }
+      { id }
     )
     return response.data
   },
 
   // Смена статуса заявки с "в работе" на "принята" + cоздание компании и первого пользователя в ней
-  approve: async (inn: string): Promise<{ message: string }> => {
+  approve: async (id: string): Promise<{ message: string }> => {
     const response = await axiosInstance.post(
       "admin/partner-requests/approve",
-      { inn }
+      { id }
     )
     return response.data
   },
 
   // Смена статуса заявки с "в работе" на "отклонена"
-  reject: async (inn: string): Promise<PartnerRequestStatus> => {
+  reject: async (id: string): Promise<PartnerRequestStatus> => {
     const response = await axiosInstance.post(
       "admin/partner-requests/reject",
-      { inn }
+      { id }
     )
     return response.data
   },

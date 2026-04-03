@@ -8,12 +8,14 @@ export interface Branch {
 export interface BranchServiceDetail {
   detail: string
   duration_min: number
+  price: number
 }
 
 export interface FreeTimeParams {
   branch_id: string
-  date?: string
-  duration: number
+  date: string
+  duration: string
+  timezone?: string
 }
 
 export interface FreeTime {

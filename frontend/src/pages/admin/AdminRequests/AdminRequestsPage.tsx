@@ -1,11 +1,14 @@
 //очень криво работает фильтр по заявкам = белый экран
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import styles from "./AdminRequestsPage.module.scss";
-import { useAdminRequests } from "../../../hooks/adminHooks/useAdminRequests";
-import type { RequestStatus } from "../../../types/admin";
 
-const AdminRequestsPage = () => {
+
+
+//import { useState } from "react";
+//import { useNavigate } from "react-router-dom";
+//import styles from "./AdminRequestsPage.module.scss";
+//import { useAdminRequests } from "../../../hooks/adminHooks/useAdminRequests";
+//import type { RequestStatus } from "../../../types/admin";
+
+const AdminRequestsPage = () => {/*
   const navigate = useNavigate();
   const [selectedRequest, setSelectedRequest] = useState<string | null>(null);
   
@@ -200,6 +203,10 @@ const AdminRequestsPage = () => {
       </div>
     </div>
   );
+  */
+ return (
+  <></>
+ );
 };
 
 export default AdminRequestsPage;

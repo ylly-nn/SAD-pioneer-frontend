@@ -18,7 +18,10 @@ export const useEditForm = () => {
     email: "",
     phone: "",
 
-    info: ""
+    info: "",
+
+    created_at: "",
+    last_used: ""
   });
 
   const [termsAccepted, setTermsAccepted] = useState(false);
@@ -43,41 +46,42 @@ export const useEditForm = () => {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (!termsAccepted) {
-      setError("Необходимо принять условия политики");
-      return;
-    }
+  if (!termsAccepted) {
+    setError("Необходимо принять условия политики");
+    return;
+  }
 
-    setError(null);
-    setIsLoading(true);
+  setError(null);
+  setIsLoading(true);
 
-    try {
-      console.log("Отправка формы:", formData);
-      
-      // ОТПРАВЛЯЕМ ДАННЫЕ НА СЕРВЕР
-      const response = await organizationRequest.create(formData);
+  try {
+    const payload = {
+      ...formData,
+      created_at: new Date().toISOString(),
+    };
 
-      //console.log("представим, что отправились...")
-      
-      console.log("Ответ от сервера:", response);
-      
-      // ТОЛЬКО после успешной отправки переходим на страницу просмотра
-      navigate(ROUTES.ORGANIZATION.VIEW_FORM, {
-        state: { 
-          email: formData.email,
-          message: "Данные успешно отправлены!" 
-        }
-      });
+    console.log("Отправка формы:", payload);
 
-    } catch (err: any) {
-      console.error("Ошибка при отправке:", err);
-      setError(err.response?.data?.message || err.message || "Ошибка отправки");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    const response = await organizationRequest.create(payload);
+
+    console.log("Ответ от сервера:", response);
+
+    navigate(ROUTES.ORGANIZATION.VIEW_FORM, {
+      state: { 
+        email: formData.email,
+        message: "Данные успешно отправлены!" 
+      }
+    });
+
+  } catch (err: any) {
+    console.error("Ошибка при отправке:", err);
+    setError(err.response?.data?.message || err.message || "Ошибка отправки");
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   const isFormValid =
   formData.org_name.trim() !== "" &&

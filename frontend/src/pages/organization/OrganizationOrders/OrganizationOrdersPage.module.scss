@@ -461,6 +461,29 @@
   }
 }
 
+.approveBtn {
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 8px;
+  margin-right: 6px;
+}
+
+.rejectBtn {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+
+.statusBadge {
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;

@@ -11,7 +11,19 @@ export interface BranchService {
 }
 
 export interface CreateBranchServiceRequest {
-  branch: string
-  service: string
-  service_details: Record<string, number>
+  branch_id: string
+  service_id: string
+}
+
+export type BranchServiceDetailRequest = {
+  branchserv_id: string
+  detail: string
+  duration: number
+  price: number
+}
+
+export type BranchServiceDetail = {
+  detail: string
+  duration_min: number
+  price: number
 }
