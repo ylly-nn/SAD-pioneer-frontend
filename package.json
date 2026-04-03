@@ -1,7 +1,0 @@
-{
-  "dependencies": {
-    "@pbe/react-yandex-maps": "^1.2.5",
-    "dayjs": "^1.11.20",
-    "tz-lookup": "^6.1.25"
-  }
-}
