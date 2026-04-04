@@ -11,10 +11,7 @@ const SelectServicePage = () => {
   const { updateBooking } = useBooking()
 
   const handleSelect = (serviceId: string) => {
-    // 🔥 сразу сохраняем
     updateBooking({ serviceId })
-
-    // 🔥 сразу переходим
     goToSelectOrganization()
   }
 
@@ -62,9 +59,7 @@ const SelectServicePage = () => {
           </div>
 
           {/* правая сторона */}
-          <div className={styles.rightSection}>
-            {/* можно потом красиво сделать превью */}
-          </div>
+
 
         </section>
       </div>

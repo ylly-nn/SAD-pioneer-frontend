@@ -1,15 +1,19 @@
-import styles from "./BranchPage.module.scss"
-import { useParams } from "react-router-dom"
-import { useBranchPage } from "../../../../hooks/useBranchPage"
-import { useNavigation } from "../../../../hooks/useNavigation"
+import styles from "./BranchPage.module.scss";
+import { useParams } from "react-router-dom";
+import { useBranchPage } from "../../../../hooks/useBranchPage";
+import { useNavigation } from "../../../../hooks/useNavigation";
 import { useModal } from "../../../../hooks/useModal";
 import UserMenu from "../../../../components/modals/UserMenu";
 
 const BranchPage = () => {
-  const { goToOrganizationAddService, goToOrganizationAddServiceDetail } = useNavigation()
-  const { id } = useParams<{ id: string }>()
+  const {
+    goToOrganizationAddService,
+    goToOrganizationAddServiceDetail,
+    goToOrganizationBranches,
+  } = useNavigation();
+  const { id } = useParams<{ id: string }>();
 
-  if (!id) return null
+  if (!id) return null;
 
   const {
     branch,
@@ -22,35 +26,42 @@ const BranchPage = () => {
     deleteDetail,
     formatMinutes,
     getTotalTime,
-  } = useBranchPage(id)
+  } = useBranchPage(id);
 
-  const {
-      isModalOpen,
-      toggleModal,
-      closeModal,
-    } = useModal();
+  const { isModalOpen, toggleModal, closeModal } = useModal();
 
-  if (loading) return <div>Загрузка...</div>
-  if (!branch) return <div>Филиал не найден</div>
+  if (loading) return <div>Загрузка...</div>;
+  if (!branch) return <div>Филиал не найден</div>;
 
-  const time = `${branch.open_time.slice(0, 5)} - ${branch.close_time.slice(0, 5)}`
+  const time = `${branch.open_time.slice(0, 5)} - ${branch.close_time.slice(0, 5)}`;
 
   return (
     <div className={styles.page}>
       <div className={styles.content}>
+
+        {/* шапка */}
         <div className={styles.header}>
-          <h1>Филиал</h1>
-          <button
-            className={styles.toggleModalButton}
-            onClick={toggleModal}
-          >
+          <div>
+            <button
+              className={styles.toggleModalButton}
+              onClick={goToOrganizationBranches}
+            >
+              <span>❮</span>
+            </button>
+
+            <h1>Филиал</h1>
+          </div>
+          <button className={styles.toggleModalButton} onClick={toggleModal}>
             ☰
           </button>
         </div>
 
+        {/* действия */}
+
+
+        {/* наполнение */}
         <div className={styles.scrollableArea}>
           <div className={styles.columns}>
-            
             {/* Информация */}
             <div className={styles.section}>
               <h2 className={styles.cardTitle}>Информация</h2>
@@ -75,7 +86,7 @@ const BranchPage = () => {
             <div className={styles.section}>
               <h2 className={styles.cardTitle}>Услуги</h2>
 
-              {/* ❗ если нет услуг */}
+              {/* если нет услуг */}
               {services.length === 0 ? (
                 <div className={styles.noDetails}>
                   <p>У этого филиала пока нет услуг</p>
@@ -83,11 +94,14 @@ const BranchPage = () => {
               ) : (
                 <div className={styles.serviceList}>
                   {services.map((service) => {
-                    const isOpen = openServiceId === service.id
-                    const totalTime = getTotalTime(service.details)
+                    const isOpen = openServiceId === service.id;
+                    const totalTime = getTotalTime(service.details);
 
                     return (
-                      <div key={service.id} className={styles.serviceItemWrapper}>
+                      <div
+                        key={service.id}
+                        className={styles.serviceItemWrapper}
+                      >
                         <div className={styles.serviceItem}>
                           <span className={styles.serviceName}>
                             {service.name}
@@ -127,7 +141,12 @@ const BranchPage = () => {
                                 {editServiceId === service.id && (
                                   <button
                                     className={styles.addDetailButton}
-                                    onClick={() => goToOrganizationAddServiceDetail(id, service.id)}
+                                    onClick={() =>
+                                      goToOrganizationAddServiceDetail(
+                                        id,
+                                        service.id,
+                                      )
+                                    }
                                   >
                                     + Добавить
                                   </button>
@@ -143,12 +162,8 @@ const BranchPage = () => {
                                     <span>{detail.name}</span>
 
                                     <div className={styles.detailRight}>
-                                      <span>
-                                        {formatMinutes(detail.time)}
-                                      </span>
-                                      <span>
-                                        {detail.price} ₽
-                                        </span>
+                                      <span>{formatMinutes(detail.time)}</span>
+                                      <span>{detail.price} ₽</span>
 
                                       {editServiceId === service.id && (
                                         <button
@@ -156,7 +171,7 @@ const BranchPage = () => {
                                           onClick={() =>
                                             deleteDetail(
                                               service.id,
-                                              detail.name
+                                              detail.name,
                                             )
                                           }
                                         >
@@ -170,7 +185,12 @@ const BranchPage = () => {
                                 {editServiceId === service.id && (
                                   <button
                                     className={styles.addDetailButton}
-                                    onClick={() => goToOrganizationAddServiceDetail(id, service.id)}
+                                    onClick={() =>
+                                      goToOrganizationAddServiceDetail(
+                                        id,
+                                        service.id,
+                                      )
+                                    }
                                   >
                                     + Добавить опцию
                                   </button>
@@ -185,7 +205,7 @@ const BranchPage = () => {
                           </div>
                         )}
                       </div>
-                    )
+                    );
                   })}
                 </div>
               )}
@@ -200,13 +220,9 @@ const BranchPage = () => {
           </div>
         </div>
       </div>
-      <UserMenu
-  isOpen={isModalOpen}
-  onClose={closeModal}
-  variant="mixed"
-/>
+      <UserMenu isOpen={isModalOpen} onClose={closeModal} variant="mixed" />
     </div>
-  )
-}
+  );
+};
 
-export default BranchPage
+export default BranchPage;

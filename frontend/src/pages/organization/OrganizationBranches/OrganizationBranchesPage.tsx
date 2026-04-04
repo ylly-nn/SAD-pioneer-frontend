@@ -2,22 +2,27 @@ import { useState } from "react";
 import styles from "./OrganizationBranchesPage.module.scss";
 import { useBranches } from "../../../hooks/useBranches";
 import { useNavigation } from "../../../hooks/useNavigation";
+import { useSearch } from "../../../hooks/useSearch";
 import { useModal } from "../../../hooks/useModal";
 import UserMenu from "../../../components/modals/UserMenu";
 
 const OrganizationBranchesPage = () => {
-    const { isModalOpen, toggleModal, closeModal } = useModal();
+  const { isModalOpen, toggleModal, closeModal } = useModal();
 
-  const { goToOrganizationAddBranch, goToOrganizationBranch } = useNavigation();
+  const {
+    goToOrganizationAddBranch,
+    goToOrganizationBranch,
+    goToOrganization,
+  } = useNavigation();
 
   const [searchQuery, setSearchQuery] = useState("");
 
   const { branches, isLoading, error } = useBranches();
 
-  const filteredBranches = branches.filter((branch) =>
-    branch.address.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    branch.city.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredBranches = useSearch(branches, searchQuery, (branch) => [
+    branch.city,
+    branch.address,
+  ]);
 
   if (isLoading) {
     return <div className={styles.page}>Загрузка...</div>;
@@ -29,64 +34,82 @@ const OrganizationBranchesPage = () => {
 
   return (
     <div className={styles.page}>
-      <div className={styles.container}>
+      <div className={styles.content}>
+        {/* шапка */}
         <div className={styles.header}>
-          <div className={styles.headerTop}>
-            <h1 className={styles.title}>Список филиалов организации</h1>
-            <button className={styles.toggleModalButton} onClick={toggleModal}>
-            ☰
-          </button>
+          <div>
+            <button
+              className={styles.toggleModalButton}
+              onClick={goToOrganization}
+            >
+              <span>❮</span>
+            </button>
 
-            <div className={styles.headerActions}>
-              <div className={styles.totalBranches}>
-                <span className={styles.totalLabel}>Всего филиалов:</span>
-                <span className={styles.totalValue}>
-                  {branches.length}
-                </span>
-              </div>
-
-              <button
-                className={styles.addButton}
-                onClick={goToOrganizationAddBranch}
-              >
-                <span className={styles.addIcon}>+</span>
-                Добавить филиал
-              </button>
-            </div>
+            <h1>Филиалы организации</h1>
           </div>
 
-          <div className={styles.searchSection}>
-            <input
-              type="text"
-              placeholder="Поиск по городу или адресу..."
-              className={styles.searchInput}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
+          <button className={styles.toggleModalButton} onClick={toggleModal}>
+            ☰
+          </button>
+        </div>
+
+        {/* действия */}
+
+        <div className={styles.filtersBar}>
+          <div className={styles.filtersLeft}>
+            {/* поиск */}
+            <div className={styles.searchSection}>
+              <input
+                type="text"
+                placeholder="Поиск по городу или адресу..."
+                className={styles.searchInput}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+            {/* селекты */}
+          </div>
+
+          <div className={styles.filtersRight}>
+            {/* счетчик */}
+            <div className={styles.totalBranches}>
+              <span className={styles.totalLabel}>Всего филиалов:</span>
+              <span className={styles.totalValue}>{branches.length}</span>
+            </div>
+
+            {/* кнопка */}
+            <button
+              className={styles.primaryButton}
+              onClick={goToOrganizationAddBranch}
+            >
+              <span className={styles.addIcon}>+</span>
+              Добавить филиал
+            </button>
           </div>
         </div>
 
-        <div className={styles.branchesList}>
+        {/* наполнение */}
+        <div className={styles.main}>
           {filteredBranches.length > 0 ? (
-            filteredBranches.map((branch) => (
-              <div
-                key={branch.branch_id}
-                className={styles.branchCard}
-                onClick={() => goToOrganizationBranch(branch.branch_id)}
-              >
-                <h3 className={styles.branchName}>
-                  {branch.city}
-                </h3>
+            <div className={styles.cardsGrid}>
+              {filteredBranches.map((branch) => (
+                <div
+                  key={branch.branch_id}
+                  className={styles.card}
+                  onClick={() => goToOrganizationBranch(branch.branch_id)}
+                >
+                  <div className={styles.cardHeader}>
+                  <h3>{branch.city}</h3>
+                  </div>
 
-                <div className={styles.branchAddress}>
-                  {branch.address}
-                </div>
+                  <div className={styles.cardAddress}>{branch.address}</div>
 
-                <div className={styles.branchSchedule}>
-                  {branch.open_time} - {branch.close_time}
+                  <div className={styles.cardDate}>
+                    {branch.open_time} - {branch.close_time}
+                  </div>
                 </div>
-              </div>
-            ))
+              ))}
+            </div>
           ) : (
             <div className={styles.emptyState}>
               <h3>Филиалы не найдены</h3>

@@ -3,10 +3,14 @@ import styles from "./OrganizationOrdersPage.module.scss";
 import { useOrganizationOrder } from "../../../hooks/useOrganizationOrder";
 import { useOrderStatus } from "../../../hooks/useOrderStatus";
 import { useOrderActions } from "../../../hooks/useOrderActions";
+import { useOrderFilters } from "../../../hooks/useOrderFilters";
 import { useModal } from "../../../hooks/useModal";
 import UserMenu from "../../../components/modals/UserMenu";
+import { useNavigation } from "../../../hooks/useNavigation";
 
 const OrganizationOrdersPage = () => {
+  const { goToOrganization } = useNavigation();
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
   const { isModalOpen, toggleModal, closeModal } = useModal();
 
   const {
@@ -53,27 +57,28 @@ const OrganizationOrdersPage = () => {
     return Array.from(map.values());
   }, [orders]);
 
-  const filteredOrders = useMemo(() => {
-    return orders.filter((order) => {
-      const matchesSearch =
-        order.service.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        order.details.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        order.branch_city.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        order.branch_address
-          .toLowerCase()
-          .includes(searchQuery.toLowerCase()) ||
-        (order.user || "").toLowerCase().includes(searchQuery.toLowerCase());
+  const filteredOrders = useOrderFilters({
+    orders,
+    searchQuery,
+    selectedStatus,
+    selectedBranch,
 
-      const matchesStatus =
-        selectedStatus === "all" || order.status === selectedStatus;
+    mapOrderToSearchStrings: (order) => [
+      order.service,
+      order.details,
+      order.branch_city,
+      order.branch_address,
+      order.user || "",
+    ],
 
-      const branchKey = `${order.branch_city}-${order.branch_address}`;
-      const matchesBranch =
-        selectedBranch === "all" || branchKey === selectedBranch;
+    getStatus: (order) => order.status,
 
-      return matchesSearch && matchesStatus && matchesBranch;
-    });
-  }, [orders, searchQuery, selectedStatus, selectedBranch]);
+    getBranchKey: (order) => `${order.branch_city}-${order.branch_address}`,
+
+    getDate: (order) => order.start_time,
+
+    sortDirection,
+  });
 
   const formatDateTime = (date: string) =>
     new Date(date).toLocaleString("ru-RU", {
@@ -87,17 +92,26 @@ const OrganizationOrdersPage = () => {
 
   return (
     <div className={styles.page}>
-      <div className={styles.container}>
+      <div className={styles.content}>
         {/* шапка */}
         <div className={styles.header}>
-            <h1 className={styles.title}>Заказы</h1>
-            <button className={styles.toggleModalButton} onClick={toggleModal}>
+          <div>
+            <button
+              className={styles.toggleModalButton}
+              onClick={goToOrganization}
+            >
+              <span>❮</span>
+            </button>
+
+            <h1>Заказы</h1>
+          </div>
+
+          <button className={styles.toggleModalButton} onClick={toggleModal}>
             ☰
           </button>
-            
         </div>
 
-        {/* переключатели */}
+        {/* история*/}
         <div className={styles.tabs}>
           <button
             className={activeTab === "current" ? styles.activeTab : styles.tab}
@@ -114,120 +128,141 @@ const OrganizationOrdersPage = () => {
           </button>
         </div>
 
-        {/* фильтры */}
-        <div className={styles.filtersSection}>
-          <input
-            className={styles.searchInput}
-            placeholder="Поиск..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
+        {/* действия */}
 
-          <select
-            className={styles.filterSelect}
-            value={selectedStatus}
-            onChange={(e) => setSelectedStatus(e.target.value)}
-          >
-            <option value="all">Все статусы</option>
-            <option value="create">Новая</option>
-            <option value="approve">Подтверждён</option>
-            <option value="reject">Отклонён</option>
-          </select>
+        <div className={styles.filtersBar}>
+          <div className={styles.filtersLeft}>
+            {/* поиск */}
+            <input
+              className={styles.searchInput}
+              placeholder="Поиск..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            {/* селекты */}
+            <select
+              className={styles.filterSelect}
+              value={selectedStatus}
+              onChange={(e) => setSelectedStatus(e.target.value)}
+            >
+              <option value="all">Все статусы</option>
+              <option value="create">Новый</option>
+              <option value="approve">Подтверждён</option>
+              <option value="reject">Отклонён</option>
+            </select>
 
-          <select
-            className={styles.filterSelect}
-            value={selectedBranch}
-            onChange={(e) => setSelectedBranch(e.target.value)}
-          >
-            <option value="all">Все филиалы</option>
-            {branches.map((b) => (
-              <option key={b.id} value={b.id}>
-                {b.label}
-              </option>
-            ))}
-          </select>
+            <select
+              className={styles.filterSelect}
+              value={selectedBranch}
+              onChange={(e) => setSelectedBranch(e.target.value)}
+            >
+              <option value="all">Все филиалы</option>
+              {branches.map((b) => (
+                <option key={b.id} value={b.id}>
+                  {b.label}
+                </option>
+              ))}
+            </select>
 
-          <div className={styles.totalOrders}>
-            <span>Всего:</span>
-            <span>{orders.length}</span>
+            <select
+              className={styles.filterSelect}
+              value={sortDirection}
+              onChange={(e) =>
+                setSortDirection(e.target.value as "asc" | "desc")
+              }
+            >
+              <option value="desc">Сначала новые</option>
+              <option value="asc">Сначала старые</option>
+            </select>
           </div>
+
+          <div className={styles.filtersRight}>
+            {/* счетчик */}
+            <div className={styles.totalOrders}>
+              <span>Всего:</span>
+              <span>{orders.length}</span>
+            </div>
+          </div>
+          {/* кнопка */}
         </div>
 
         {(error || actionError) && (
           <div className={styles.errorMessage}>{error || actionError}</div>
         )}
 
-        {/* заказы */}
-        <div className={styles.ordersList}>
+        {/* наполнение */}
+        <div className={styles.main}>
           {filteredOrders.length > 0 ? (
-            filteredOrders.map((order) => (
-              <div key={order.id} className={styles.orderCard}>
-                <div className={styles.orderHeader}>
-                  <span className={styles.branchInfo}>
-                    {order.branch_city}, {order.branch_address}
-                  </span>
+            <div className={styles.cardGrid}>
+              {filteredOrders.map((order) => (
+                <div key={order.id} className={styles.orderCard}>
+                  <div className={styles.orderHeader}>
+                    <span className={styles.branchInfo}>
+                      {order.branch_city}, {order.branch_address}
+                    </span>
 
-                  <div
-                    className={styles.statusBadge}
-                    style={getStatusStyle(order.status)}
-                  >
-                    {getStatusLabel(order.status)}
+                    <div
+                      className={styles.statusBadge}
+                      style={getStatusStyle(order.status)}
+                    >
+                      {getStatusLabel(order.status)}
+                    </div>
+                  </div>
+
+                  <div className={styles.orderService}>
+                    <h3>{order.service}</h3>
+                    <p>{order.details}</p>
+                  </div>
+
+                  <div className={styles.orderInfo}>
+                    <span>
+                      {formatDateTime(order.start_time)} -{" "}
+                      {formatDateTime(order.end_time).split(" ")[1]}
+                    </span>
+                  </div>
+
+                  <div className={styles.orderUser}>Клиент: {order.user}</div>
+
+                  {!isPastTab && (
+                    <div className={styles.orderActions}>
+                      {canApprove(order.status) && (
+                        <button
+                          className={styles.approveBtn}
+                          disabled={loadingId === order.id}
+                          onClick={() => approve(order.id, order.status)}
+                        >
+                          Принять
+                        </button>
+                      )}
+
+                      {canReject(order.status) && (
+                        <button
+                          className={styles.rejectBtn}
+                          disabled={loadingId === order.id}
+                          onClick={() => reject(order.id, order.status)}
+                        >
+                          Отклонить
+                        </button>
+                      )}
+
+                      {canCancel(order.status) && (
+                        <button
+                          className={styles.rejectBtn}
+                          disabled={loadingId === order.id}
+                          onClick={() => reject(order.id, order.status)}
+                        >
+                          Отменить
+                        </button>
+                      )}
+                    </div>
+                  )}
+
+                  <div className={styles.orderFooter}>
+                    <span>{order.total_amount} ₽</span>
                   </div>
                 </div>
-
-                <div className={styles.orderService}>
-                  <h3>{order.service}</h3>
-                  <p>{order.details}</p>
-                </div>
-
-                <div className={styles.orderInfo}>
-                  <span>
-                    {formatDateTime(order.start_time)} -{" "}
-                    {formatDateTime(order.end_time).split(" ")[1]}
-                  </span>
-                </div>
-
-                <div className={styles.orderUser}>Клиент: {order.user}</div>
-
-                {!isPastTab && (
-                  <div className={styles.orderActions}>
-                    {canApprove(order.status) && (
-                      <button
-                        className={styles.approveBtn}
-                        disabled={loadingId === order.id}
-                        onClick={() => approve(order.id, order.status)}
-                      >
-                        Принять
-                      </button>
-                    )}
-
-                    {canReject(order.status) && (
-                      <button
-                        className={styles.rejectBtn}
-                        disabled={loadingId === order.id}
-                        onClick={() => reject(order.id, order.status)}
-                      >
-                        Отклонить
-                      </button>
-                    )}
-
-                    {canCancel(order.status) && (
-                      <button
-                        className={styles.rejectBtn}
-                        disabled={loadingId === order.id}
-                        onClick={() => reject(order.id, order.status)}
-                      >
-                        Отменить
-                      </button>
-                    )}
-                  </div>
-                )}
-
-                <div className={styles.orderFooter}>
-                  <span>{order.total_amount} ₽</span>
-                </div>
-              </div>
-            ))
+              ))}
+            </div>
           ) : (
             <div className={styles.emptyState}>
               <h3>Нет заказов</h3>

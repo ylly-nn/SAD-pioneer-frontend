@@ -1,23 +1,16 @@
 .page {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  background-color: #f5f5f5;
+  min-height: 90vh;
+  background: #f5f5f5;
+  padding: 1%;
 }
 
-/* контейнер */
 .content {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-
   max-width: 1300px;
-  width: 100%;
-  margin: 20px auto;
-
-  background-color: white;
+  margin: auto;
+  background: #ffffff;
   border-radius: 12px;
   overflow: hidden;
+  min-height: 95vh;
 }
 
 /* header */
@@ -26,13 +19,18 @@
   justify-content: space-between;
   align-items: center;
   padding: 20px 24px;
-  border-bottom: 1px solid #e0e0e0;
-  margin-bottom: 20px;
+  border-bottom: 1px solid #f0f0f0;
+
+  div {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
 
   h1 {
-    margin: 0;
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 600;
+    color: #111827;
   }
 }
 
@@ -42,6 +40,8 @@
   font-size: 22px;
   cursor: pointer;
   color: #666;
+  line-height: 1;
+  padding: 0;
 
   &:hover {
     color: #000;

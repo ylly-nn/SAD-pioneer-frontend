@@ -38,10 +38,6 @@ const SelectOrganizationPage = () => {
   const { mapRef, moveMapTo, geocodeAddress } =
     useMapControl(ymapsInstance)
 
-  // =========================
-  // 🔥 УТИЛИТЫ (ВАЖНО: ВВЕРХУ!)
-  // =========================
-
   const normalize = (str: string) =>
     str
       .toLowerCase()
@@ -67,6 +63,7 @@ const SelectOrganizationPage = () => {
     "санкт петербург": "Санкт-Петербург",
     "спб": "Санкт-Петербург",
     "питер": "Санкт-Петербург",
+    "Тула": "Тула",
   }
 
   // =========================
@@ -194,6 +191,7 @@ const SelectOrganizationPage = () => {
     updateBooking({
       branchId: selectedBranch.id_branch,
       serviceByBranchId: selectedBranch.id_branchserv, 
+      city: city,
       organization: {
         name: selectedBranch.org_short_name,
         address: selectedBranch.address,

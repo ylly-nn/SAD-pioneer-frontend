@@ -1,10 +1,11 @@
 import styles from "./ServiceFormPage.module.scss"
-import { useParams, useNavigate } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import { useAddBranchService } from "../../../../hooks/useAddBranchService"
+import { useNavigation } from "../../../../hooks/useNavigation"
 
 const ServiceFormPage = () => {
+  const { goBack } = useNavigation();
   const { id } = useParams<{ id: string }>()
-  const navigate = useNavigate()
 
   const {
     services,
@@ -16,7 +17,7 @@ const ServiceFormPage = () => {
 
   const handleSubmit = async () => {
     await addServiceToBranch()
-    navigate(-1) // назад в филиал
+    goBack()
   }
 
   if (loading) return <div>Загрузка...</div>
@@ -37,7 +38,30 @@ const ServiceFormPage = () => {
                   Выберите услугу
                 </h2>
 
-                <div className={styles.serviceGrid}>
+                
+
+                <button
+                  className={styles.submit}
+                  onClick={handleSubmit}
+                  disabled={!selectedId}
+                >
+                  Добавить
+                </button>
+              </div>
+            </div>
+
+            <div className={styles.footer}>
+              <button
+                className={styles.backButton}
+                onClick={goBack}
+              >
+                Назад
+              </button>
+            </div>
+          </div>
+
+          <div className={styles.rightSection}>
+            <div className={styles.serviceGrid}>
                   {services.map((service) => (
                     <div
                       key={service.id}
@@ -53,27 +77,7 @@ const ServiceFormPage = () => {
                   ))}
                 </div>
 
-                <button
-                  className={styles.submit}
-                  onClick={handleSubmit}
-                  disabled={!selectedId}
-                >
-                  Добавить
-                </button>
-              </div>
-            </div>
-
-            <div className={styles.footer}>
-              <button
-                className={styles.backButton}
-                onClick={() => navigate(-1)}
-              >
-                Назад
-              </button>
-            </div>
           </div>
-
-          <div className={styles.rightSection}></div>
         </section>
       </div>
     </div>

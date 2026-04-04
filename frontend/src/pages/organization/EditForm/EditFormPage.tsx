@@ -3,7 +3,7 @@ import { useNavigation } from "../../../hooks/useNavigation";
 import { useEditForm } from "../../../hooks/useEditForm";
 
 const EditFormPage = () => {
-  const { goHome } = useNavigation();
+  const { goToOrganization } = useNavigation();
 
   const {
     formData,
@@ -23,7 +23,7 @@ const EditFormPage = () => {
 
         <div className={styles.header}>
           <h1>Подключение организации</h1>
-          <button onClick={goHome}>✕</button>
+          <button onClick={goToOrganization}>✕</button>
         </div>
 
         <form onSubmit={handleSubmit} className={styles.form}>

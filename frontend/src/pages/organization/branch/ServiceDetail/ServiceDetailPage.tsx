@@ -1,11 +1,12 @@
 import { useState } from "react"
 import styles from "./ServiceDetailPage.module.scss"
-import { useParams, useNavigate } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import { branchService } from "../../../../api/branchService"
+import { useNavigation } from "../../../../hooks/useNavigation"
 
 const ServiceDetailPage = () => {
+  const { goBack } = useNavigation();
   const { serviceId } = useParams<{ serviceId: string }>()
-  const navigate = useNavigate()
 
   const [form, setForm] = useState({
     name: "",
@@ -29,7 +30,7 @@ const ServiceDetailPage = () => {
       price: Number(form.price),
     })
 
-    navigate(-1)
+    goBack()
   }
 
   return (
@@ -37,7 +38,7 @@ const ServiceDetailPage = () => {
       <div className={styles.card}>
         <div className={styles.header}>
           <h1 className={styles.title}>Добавить опцию</h1>
-          <button className={styles.close} onClick={() => navigate(-1)}>
+          <button className={styles.close} onClick={goBack} aria-label="Закрыть">
             ✕
           </button>
         </div>

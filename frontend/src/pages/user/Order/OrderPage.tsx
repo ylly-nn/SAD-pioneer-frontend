@@ -6,7 +6,7 @@ import { useOrderStatus } from "../../../hooks/useOrderStatus";
 const OrderPage = () => {
   const { getStatusLabel } = useOrderStatus();
 
-  const { goToUser } = useNavigation();
+  const { goBack } = useNavigation();
 
   const {
     order,
@@ -82,7 +82,7 @@ const OrderPage = () => {
 
                 <button
                   className={styles.submit}
-                  onClick={goToUser}
+                  onClick={goBack}
                 >
                   Назад
                 </button>

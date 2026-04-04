@@ -6,6 +6,8 @@ export interface BookingState {
   branchId?: string
   serviceByBranchId?: string
 
+  city?: string
+
   organization?: {
     name: string
     address: string

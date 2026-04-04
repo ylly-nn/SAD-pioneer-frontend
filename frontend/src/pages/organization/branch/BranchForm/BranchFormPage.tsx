@@ -6,7 +6,7 @@ import { useBranchForm } from "../../../../hooks/useBranchFormLogic";
 import { YMaps, Map } from "@pbe/react-yandex-maps";
 
 const BranchFormPage = () => {
-  const { goHome } = useNavigation();
+  const { goToOrganizationAddBranch} = useNavigation();
 
   const [ymapsInstance, setYmapsInstance] = useState<any>(null);
   const [ymapsReady, setYmapsReady] = useState(false);
@@ -28,7 +28,7 @@ const BranchFormPage = () => {
 
           <button
             className={styles.close}
-            onClick={goHome}
+            onClick={goToOrganizationAddBranch}
             type="button"
           >
             ✕

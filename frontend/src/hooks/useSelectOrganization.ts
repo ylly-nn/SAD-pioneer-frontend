@@ -17,12 +17,18 @@ export const useSelectOrganization = () => {
     const initCity = async () => {
 
       // 1. попытка взять город из localStorage
-      const saved = localStorage.getItem("city")
+      /*const saved = localStorage.getItem("city")
       if (saved) {
         setCity(saved)
         setIsCityLoaded(true)
         return
-      }
+      }*/
+
+      if (booking.city) {
+      setCity(booking.city)
+      setIsCityLoaded(true)
+      return
+    }
 
       // 2. попытка взять город с бека
       try {

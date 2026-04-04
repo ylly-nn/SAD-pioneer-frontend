@@ -5,7 +5,7 @@ import { useOrderStatus } from "../../../hooks/useOrderStatus";
 
 const ViewFormPage = () => {
   const { getStatusLabel } = useOrderStatus();
-  const { goHome } = useNavigation();
+  const { goBack } = useNavigation();
   const { formData } = useViewForm();
 
   const formatDateTime = (date?: string) => {
@@ -23,7 +23,7 @@ const ViewFormPage = () => {
       <div className={styles.card}>
         <div className={styles.header}>
           <h1>Подключение организации</h1>
-          <button onClick={goHome}>✕</button>
+          <button onClick={goBack}>✕</button>
         </div>
 
         <form className={styles.form}>
