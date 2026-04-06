@@ -169,16 +169,227 @@
   white-space: pre-wrap;
 }
 
+
+/* Планшеты */
+@media (max-width: 900px) {
+  .card {
+    max-width: 95%;
+    padding: 25px 35px;
+  }
+
+  .columns {
+    gap: 20px;
+  }
+
+  .status {
+    gap: 15px;
+  }
+}
+
+/* Мобильные телефоны */
 @media (max-width: 768px) {
+  .page {
+    padding: 20px 15px;
+  }
+
+  .card {
+    padding: 20px 25px;
+  }
+
+  .header h1 {
+    font-size: 20px;
+  }
+
   .columns {
     grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .section h3 {
+    font-size: 16px;
+    margin-bottom: 6px;
   }
 
   .status {
     grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .select {
+    height: 48px;
+    font-size: 13px;
+  }
+
+  .submitButton {
+    height: 42px;
+    font-size: 14px;
+  }
+
+  .label {
+    font-size: 12px;
+  }
+
+  .fieldValue {
+    font-size: 13px;
+    min-height: 36px;
+    padding: 6px 10px;
+  }
+
+  .textAreaValue {
+    font-size: 13px;
+    min-height: 80px;
+  }
+}
+
+/* Маленькие телефоны */
+@media (max-width: 480px) {
+  .page {
+    padding: 12px;
   }
 
   .card {
-    padding: 20px;
+    padding: 16px 18px;
+    border-radius: 12px;
+  }
+
+  .header {
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-size: 18px;
+  }
+
+  .header button {
+    font-size: 20px;
+  }
+
+  .form {
+    gap: 20px;
+  }
+
+  .columns {
+    gap: 18px;
+  }
+
+  .section {
+    gap: 8px;
+  }
+
+  .section h3 {
+    font-size: 15px;
+    margin-bottom: 4px;
+  }
+
+  .field {
+    gap: 3px;
+  }
+
+  .label {
+    font-size: 11px;
+  }
+
+  .fieldValue {
+    font-size: 12px;
+    min-height: 34px;
+    padding: 5px 8px;
+  }
+
+  .status {
+    gap: 10px;
+  }
+
+  .statusSubmit {
+    gap: 15px;
+  }
+
+  .select {
+    height: 42px;
+    font-size: 12px;
+  }
+
+  .submitButton {
+    height: 40px;
+    font-size: 13px;
+  }
+
+  .textAreaValue {
+    font-size: 12px;
+    min-height: 70px;
+    padding: 8px;
+  }
+
+  .infoBlock h3 {
+    font-size: 15px;
+  }
+}
+
+/* Очень маленькие телефоны */
+@media (max-width: 360px) {
+  .card {
+    padding: 12px 14px;
+  }
+
+  .header h1 {
+    font-size: 16px;
+  }
+
+  .section h3 {
+    font-size: 14px;
+  }
+
+  .fieldValue {
+    font-size: 11px;
+    padding: 4px 6px;
+  }
+
+  .select {
+    height: 38px;
+    font-size: 11px;
+  }
+
+  .submitButton {
+    height: 38px;
+    font-size: 12px;
+  }
+}
+
+/* Альбомная ориентация */
+@media (max-width: 850px) and (orientation: landscape) {
+  .page {
+    padding: 15px;
+  }
+
+  .card {
+    padding: 20px 25px;
+  }
+
+  .columns {
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .status {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+  }
+
+  .fieldValue {
+    min-height: 32px;
+  }
+}
+
+/* Для десктопов с большим экраном */
+@media (min-width: 1440px) {
+  .card {
+    max-width: 1000px;
+  }
+
+  .columns {
+    gap: 40px;
+  }
+
+  .status {
+    gap: 30px;
   }
 }

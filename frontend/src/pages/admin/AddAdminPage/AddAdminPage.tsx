@@ -63,7 +63,7 @@ const AddAdmin = () => {
 
       console.log("Админ успешно добавлен:", response.data);
       
-      navigate("/admin", { 
+      navigate("/admin/panelka", { 
         state: { message: "Администратор успешно добавлен" } 
       });
     } catch (err: any) {
@@ -76,7 +76,7 @@ const AddAdmin = () => {
       setIsSubmitting(false);
     }
   };
-
+ 
   const handleBack = () => {
     navigate("/admin");
   };

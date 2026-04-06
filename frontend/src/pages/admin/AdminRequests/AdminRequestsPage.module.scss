@@ -231,3 +231,205 @@
   margin-bottom: 16px;
   font-size: 16px;
 }
+
+/* Планшеты */
+@media (max-width: 1024px) {
+  .container {
+    padding: 20px;
+  }
+
+  .header h1 {
+    font-size: 26px;
+  }
+
+  .filters {
+    padding: 14px 16px;
+    gap: 10px;
+  }
+
+  .filters button {
+    padding: 6px 16px;
+    font-size: 13px;
+  }
+}
+
+/* Мобильные телефоны */
+@media (max-width: 768px) {
+  .container {
+    padding: 16px;
+  }
+
+  .header {
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-size: 24px;
+  }
+
+  .filters {
+    padding: 12px;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .filters button {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  .tableWrapper {
+    border-radius: 8px;
+  }
+
+  .table {
+    min-width: auto;
+    width: 100%;
+  }
+
+  .table th,
+  .table td {
+    padding: 12px 8px;
+    font-size: 12px;
+  }
+
+  .table th:first-child,
+  .table td:first-child {
+    padding-left: 12px;
+  }
+
+  .table th:last-child,
+  .table td:last-child {
+    padding-right: 12px;
+  }
+
+  .orgShortName {
+    font-size: 10px;
+  }
+
+  .statusBadge {
+    padding: 3px 8px;
+    font-size: 10px;
+    min-width: 60px;
+  }
+
+  .actions {
+    gap: 6px;
+  }
+
+  .takeButton,
+  .approveButton,
+  .rejectButton,
+  .viewButton {
+    padding: 4px 8px;
+    font-size: 10px;
+  }
+
+  .emptyState,
+  .loader,
+  .error {
+    padding: 32px;
+    font-size: 14px;
+  }
+}
+
+/* Маленькие телефоны */
+@media (max-width: 600px) {
+  .container {
+    padding: 12px;
+  }
+
+  .header h1 {
+    font-size: 20px;
+  }
+
+  .filters {
+    padding: 10px;
+    gap: 6px;
+  }
+
+  .filters button {
+    padding: 4px 10px;
+    font-size: 11px;
+  }
+
+  .table th,
+  .table td {
+    padding: 8px 6px;
+    font-size: 11px;
+  }
+
+  .table th:nth-child(5),
+  .table td:nth-child(5),
+  .table th:nth-child(3),
+  .table td:nth-child(3) {
+    display: none;
+  }
+
+  .table th:first-child,
+  .table td:first-child {
+    padding-left: 8px;
+  }
+
+  .table th:last-child,
+  .table td:last-child {
+    padding-right: 8px;
+  }
+}
+
+/* Очень маленькие телефоны */
+@media (max-width: 480px) {
+  .filters {
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .filters button {
+    flex: 1;
+    text-align: center;
+    min-width: 70px;
+  }
+
+  .actions {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .takeButton,
+  .approveButton,
+  .rejectButton,
+  .viewButton {
+    width: 100%;
+    text-align: center;
+  }
+
+  .statusBadge {
+    font-size: 9px;
+    min-width: 50px;
+  }
+}
+
+/* Альбомная ориентация */
+@media (max-width: 850px) and (orientation: landscape) {
+  .container {
+    padding: 12px;
+  }
+
+  .header h1 {
+    font-size: 22px;
+  }
+
+  .filters {
+    padding: 8px 12px;
+  }
+
+  .table th,
+  .table td {
+    padding: 8px;
+    font-size: 11px;
+  }
+
+  .actions {
+    flex-direction: row;
+  }
+}
