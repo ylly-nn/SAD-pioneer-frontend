@@ -272,3 +272,139 @@ export const validatePhone = (phone: string): string => {
 
   return "";
 };
+
+/**
+ * Валидация пароля
+ * @param password - пароль для проверки
+ * @returns строку с ошибкой или пустую строку, если ошибок нет
+ */
+export const validatePassword = (password: string): string => {
+  if (!password) {
+    return "Пароль обязателен для заполнения";
+  }
+
+  if (password.length < 8 || password.length > 24) {
+    return "Пароль должен быть от 8 до 24 символов";
+  }
+
+  if (/\s/.test(password)) {
+    return "Пароль не должен содержать пробелов";
+  }
+
+  // Проверка на допустимые символы
+  const allowedRegex = /^[a-zA-Z0-9~!?@#$%^&*_\-+()\[\]{}/\\"'. ,:;]+$/;
+  if (!allowedRegex.test(password)) {
+    return "Пароль содержит недопустимые символы";
+  }
+
+  // Проверка на наличие хотя бы одной заглавной буквы
+  if (!/[A-Z]/.test(password)) {
+    return "Пароль должен содержать хотя бы одну заглавную букву";
+  }
+
+  // Проверка на наличие хотя бы одной строчной буквы
+  if (!/[a-z]/.test(password)) {
+    return "Пароль должен содержать хотя бы одну строчную букву";
+  }
+
+  // Проверка на наличие хотя бы одной цифры
+  if (!/[0-9]/.test(password)) {
+    return "Пароль должен содержать хотя бы одну цифру";
+  }
+
+  // Проверка на наличие хотя бы одного спецсимвола
+  const specialCharsRegex = /[~!?@#$%^&*_\-+()\[\]{}/\\"'. ,:;]/;
+  if (!specialCharsRegex.test(password)) {
+    return "Пароль должен содержать хотя бы один специальный символ";
+  }
+
+  return "";
+};
+
+/**
+ * Валидация подтверждения пароля
+ * @param password - пароль
+ * @param confirmPassword - подтверждение пароля
+ * @returns строку с ошибкой или пустую строку, если ошибок нет
+ */
+export const validateConfirmPassword = (password: string, confirmPassword: string): string => {
+  if (!confirmPassword) {
+    return "Подтверждение пароля обязательно";
+  }
+
+  if (password !== confirmPassword) {
+    return "Пароли не совпадают";
+  }
+
+  return "";
+};
+
+
+// Интерфейс для ошибок формы регистрации
+export interface RegisterFormErrors {
+  email?: string;
+  password?: string;
+  confirmPassword?: string;
+  [key: string]: string | undefined;
+}
+
+// Интерфейс для ошибок формы логина
+export interface LoginFormErrors {
+  email?: string;
+  password?: string;
+}
+
+// Хелпер для проверки всех полей формы регистрации
+export const validateRegisterForm = (data: {
+  email: string;
+  password: string;
+  confirmPassword: string;
+}): RegisterFormErrors => {
+  return {
+    email: validateEmail(data.email),
+    password: validatePassword(data.password),
+    confirmPassword: validateConfirmPassword(data.password, data.confirmPassword),
+  };
+};
+
+// Хелпер для проверки всех полей формы логина
+export const validateLoginForm = (data: {
+  email: string;
+  password: string;
+}): LoginFormErrors => {
+  return {
+    email: validateEmail(data.email),
+    password: validatePassword(data.password),
+  };
+};
+
+// Проверка, есть ли ошибки в форме регистрации
+export const hasRegisterErrors = (errors: RegisterFormErrors): boolean => {
+  return Object.values(errors).some(error => error && error.length > 0);
+};
+
+// Проверка, валидна ли форма регистрации
+export const isRegisterFormValid = (
+  data: { email: string; password: string; confirmPassword: string },
+  errors: RegisterFormErrors
+): boolean => {
+  return (
+    data.email.length > 0 &&
+    data.password.length > 0 &&
+    data.confirmPassword.length > 0 &&
+    !hasRegisterErrors(errors)
+  );
+};
+
+// Проверка, валидна ли форма логина
+export const isLoginFormValid = (
+  data: { email: string; password: string },
+  errors: LoginFormErrors
+): boolean => {
+  return (
+    data.email.length > 0 &&
+    data.password.length > 0 &&
+    !errors.email &&
+    !errors.password
+  );
+};

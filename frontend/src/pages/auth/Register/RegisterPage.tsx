@@ -7,8 +7,6 @@ import { useRegisterForm } from "../../../hooks/useRegisterForm";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
-import { roleService } from "../../../services/roleService";
-
 const RegisterPage = () => {
   const { goHome } = useNavigation();
   const {
@@ -18,18 +16,19 @@ const RegisterPage = () => {
     error,
     isLoading,
     handleChange,
+    handleBlur,
     handleTermsChange,
     handleSubmit,
+    getFieldError,
   } = useRegisterForm();
 
   const [showPassword, setShowPassword] = useState(false);
   
   const togglePassword = () => setShowPassword(!showPassword);
 
-  const role = roleService.getRole();
-    if (!role) {
-      goHome;
-    }
+  const emailError = getFieldError('email');
+  const passwordError = getFieldError('password');
+  const confirmPasswordError = getFieldError('confirmPassword');
 
   return (
     <div className={styles.page}>
@@ -47,7 +46,7 @@ const RegisterPage = () => {
 
         <div className={styles.formContainer}>
           <form className={styles.form} onSubmit={handleSubmit}>
-            <div className={styles.field}>
+            <div className={emailError ? styles.fieldWithError : styles.field}>
               <label className={styles.label} htmlFor="email">
                 почта
               </label>
@@ -56,15 +55,16 @@ const RegisterPage = () => {
                 name="email"
                 type="email"
                 placeholder="введите email"
-                required
-                className={styles.input}
-                autoComplete="email"
+                className={`${styles.input} ${emailError ? styles.inputError : ''}`}
+                autoComplete="off"
                 value={formData.email}
                 onChange={handleChange}
+                onBlur={() => handleBlur('email')}
               />
+              {emailError && <div className={styles.error}>{emailError}</div>}
             </div>
 
-            <div className={styles.field}>
+            <div className={passwordError ? styles.fieldWithError : styles.field}>
               <div className={styles.b}>
                 <label className={styles.label} htmlFor="password">
                   пароль
@@ -85,15 +85,16 @@ const RegisterPage = () => {
                 name="password"
                 type={showPassword ? "text" : "password"}
                 placeholder="введите пароль"
-                required
-                className={styles.input}
+                className={`${styles.input} ${passwordError ? styles.inputError : ''}`}
                 autoComplete="new-password"
                 value={formData.password}
                 onChange={handleChange}
+                onBlur={() => handleBlur('password')}
               />
+              {passwordError && <div className={styles.error}>{passwordError}</div>}
             </div>
 
-            <div className={styles.field}>
+            <div className={confirmPasswordError ? styles.fieldWithError : styles.field}>
               <label className={styles.label} htmlFor="confirm-password">
                 подтвердите пароль
               </label>
@@ -102,12 +103,13 @@ const RegisterPage = () => {
                 name="confirm-password"
                 type={showPassword ? "text" : "password"}
                 placeholder="повторите пароль"
-                required
-                className={styles.input}
-                autoComplete="new-password"
+                className={`${styles.input} ${confirmPasswordError ? styles.inputError : ''}`}
+                autoComplete="off"
                 value={confirmPassword}
                 onChange={handleChange}
+                onBlur={() => handleBlur('confirmPassword')}
               />
+              {confirmPasswordError && <div className={styles.error}>{confirmPasswordError}</div>}
             </div>
 
             <div className={styles.fieldCheckbox}>
@@ -115,7 +117,6 @@ const RegisterPage = () => {
                 <input
                   type="checkbox"
                   name="terms"
-                  required
                   className={styles.checkbox}
                   checked={termsAccepted}
                   onChange={handleTermsChange}

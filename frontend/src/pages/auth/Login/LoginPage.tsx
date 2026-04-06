@@ -6,20 +6,30 @@ import { useState } from "react";
 import { ROUTES } from "../../../constants/routes";
 import { useNavigation } from "../../../hooks/useNavigation";
 import { useLoginForm } from "../../../hooks/useLoginForm";
-import { roleService } from "../../../services/roleService";
 
 const LoginPage = () => {
+
   const { goHome } = useNavigation();
-  const { formData, error, isLoading, handleChange, handleSubmit } =
-    useLoginForm();
+  const { 
+    formData, 
+    error, 
+    isLoading, 
+    handleChange, 
+    handleBlur,
+    handleSubmit, 
+    getFieldError 
+  } = useLoginForm();
 
   const [showPassword, setShowPassword] = useState(false);
   const togglePassword = () => setShowPassword(!showPassword);
 
-  const role = roleService.getRole();
-  if (!role) {
-    goHome;
-  }
+  const emailError = getFieldError('email');
+  const passwordError = getFieldError('password');
+
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault(); 
+    handleSubmit(e);
+  };
 
   return (
     <div className={styles.page}>
@@ -36,25 +46,30 @@ const LoginPage = () => {
         </div>
 
         <div className={styles.formContainer}>
-          <form className={styles.form} onSubmit={handleSubmit}>
-            <div className={styles.field}>
+          <form 
+            className={styles.form} 
+            onSubmit={handleFormSubmit}
+            noValidate  
+          >
+            <div className={emailError ? styles.fieldWithError : styles.field}>
               <label className={styles.label} htmlFor="email">
                 Почта
               </label>
               <input
                 id="email"
                 name="email"
-                type="email"
+                type="text" 
                 placeholder="введите email"
-                required
-                className={styles.input}
+                className={`${styles.input} ${emailError ? styles.inputError : ''}`}
                 autoComplete="email"
                 value={formData.email}
                 onChange={handleChange}
+                onBlur={() => handleBlur('email')}
               />
+              {emailError && <div className={styles.error}>{emailError}</div>}
             </div>
 
-            <div className={styles.field}>
+            <div className={passwordError ? styles.fieldWithError : styles.field}>
               <div className={styles.b}>
                 <label className={styles.label} htmlFor="password">
                   пароль
@@ -75,16 +90,17 @@ const LoginPage = () => {
                 name="password"
                 type={showPassword ? "text" : "password"}
                 placeholder="введите пароль"
-                required
-                className={styles.input}
+                className={`${styles.input} ${passwordError ? styles.inputError : ''}`}
                 autoComplete="current-password"
                 value={formData.password}
                 onChange={handleChange}
+                onBlur={() => handleBlur('password')}
               />
+              {passwordError && <div className={styles.error}>{passwordError}</div>}
               <div className={styles.forgotPassword}>
-                <Link to={ROUTES.RESET_PASSWORD} className={styles.link}>
+                  <Link to={ROUTES.RESET_PASSWORD} className={styles.link}>
                   Забыли пароль?
-                </Link>
+                  </Link>
               </div>
             </div>
 
