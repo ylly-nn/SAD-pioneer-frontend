@@ -61,7 +61,7 @@
   color: rgba(255, 255, 255, 0.8);
 }
 
-button {
+.backButton {
   margin-top: 25px;
   padding: 12px 24px;
   border-radius: 10px;
@@ -80,7 +80,7 @@ button {
   transition: all 0.25s ease;
 }
 
-button:hover {
+.backButton:hover {
   background: rgba(255, 255, 255, 0.2);
   transform: translateY(-2px);
 }

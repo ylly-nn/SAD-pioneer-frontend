@@ -3,7 +3,7 @@ import { useNavigation } from "../../../../hooks/useNavigation";
 
 const EmptyPage = () => {
   const {
-    goBack,
+    goHome,
     goToCreateForm
   } = useNavigation();
 
@@ -24,7 +24,7 @@ const EmptyPage = () => {
         </button>
 
         <div className={styles.footer}>
-          <button className={styles.backLink} onClick={goBack}>
+          <button className={styles.backLink} onClick={goHome}>
             Назад
           </button>
         </div>

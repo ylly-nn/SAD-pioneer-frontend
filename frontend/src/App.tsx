@@ -2,7 +2,7 @@ import "./App.css";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import { HomeRoute, ProtectedRoute, ProtectedRouteOrganizations, ProtectedRouteOrganizationsRequest } from "./components/ProtectedRoute";
+import { HomeRoute, ProtectedRoute, ProtectedRouteNoOrganizations, ProtectedRouteOrganizations, ProtectedRouteOrganizationsRequest } from "./components/ProtectedRoute";
 import ProtectedAdminRoute from "./components/ProtectedAdminRoute"
 import Home from "./pages/Home/HomePage";
 import NotFound from "./pages/NotFound/NotFoundPage";
@@ -68,7 +68,7 @@ const App = () => {
         <Route path="/organization">
         <Route index element={<ProtectedRoute> <OrganizationProfile /> </ProtectedRoute>}/>
           
-          <Route path="create-form" element={<ProtectedRouteOrganizationsRequest> <OrganizationEditForm /> </ProtectedRouteOrganizationsRequest>} />
+          <Route path="create-form" element={<ProtectedRouteNoOrganizations> <OrganizationEditForm /> </ProtectedRouteNoOrganizations>} />
           <Route path="view-form" element={<ProtectedRouteOrganizationsRequest> <OrganizationViewForm /> </ProtectedRouteOrganizationsRequest>} />
 
           <Route path="orders" element={<ProtectedRouteOrganizations> <OrganizationOrders /> </ProtectedRouteOrganizations>} />

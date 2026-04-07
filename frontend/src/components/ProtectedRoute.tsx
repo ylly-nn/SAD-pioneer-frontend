@@ -94,3 +94,31 @@ export const ProtectedRouteOrganizationsRequest = ({ children }: Props) => {
 
   return <>{children}</>;
 };
+
+// для маршрутов пользователей у которых ещё нет ни организации, ни заявки
+export const ProtectedRouteNoOrganizations = ({ children }: Props) => {
+  const { isOrganization, isOrganizationRequest, isLoading } = useProfile();
+
+  // если пользователь не авторизован
+  const location = useLocation();
+
+  if (!isAuthenticated()) {
+    return redirectToLogin(location);
+  }
+
+  if (isLoading) {
+    return <div>Загрузка...</div>;
+  }
+
+  // если у пользователя есть заявка
+  if (isOrganizationRequest) {
+    return <Navigate to={ROUTES.ORGANIZATION.PROFILE} replace />;
+  }
+
+  // если у пользователя есть организация
+  if (isOrganization) {
+    return <Navigate to={ROUTES.ORGANIZATION.PROFILE} replace />;
+  }
+
+  return <>{children}</>;
+};

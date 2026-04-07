@@ -17,7 +17,7 @@ const NotFoundPage = () => {
         <p className={styles.text}>
           возможно, она была удалена или вы ввели неверный адрес
         </p>
-        <button onClick={goHome}>
+        <button onClick={goHome} className={styles.backButton}>
           вернуться на главную
       </button>
       </div>
