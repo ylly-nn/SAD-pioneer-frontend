@@ -25,15 +25,18 @@ const getWeekStart = (date: Date) => {
 }
 
 const getRequestDate = (selectedDate: Date) => {
-  const today = new Date()
-  const monday = getWeekStart(selectedDate)
+  const today = new Date();
+  const monday = getWeekStart(selectedDate);
+
+  today.setHours(0, 0, 0, 0);
+  monday.setHours(0, 0, 0, 0);
 
   if (monday >= today) {
-    return formatLocalDate(monday)
+    return formatLocalDate(monday);
   }
 
-  return formatLocalDate(today)
-}
+  return formatLocalDate(today);
+};
 
 export const useFreeTimeCached = (
   branchId?: string,

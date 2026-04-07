@@ -103,6 +103,13 @@ const validatePhone = (value: string): string => {
   return "";
 };
 
+const validateInfo = (value: string): string => {
+  if (value.length > 2000) {
+    return "Дополнительная информация не должна превышать 2000 символов";
+  }
+  return "";
+};
+
 export const useEditForm = () => {
   const [formData, setFormData] = useState<PartnerRequest>({
     inn: "",
@@ -142,6 +149,7 @@ export const useEditForm = () => {
       case "patronymic": return validatePatronymic(value);
       case "email": return validateEmail(value);
       case "phone": return validatePhone(value);
+      case "info": return validateInfo(value);
       default: return "";
     }
   };
@@ -183,6 +191,7 @@ export const useEditForm = () => {
     newErrors.patronymic = validatePatronymic(formData.patronymic);
     newErrors.email = validateEmail(formData.email);
     newErrors.phone = validatePhone(formData.phone);
+    newErrors.phone = validateInfo(formData.info);
     
     setFieldErrors(newErrors);
     

@@ -31,19 +31,7 @@ const SelectServicePage = () => {
                 Выберите услугу
               </h2>
 
-              <div className={styles.serviceGrid}>
-                {services.map((service) => (
-                  <div
-                    key={service.id}
-                    className={styles.serviceCard}
-                    onClick={() => handleSelect(service.id)}
-                  >
-                    <div className={styles.cardTitle}>
-                      {service.name}
-                    </div>
-                  </div>
-                ))}
-              </div>
+              
             </div>
 
             <div className={styles.footer}>
@@ -59,6 +47,22 @@ const SelectServicePage = () => {
           </div>
 
           {/* правая сторона */}
+          <div className={styles.rightSection}>
+            <div className={styles.serviceGrid}>
+                {services.map((service) => (
+                  <div
+                    key={service.id}
+                    className={styles.serviceCard}
+                    onClick={() => handleSelect(service.id)}
+                  >
+                    <div className={styles.cardTitle}>
+                      {service.name}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+          </div>
 
 
         </section>

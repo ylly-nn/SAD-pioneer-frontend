@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { auth } from "../api/authService";
 import { ROUTES } from "../constants/routes";
 import { roleService } from "../services/roleService";
+import { getErrorMessage } from "../utils/getErrorMessage";
 
 export const useRegisterForm = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -56,7 +57,7 @@ export const useRegisterForm = () => {
       navigate(ROUTES.VERIFY, {state: { email: formData.email },});
       //navigate(ROUTES.USER.VERIFY, { state: { email: formData.email } });
     } catch (err: any) {
-      const message = err.response?.data?.message || "Ошибка регистрации";
+      const message = getErrorMessage(err);
       setError(message);
     } finally {
       setIsLoading(false);

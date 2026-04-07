@@ -1,4 +1,6 @@
-import { useState } from "react";
+// hooks/useBranchForm.ts
+
+import { useState, useEffect } from "react";
 import { branches as branchesApi } from "../api/organization";
 import { useNavigation } from "./useNavigation";
 import type { BranchRequest } from "../types/organization";
@@ -8,6 +10,11 @@ import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import tzLookup from "tz-lookup";
 
+import {
+  validateBranchForm,
+  type FormErrors,
+} from "../utils/branchValidation";
+
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -16,6 +23,10 @@ type FormData = {
   address: string;
   openning_time: string;
   closing_time: string;
+};
+
+type Touched = {
+  [key: string]: boolean;
 };
 
 export const useBranchForm = (ymaps: any) => {
@@ -28,8 +39,15 @@ export const useBranchForm = (ymaps: any) => {
     closing_time: "",
   });
 
+  const [touched, setTouched] = useState<Touched>({});
+
+  const [syncErrors, setSyncErrors] = useState<FormErrors>({});
+  const [asyncErrors, setAsyncErrors] = useState<FormErrors>({});
+
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  // ---------------- CHANGE ----------------
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -38,54 +56,107 @@ export const useBranchForm = (ymaps: any) => {
       ...prev,
       [name]: value,
     }));
+
+    setTouched((prev) => ({
+      ...prev,
+      [name]: true,
+    }));
   };
 
-  const getTimezoneByCity = async (city: string) => {
-    if (!ymaps) {
-      throw new Error("ymaps не готов");
-    }
+  // ---------------- SYNC VALIDATION ----------------
 
-    const res = await ymaps.geocode(city);
+  useEffect(() => {
+    const errors = validateBranchForm(formData);
+    setSyncErrors(errors);
+  }, [formData]);
 
-    const firstGeoObject = res.geoObjects.get(0);
+  // ---------------- ASYNC CITY ----------------
 
-    if (!firstGeoObject) {
-      throw new Error("Город не найден");
-    }
+  useEffect(() => {
+    if (!formData.city || syncErrors.city) return;
 
-    const coords = firstGeoObject.geometry.getCoordinates();
+    const t = setTimeout(async () => {
+      try {
+        const res = await ymaps.geocode(formData.city);
+        const obj = res.geoObjects.get(0);
 
-    const timezone = tzLookup(coords[0], coords[1]);
+        setAsyncErrors((prev) => ({
+          ...prev,
+          city: obj ? undefined : "Город не найден",
+        }));
+      } catch {
+        setAsyncErrors((prev) => ({
+          ...prev,
+          city: "Ошибка проверки города",
+        }));
+      }
+    }, 500);
 
-    return timezone;
+    return () => clearTimeout(t);
+  }, [formData.city, syncErrors.city]);
+
+  // ---------------- ASYNC ADDRESS ----------------
+
+  useEffect(() => {
+    if (!formData.address || syncErrors.address || !formData.city) return;
+
+    const t = setTimeout(async () => {
+      try {
+        const res = await ymaps.geocode(
+          `${formData.city}, ${formData.address}`,
+          { results: 1 }
+        );
+
+        const obj = res.geoObjects.get(0);
+
+        setAsyncErrors((prev) => ({
+          ...prev,
+          address: obj ? undefined : "Адрес не найден",
+        }));
+      } catch {
+        setAsyncErrors((prev) => ({
+          ...prev,
+          address: "Ошибка проверки адреса",
+        }));
+      }
+    }, 700);
+
+    return () => clearTimeout(t);
+  }, [formData.address, formData.city, syncErrors.address]);
+
+  // ---------------- MERGE ERRORS ----------------
+
+  const errors: FormErrors = {
+    ...syncErrors,
+    ...asyncErrors,
   };
+
+  // ---------------- SUBMIT ----------------
 
   const formatTime = (time: string, timezone: string) => {
-
-    const date = dayjs.tz(`2024-01-01 ${time}`, timezone);
-
-    const formatted = date.format("HH:mm:ssZ");
-
-    return formatted;
+    return dayjs.tz(`2024-01-01 ${time}`, timezone).format("HH:mm:ssZ");
   };
 
   const mapToRequest = async (): Promise<BranchRequest> => {
-    const timezone = await getTimezoneByCity(formData.city);
+    const res = await ymaps.geocode(formData.city);
+    const coords = res.geoObjects.get(0).geometry.getCoordinates();
 
-    const payload = {
+    const timezone = tzLookup(coords[0], coords[1]);
+
+    return {
       city: formData.city,
       address: formData.address,
       open_time: formatTime(formData.openning_time, timezone),
       close_time: formatTime(formData.closing_time, timezone),
     };
-
-    return payload;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    setError(null);
+    const hasErrors = Object.values(errors).some(Boolean);
+    if (hasErrors) return;
+
     setIsLoading(true);
 
     try {
@@ -94,9 +165,7 @@ export const useBranchForm = (ymaps: any) => {
 
       goToOrganizationBranches();
     } catch (err: any) {
-      console.error("error:", err);
-
-      setError(err.message || "Ошибка отправки");
+      setError(err.message || "Ошибка");
     } finally {
       setIsLoading(false);
     }
@@ -106,10 +175,13 @@ export const useBranchForm = (ymaps: any) => {
     formData.city &&
     formData.address &&
     formData.openning_time &&
-    formData.closing_time;
+    formData.closing_time &&
+    !Object.values(errors).some(Boolean);
 
   return {
     formData,
+    errors,
+    touched,
     error,
     isLoading,
     handleChange,

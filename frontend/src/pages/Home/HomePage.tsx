@@ -21,7 +21,6 @@ const HomePage = () => {
             <li className={styles.card}>
               <button
               
-              // onClick={() => goToLogin("user")}
                 onClick={() => goToUser()}
                 className={styles.cardButton}
                 aria-label="Войти как владелец ТС"
@@ -35,7 +34,6 @@ const HomePage = () => {
 
             <li className={styles.card}>
               <button
-              // onClick={() => goToLogin("organization")}
                 onClick={() => goToOrganization()}
                 className={styles.cardButton}
                 aria-label="Войти как организация"

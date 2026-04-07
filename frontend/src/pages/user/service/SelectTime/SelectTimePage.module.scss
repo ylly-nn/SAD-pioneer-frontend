@@ -39,7 +39,6 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
 }
 
 .form {
@@ -48,12 +47,8 @@
 }
 
 .sectionTitle {
-  font-size: 26px;
-  font-weight: 600;
+  font-size: 30px;
   margin-bottom: 30px;
-  color: #1f2937;
-  text-align: center;
-  width: 100%;
 }
 
 .organizationInfo {
@@ -302,12 +297,11 @@
 }
 
 .day.disabled {
-  background: #f3f4f6;
+  background: #f9fafb;
   border-color: #e5e7eb;
   color: #9ca3af;
   cursor: not-allowed;
-  text-decoration: none;
-  opacity: 0.7;
+  opacity: 0.6;
 }
 
 .day.disabled:hover {
@@ -400,4 +394,20 @@
   text-decoration: line-through;
   opacity: 0.7;
   pointer-events: none;
+}
+
+.timeSlot.disabled {
+  background: #f3f4f6;
+  border-color: #e5e7eb;
+  color: #9ca3af;
+  cursor: not-allowed;
+  opacity: 0.7;
+  transform: none;
+  box-shadow: none;
+}
+
+.timeSlot.disabled:hover {
+  border-color: #e5e7eb;
+  transform: none;
+  box-shadow: none;
 }

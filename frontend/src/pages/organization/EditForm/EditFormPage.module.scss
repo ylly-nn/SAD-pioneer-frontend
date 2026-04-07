@@ -37,6 +37,9 @@
     border: none;
     font-size: 22px;
     cursor: pointer;
+    &:hover {
+      color: #549293;
+    }
   }
 }
 
@@ -128,6 +131,16 @@
   display: flex;
   gap: 8px;
   align-items: center;
+}
+
+.checkboxText{
+  color: #000000;
+  a {
+    color: #000000;
+    &:hover {
+      color: #549293;
+    }
+  }
 }
 
 .error {

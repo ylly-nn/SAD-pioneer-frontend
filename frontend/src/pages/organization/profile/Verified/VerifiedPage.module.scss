@@ -31,12 +31,33 @@
   flex-direction: column;
 }
 
+
 .header {
   margin-top: 20px;
-  display: flex;
+  
+display: flex;
+  justify-content: space-between;
+
+  div {
+    display: flex;
   align-items: baseline;
   flex-wrap: wrap;
   gap: 20px;
+
+  }
+}
+
+.toggleModalButton {
+  background: none;
+  border: none;
+  font-size: 26px;
+  color: #F7F7F7;
+  cursor: pointer;
+  height: 50px;
+
+  &:hover {
+    color: #549293;
+  }
 }
 
 .title {

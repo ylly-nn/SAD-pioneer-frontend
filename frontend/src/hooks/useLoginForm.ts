@@ -5,6 +5,7 @@ import { tokenService } from "../api/tokenService";
 import { roleService } from "../services/roleService";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { getErrorMessage } from "../utils/getErrorMessage";
 
 export const useLoginForm = () => {
   const navigate = useNavigate();
@@ -50,8 +51,10 @@ export const useLoginForm = () => {
         goToUser();
       }
     } catch (err: any) {
-      const message = err.response?.data?.message || "Ошибка авторизации";
+      tokenService.clearTokens();
+      const message = getErrorMessage(err);
       setError(message);
+      
     } finally {
       setIsLoading(false);
     }

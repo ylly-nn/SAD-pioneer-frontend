@@ -272,3 +272,17 @@ export const validatePhone = (phone: string): string => {
 
   return "";
 };
+/**
+ * Валидация телефона
+ * @param value - значение для проверки
+ * @returns строку с ошибкой или пустую строку, если ошибок нет
+ */
+export const validateInfo = (value: string): string => {
+
+
+  if (value.length > 2000) {
+    return "Дополнительная информация не должна превышать 2000 символов";
+  }
+
+  return "";
+};

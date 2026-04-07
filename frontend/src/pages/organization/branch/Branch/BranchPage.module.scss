@@ -53,6 +53,7 @@
   flex: 1;
   overflow-y: auto;
   padding: 0 24px;
+  height: 87vh;
 }
 
 /* layout */
@@ -216,7 +217,7 @@
   }
 }
 
-/* add */
+
 .addDetailButton {
   align-self: flex-start;
   padding: 6px 10px;
@@ -241,6 +242,48 @@
 
   &:hover {
     background: #f0f0f0;
+  }
+}
+
+
+/* модальное окно для удаления детали*/
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  min-width: 300px;
+}
+
+.modalActions {
+  display: flex;
+  gap: 12px;
+  margin-top: 15px;
+  justify-content: flex-end;
+}
+
+.confirmButton {
+  align-self: flex-start;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: none;
+  background: #f0f0f0;
+  color: rgb(0, 0, 0);
+  cursor: pointer;
+
+  &:hover {
+    color: white;
+    background: #549293;
   }
 }
 

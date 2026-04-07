@@ -16,6 +16,7 @@ const mapDefaultState = {
 }
 
 const SelectOrganizationPage = () => {
+
   const wrapperRef = useRef<HTMLDivElement>(null)
 
   const [ymapsInstance, setYmapsInstance] = useState<any>(null)
@@ -25,7 +26,16 @@ const SelectOrganizationPage = () => {
   const [isManualSelection, setIsManualSelection] = useState(false)
 
   const { goToSelectService, goToSelectDetails } = useNavigation()
-  const { updateBooking } = useBooking()
+  const { isLoaded, booking, updateBooking } = useBooking()
+//serviceId
+
+useEffect(() => {
+  if (!isLoaded) return
+
+  if (!booking.serviceId) {
+    goToSelectService()
+  }
+}, [booking.serviceId, isLoaded])
 
   const {
     branches,

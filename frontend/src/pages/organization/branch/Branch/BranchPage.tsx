@@ -4,6 +4,7 @@ import { useBranchPage } from "../../../../hooks/useBranchPage";
 import { useNavigation } from "../../../../hooks/useNavigation";
 import { useModal } from "../../../../hooks/useModal";
 import UserMenu from "../../../../components/modals/UserMenu";
+import { useState } from "react";
 
 const BranchPage = () => {
   const {
@@ -30,6 +31,11 @@ const BranchPage = () => {
 
   const { isModalOpen, toggleModal, closeModal } = useModal();
 
+  const [deleteTarget, setDeleteTarget] = useState<{
+    serviceId: string;
+    detailName: string;
+  } | null>(null);
+
   if (loading) return <div>Загрузка...</div>;
   if (!branch) return <div>Филиал не найден</div>;
 
@@ -38,7 +44,6 @@ const BranchPage = () => {
   return (
     <div className={styles.page}>
       <div className={styles.content}>
-
         {/* шапка */}
         <div className={styles.header}>
           <div>
@@ -57,7 +62,6 @@ const BranchPage = () => {
         </div>
 
         {/* действия */}
-
 
         {/* наполнение */}
         <div className={styles.scrollableArea}>
@@ -169,10 +173,10 @@ const BranchPage = () => {
                                         <button
                                           className={styles.deleteButton}
                                           onClick={() =>
-                                            deleteDetail(
-                                              service.id,
-                                              detail.name,
-                                            )
+                                            setDeleteTarget({
+                                              serviceId: service.id,
+                                              detailName: detail.name,
+                                            })
                                           }
                                         >
                                           ✕
@@ -192,7 +196,7 @@ const BranchPage = () => {
                                       )
                                     }
                                   >
-                                    + Добавить опцию
+                                    + Добавить
                                   </button>
                                 )}
 
@@ -221,6 +225,38 @@ const BranchPage = () => {
         </div>
       </div>
       <UserMenu isOpen={isModalOpen} onClose={closeModal} variant="mixed" />
+
+      {deleteTarget && (
+        <div
+          className={styles.modalOverlay}
+          onClick={() => setDeleteTarget(null)}
+        >
+          <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+            <p>Вы точно хотите удалить эту деталь услуги?</p>
+
+            <div className={styles.modalActions}>
+              <button
+                className={styles.confirmButton}
+                onClick={async () => {
+                  await deleteDetail(
+                    deleteTarget.serviceId,
+                    deleteTarget.detailName,
+                  );
+                  setDeleteTarget(null);
+                }}
+              >
+                Да
+              </button>
+              <button
+                onClick={() => setDeleteTarget(null)}
+                className={styles.confirmButton}
+              >
+                Нет
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

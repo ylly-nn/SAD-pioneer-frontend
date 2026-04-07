@@ -245,6 +245,13 @@ input:hover {
   line-height: 1.4;
   color: #549293;
   flex: 1;
+
+  a {
+    color: #549293;
+    &:hover {
+      color: #7c415b;
+    }
+  }
 }
 
 .submit {
@@ -283,4 +290,10 @@ input:hover {
 
 .link:hover {
   color: #7c415b;
+}
+
+
+.error {
+  text-align: center;
+  color: #549293;
 }

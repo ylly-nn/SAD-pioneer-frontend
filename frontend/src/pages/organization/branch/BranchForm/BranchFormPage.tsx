@@ -6,13 +6,15 @@ import { useBranchForm } from "../../../../hooks/useBranchFormLogic";
 import { YMaps, Map } from "@pbe/react-yandex-maps";
 
 const BranchFormPage = () => {
-  const { goToOrganizationAddBranch} = useNavigation();
+  const { goToOrganizationBranches } = useNavigation();
 
   const [ymapsInstance, setYmapsInstance] = useState<any>(null);
   const [ymapsReady, setYmapsReady] = useState(false);
 
   const {
     formData,
+    errors,
+    touched,
     error,
     isLoading,
     handleChange,
@@ -28,7 +30,7 @@ const BranchFormPage = () => {
 
           <button
             className={styles.close}
-            onClick={goToOrganizationAddBranch}
+            onClick={goToOrganizationBranches}
             type="button"
           >
             ✕
@@ -36,17 +38,14 @@ const BranchFormPage = () => {
         </div>
 
         <form className={styles.form} onSubmit={handleSubmit}>
-          
           {/* город */}
           <div className={styles.field}>
             <label className={styles.label}>Город</label>
 
-            <input
-              name="city"
-              placeholder="Москва"
-              value={formData.city}
-              onChange={handleChange}
-            />
+            <input name="city" value={formData.city} onChange={handleChange} />
+            {touched.city && errors.city && (
+              <div className={styles.error}>{errors.city}</div>
+            )}
           </div>
 
           {/* адрес */}
@@ -55,17 +54,17 @@ const BranchFormPage = () => {
 
             <input
               name="address"
-              placeholder="Улица, дом"
               value={formData.address}
               onChange={handleChange}
             />
+            {touched.address && errors.address && (
+              <div className={styles.error}>{errors.address}</div>
+            )}
           </div>
 
           {/* время */}
           <div className={styles.field}>
-            <label className={styles.label}>
-              Время работы
-            </label>
+            <label className={styles.label}>Время работы</label>
 
             <div className={styles.timeRow}>
               <input
@@ -84,6 +83,12 @@ const BranchFormPage = () => {
                 onChange={handleChange}
               />
             </div>
+            {touched.openning_time && errors.openning_time && (
+              <div className={styles.error}>{errors.openning_time}</div>
+            )}
+            {touched.closing_time && errors.closing_time && (
+              <div className={styles.error}>{errors.closing_time}</div>
+            )}
           </div>
 
           {error && <div className={styles.error}>{error}</div>}
@@ -97,7 +102,6 @@ const BranchFormPage = () => {
           </button>
         </form>
 
-        {/* 🔥 Невидимая карта ТОЛЬКО чтобы получить ymaps */}
         <YMaps
           query={{
             apikey: import.meta.env.VITE_YANDEX_MAPS_API_KEY,

@@ -31,12 +31,23 @@ export const ProtectedRoute = ({ children }: Props) => {
 
 // базовая страница
 export const HomeRoute = ({ children }: Props) => {
+
   if (isAuthenticated()) {
+    console.log("REDIRECT HOME");
     return <Navigate to={ROUTES.HOME} replace />;
   }
 
   return <>{children}</>;
 };
+/*
+export const HomeRoute = ({ children }: Props) => {
+  
+  if (isAuthenticated()) {
+    return <Navigate to={ROUTES.HOME} replace />;
+  }
+
+  return <>{children}</>;
+};*/
 
 // для маршрутов организации
 export const ProtectedRouteOrganizations = ({ children }: Props) => {

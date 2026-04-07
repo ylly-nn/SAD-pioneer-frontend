@@ -2,6 +2,7 @@ import { useState } from "react";
 import { auth } from "../api/authService";
 import { useNavigation } from "./useNavigation";
 import { roleService } from "../services/roleService";
+import { getErrorMessage } from "../utils/getErrorMessage";
 
 export const useVerification = (email: string) => {
   const [code, setCode] = useState("");
@@ -24,7 +25,8 @@ export const useVerification = (email: string) => {
       const role = roleService.getRole() || "user";
       goToLogin(role);
     } catch (err: any) {
-      setError(err.response?.data?.message || "Ошибка подтверждения");
+      const message = getErrorMessage(err);
+      setError(message);
     } finally {
       setIsLoading(false);
     }

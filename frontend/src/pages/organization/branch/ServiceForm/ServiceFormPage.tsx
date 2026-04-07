@@ -4,20 +4,24 @@ import { useAddBranchService } from "../../../../hooks/useAddBranchService"
 import { useNavigation } from "../../../../hooks/useNavigation"
 
 const ServiceFormPage = () => {
-  const { goBack } = useNavigation();
+  const { goToOrganizationBranch } = useNavigation();
   const { id } = useParams<{ id: string }>()
 
   const {
     services,
     selectedId,
     loading,
+    error,
     selectService,
     addServiceToBranch,
   } = useAddBranchService(id!)
 
   const handleSubmit = async () => {
-    await addServiceToBranch()
-    goBack()
+    const success = await addServiceToBranch()
+
+    if (success) {
+      goToOrganizationBranch(id!)
+    }
   }
 
   if (loading) return <div>Загрузка...</div>
@@ -38,6 +42,12 @@ const ServiceFormPage = () => {
                   Выберите услугу
                 </h2>
 
+                {error && (
+                  <div className={styles.error}>
+                    {error}
+                  </div>
+                )}
+
                 
 
                 <button
@@ -53,7 +63,7 @@ const ServiceFormPage = () => {
             <div className={styles.footer}>
               <button
                 className={styles.backButton}
-                onClick={goBack}
+                onClick={() => goToOrganizationBranch(id!)}
               >
                 Назад
               </button>

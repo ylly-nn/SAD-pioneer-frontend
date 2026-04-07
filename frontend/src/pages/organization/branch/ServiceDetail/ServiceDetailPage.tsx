@@ -1,69 +1,91 @@
-import { useState } from "react"
-import styles from "./ServiceDetailPage.module.scss"
-import { useParams } from "react-router-dom"
-import { branchService } from "../../../../api/branchService"
-import { useNavigation } from "../../../../hooks/useNavigation"
+import styles from "./ServiceDetailPage.module.scss";
+import { useNavigation } from "../../../../hooks/useNavigation";
+import { useServiceDetailForm } from "../../../../hooks/useServiceDetailForm";
 
 const ServiceDetailPage = () => {
   const { goBack } = useNavigation();
-  const { serviceId } = useParams<{ serviceId: string }>()
 
-  const [form, setForm] = useState({
-    name: "",
-    duration: "",
-    price: "",
-  })
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value })
-  }
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-
-    if (!serviceId) return
-
-    await branchService.postDetail({
-      branchserv_id: serviceId,
-      detail: form.name,
-      duration: Number(form.duration),
-      price: Number(form.price),
-    })
-
-    goBack()
-  }
+  const {
+    form,
+    errors,
+    touched,
+    isLoading,
+    isFormValid,
+    handleChange,
+    handleSubmit,
+  } = useServiceDetailForm();
 
   return (
     <div className={styles.page}>
       <div className={styles.card}>
         <div className={styles.header}>
           <h1 className={styles.title}>Добавить опцию</h1>
-          <button className={styles.close} onClick={goBack} aria-label="Закрыть">
+
+          <button
+            className={styles.close}
+            onClick={goBack}
+            type="button"
+          >
             ✕
           </button>
         </div>
 
         <form className={styles.form} onSubmit={handleSubmit}>
+          {/* NAME */}
           <div className={styles.field}>
             <label>Название</label>
-            <input name="name" onChange={handleChange} />
+            <input
+              name="name"
+              value={form.name}
+              onChange={handleChange}
+            />
+
+            {touched.name && errors.name && (
+              <div className={styles.error}>{errors.name}</div>
+            )}
           </div>
 
+          {/* DURATION */}
           <div className={styles.field}>
             <label>Длительность (мин)</label>
-            <input name="duration" type="number" onChange={handleChange} />
+            <input
+              name="duration"
+              type="number"
+              value={form.duration}
+              onChange={handleChange}
+            />
+
+            {touched.duration && errors.duration && (
+              <div className={styles.error}>{errors.duration}</div>
+            )}
           </div>
 
+          {/* PRICE */}
           <div className={styles.field}>
             <label>Цена</label>
-            <input name="price" type="number" onChange={handleChange} />
+            <input
+              name="price"
+              type="number"
+              value={form.price}
+              onChange={handleChange}
+            />
+
+            {touched.price && errors.price && (
+              <div className={styles.error}>{errors.price}</div>
+            )}
           </div>
 
-          <button className={styles.submit}>Добавить</button>
+          <button
+            type="submit"
+            className={styles.submit}
+            disabled={!isFormValid || isLoading}
+          >
+            {isLoading ? "Добавление..." : "Добавить"}
+          </button>
         </form>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ServiceDetailPage
+export default ServiceDetailPage;

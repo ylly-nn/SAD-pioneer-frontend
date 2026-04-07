@@ -68,7 +68,7 @@ const App = () => {
         <Route path="/organization">
         <Route index element={<ProtectedRoute> <OrganizationProfile /> </ProtectedRoute>}/>
           
-          <Route path="create-form" element={<ProtectedRoute> <OrganizationEditForm /> </ProtectedRoute>} />
+          <Route path="create-form" element={<ProtectedRouteOrganizationsRequest> <OrganizationEditForm /> </ProtectedRouteOrganizationsRequest>} />
           <Route path="view-form" element={<ProtectedRouteOrganizationsRequest> <OrganizationViewForm /> </ProtectedRouteOrganizationsRequest>} />
 
           <Route path="orders" element={<ProtectedRouteOrganizations> <OrganizationOrders /> </ProtectedRouteOrganizations>} />

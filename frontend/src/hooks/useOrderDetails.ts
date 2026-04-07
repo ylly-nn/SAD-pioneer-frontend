@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react"
 import { order } from "../api/order"
 import type { UserOrder } from "../types/orders"
+import { getErrorMessage } from "../utils/getErrorMessage";
 
 export const useOrderDetails = () => {
   const [orderData, setOrderData] = useState<UserOrder | null>(null)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const orderId = localStorage.getItem("orderId")
@@ -25,8 +27,10 @@ export const useOrderDetails = () => {
         if (found) {
           setOrderData(found)
         }
-      } catch (e) {
-        console.error("Ошибка загрузки заказа", e)
+      } catch (err) {
+        console.error("Ошибка загрузки заказа", err)
+        const message = getErrorMessage(err);
+        setError(message);
       } finally {
         setLoading(false)
       }
@@ -38,5 +42,6 @@ export const useOrderDetails = () => {
   return {
     orderData,
     loading,
+    error
   }
 }

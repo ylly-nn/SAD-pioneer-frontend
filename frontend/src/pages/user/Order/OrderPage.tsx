@@ -15,7 +15,7 @@ const OrderPage = () => {
     getTimeRange,
     details,
     totalDuration,
-    totalPrice,
+    totalPrice
   } = useUserOrderDetails();
 
   if (isLoading) return <div className={styles.page}>Загрузка...</div>;

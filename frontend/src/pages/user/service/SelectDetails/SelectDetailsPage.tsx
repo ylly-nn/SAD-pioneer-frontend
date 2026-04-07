@@ -80,7 +80,7 @@ const SelectDetailsPage = () => {
                       {booking.organization.name}
                     </div>
                     <div className={styles.orgAddress}>
-                      📍 {booking.organization.address}
+                      {booking.organization.address}
                     </div>
                   </div>
                 )}
@@ -158,7 +158,7 @@ const SelectDetailsPage = () => {
                           </div>
 
                           <div className={styles.serviceMeta}>
-                            ⏱️ {formatDuration(d.duration_min)} • 💰{" "}
+                            {formatDuration(d.duration_min)} • {" "}
                             {d.price.toFixed(2)} ₽
                           </div>
                         </div>

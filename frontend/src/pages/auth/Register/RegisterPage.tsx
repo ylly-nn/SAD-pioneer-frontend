@@ -23,13 +23,13 @@ const RegisterPage = () => {
   } = useRegisterForm();
 
   const [showPassword, setShowPassword] = useState(false);
-  
+
   const togglePassword = () => setShowPassword(!showPassword);
 
   const role = roleService.getRole();
-    if (!role) {
-      goHome;
-    }
+  if (!role) {
+    goHome;
+  }
 
   return (
     <div className={styles.page}>
@@ -122,7 +122,15 @@ const RegisterPage = () => {
                 />
                 <span className={styles.checkboxCustom}></span>
                 <span className={styles.checkboxText}>
-                  принимаю условия политики конфиденциальности
+                  Принимаю условия{" "}
+                  <a
+                    href="https://dev.pionner.ru/user-agreement"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Политика конфиденциальности (откроется в новой вкладке)"
+                  >
+                    политики конфиденциальности
+                  </a>
                 </span>
               </label>
             </div>

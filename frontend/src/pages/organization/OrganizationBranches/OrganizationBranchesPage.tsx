@@ -73,7 +73,7 @@ const OrganizationBranchesPage = () => {
           <div className={styles.filtersRight}>
             {/* счетчик */}
             <div className={styles.totalBranches}>
-              <span className={styles.totalLabel}>Всего филиалов:</span>
+              <span className={styles.totalLabel}>Всего филиалов: </span>
               <span className={styles.totalValue}>{branches.length}</span>
             </div>
 

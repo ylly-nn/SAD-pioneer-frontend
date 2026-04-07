@@ -2,11 +2,14 @@ import styles from "./VerifiedPage.module.scss";
 import backgroundImage from "../../../../assets/33.jpg";
 import { useOrganizationData } from "../../../../hooks/useOrganizationData";
 import { useNavigation } from "../../../../hooks/useNavigation";
+import { useModal } from "../../../../hooks/useModal";
+import UserMenu from "../../../../components/modals/UserMenu";
 
 const VerifiedPage = () => {
   const { goToOrganizationOrders, goToOrganizationBranches, goToOrganizationAddUser }= useNavigation();
   
   const { org, branchesCount, loading } = useOrganizationData();
+  const { isModalOpen, toggleModal, closeModal } = useModal();
 
   if (loading) {
     return <div className={styles.page}>Загрузка...</div>;
@@ -20,10 +23,15 @@ const VerifiedPage = () => {
       <div className={styles.overlay} />
       <div className={styles.container}>
         <div className={styles.header}>
+          <div>
           <h1 className={styles.title}>PIONEER</h1>
           <p className={styles.subtitle}>
             организация<br />панель управления
           </p>
+          </div>
+          <button className={styles.toggleModalButton} onClick={toggleModal}>
+            ☰
+          </button>
         </div>
 
         <div className={styles.orgInfo}>
@@ -89,6 +97,7 @@ const VerifiedPage = () => {
           </div>
         </section>
       </div>
+      <UserMenu isOpen={isModalOpen} onClose={closeModal} variant="organization" />
     </div>
   );
 };

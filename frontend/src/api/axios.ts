@@ -22,6 +22,12 @@ axiosInstance.interceptors.request.use((config) => {
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
+    const url = error.config?.url;
+
+    if (url?.includes("auth/login")) {
+      return Promise.reject(error);
+    }
+
     if (error.response?.status === 401) {
       tokenService.clearTokens();
       window.location.href = "/";
