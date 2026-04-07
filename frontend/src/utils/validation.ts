@@ -28,7 +28,7 @@ export const validateEmail = (email: string): string => {
     return "Локальная часть email не может быть пустой";
   }
 
-  const localPartRegex = /^[a-zA-Z0-9.-]+$/;
+  const localPartRegex = /^[a-zA-Z0-9._-]+$/;
   if (!localPartRegex.test(localPart)) {
     return "Локальная часть email может содержать только латинские буквы, цифры, тире и точку";
   }
@@ -49,7 +49,7 @@ export const validateEmail = (email: string): string => {
     return "Домен не может заканчиваться точкой";
   }
 
-  const domainRegex = /^[a-zA-Z0-9.-]+$/;
+  const domainRegex = /^[a-zA-Z0-9._-]+$/;
   if (!domainRegex.test(domain)) {
     return "Домен может содержать только латинские буквы, цифры, тире и точку";
   }
