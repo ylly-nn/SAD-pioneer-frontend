@@ -295,5 +295,20 @@ input:hover {
 
 .error {
   text-align: center;
-  color: #549293;
+  color: #7c415b;
+  font-size: 12px;
+  margin-top: 4px;
+  margin-bottom: 0;
+}
+
+.fieldWithError {
+  margin-bottom: 0;
+}
+
+.inputError {
+  border-bottom: 2px solid #7c415b;
+  
+  &:focus {
+    border-color: #7c415b;
+  }
 }
