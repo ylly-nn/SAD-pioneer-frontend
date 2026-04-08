@@ -286,26 +286,6 @@
   background: #7c415b;
 }
 
-// Адаптивность
-@media (max-width: 480px) {
-  .card {
-    width: 90%;
-    padding: 20px;
-  }
-
-  .title {
-    font-size: 24px;
-  }
-
-  .description {
-    font-size: 14px;
-  }
-
-  .note {
-    font-size: 12px;
-  }
-}
-
 .errorGeneral {
   color: #7c415b;
   font-size: 14px;
@@ -317,4 +297,41 @@
 }
 .error.includes{
   color: #7c415b;
+}
+
+
+@media (max-width: 768px) {
+  .card {
+    width: 75%;
+    padding: 24px;
+  }
+
+  .title {
+    font-size: 26px;
+  }
+
+  .label {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    width: 75%;
+    padding: 16px;
+  }
+
+  .title {
+    font-size: 22px;
+  }
+
+  .input {
+    height: 40px;
+    font-size: 14px;
+  }
+
+  .submit {
+    height: 40px;
+    font-size: 14px;
+  }
 }

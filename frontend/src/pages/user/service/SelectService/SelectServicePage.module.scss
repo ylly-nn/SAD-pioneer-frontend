@@ -171,3 +171,55 @@
   height: 100%;
   object-fit: cover;
 }
+
+
+@media (max-width: 1024px) {
+  .leftSection,
+  .rightSection {
+    padding: 32px;
+  }
+
+  .sectionTitle {
+    font-size: 26px;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .columns {
+    flex-direction: column;
+  }
+
+  .leftSection {
+    padding: 20px;
+    gap: 16px;
+  }
+
+  .rightSection {
+    padding: 16px;
+  }
+
+  .title {
+    font-size: 22px;
+  }
+
+  .sectionTitle {
+    font-size: 20px;
+  }
+
+
+  .serviceGrid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .serviceCard {
+    min-height: 64px;
+    padding: 14px;
+    font-size: 14px;
+  }
+
+  .footer {
+    margin-top: 10px;
+  }
+}

@@ -97,7 +97,7 @@ export const ProtectedRouteOrganizationsRequest = ({ children }: Props) => {
 
 // для маршрутов пользователей у которых ещё нет ни организации, ни заявки
 export const ProtectedRouteNoOrganizations = ({ children }: Props) => {
-  const { isOrganization, isOrganizationRequest, isLoading } = useProfile();
+  const { isOrganization, isOrganizationRequest, isLoading, requestStatus } = useProfile();
 
   // если пользователь не авторизован
   const location = useLocation();
@@ -110,8 +110,9 @@ export const ProtectedRouteNoOrganizations = ({ children }: Props) => {
     return <div>Загрузка...</div>;
   }
 
+  
   // если у пользователя есть заявка
-  if (isOrganizationRequest) {
+  if (isOrganizationRequest && (requestStatus != "rejected")) {
     return <Navigate to={ROUTES.ORGANIZATION.PROFILE} replace />;
   }
 

@@ -147,3 +147,97 @@
   color: #dc2626;
   font-size: 14px;
 }
+
+
+@media (max-width: 1024px) {
+  .card {
+    max-width: 700px;
+    padding: 25px 30px;
+  }
+
+  .columns {
+    gap: 20px;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .page {
+    align-items: flex-start;
+    padding: 20px 0;
+  }
+
+  .card {
+    max-width: 100%;
+    border-radius: 12px;
+    padding: 20px;
+  }
+
+  .header {
+    align-items: flex-start;
+
+    h1 {
+      font-size: 20px;
+      line-height: 1.2;
+    }
+
+    button {
+      font-size: 20px;
+    }
+  }
+
+  .columns {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .section {
+    input {
+      height: 44px;
+      font-size: 15px;
+    }
+  }
+
+  .infoBlock {
+    textarea {
+      min-height: 120px;
+      font-size: 15px;
+    }
+  }
+
+  .footer {
+    gap: 16px;
+
+    button {
+      height: 48px;
+      font-size: 16px;
+    }
+  }
+
+  .checkbox {
+    align-items: flex-start;
+    line-height: 1.4;
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    padding: 16px;
+  }
+
+  .header {
+    h1 {
+      font-size: 18px;
+    }
+  }
+
+  .section {
+    h3 {
+      font-size: 16px;
+    }
+  }
+
+  .form {
+    gap: 24px;
+  }
+}

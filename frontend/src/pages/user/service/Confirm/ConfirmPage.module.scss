@@ -189,22 +189,114 @@
 }
 
 /* Адаптивность */
+@media (max-width: 1024px) {
+
+  .page {
+    height: auto;
+    overflow: visible;
+  }
+
+  .content {
+    height: auto;
+  }
+
+  .leftSection {
+    padding: 32px;
+  }
+
+  .rightSection {
+    padding: 32px;
+  }
+}
+
 @media (max-width: 768px) {
+
+  .page {
+    height: auto;
+    overflow: visible;
+  }
+
+  .content {
+    height: auto;
+    margin: 10px;
+  }
+
   .columns {
     flex-direction: column;
   }
-  
   .leftSection {
-    padding: 24px;
+    padding: 20px;
+    gap: 20px;
+    overflow: visible;
   }
-  
+
   .rightSection {
-    min-height: 300px;
     padding: 24px;
+    min-height: 280px;
+    overflow: visible;
   }
-  
-  .content {
-    margin: 15px;
-    height: calc(100vh - 30px);
+
+  .confirmationCard {
+    max-width: 100%;
+  }
+
+  .successIcon svg {
+    width: 60px;
+    height: 60px;
+  }
+
+  .successTitle {
+    font-size: 20px;
+    margin-bottom: 24px;
+  }
+
+  .details {
+    padding: 16px;
+  }
+
+  .detailItem {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .submit {
+    height: 44px;
+    font-size: 15px;
+  }
+
+  .overlayContent {
+    max-width: 100%;
+  }
+
+  .overlayTitle {
+    font-size: 22px;
+  }
+
+  .overlayText {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .leftSection {
+    padding: 16px;
+  }
+
+  .rightSection {
+    padding: 20px;
+  }
+
+  .successTitle {
+    font-size: 18px;
+  }
+
+  .overlayTitle {
+    font-size: 20px;
+  }
+
+  .overlayText {
+    font-size: 13px;
   }
 }

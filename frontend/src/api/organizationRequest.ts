@@ -17,15 +17,15 @@ export const organizationRequest = {
 
   // получение всех заявок на создание компании
   getAll: async (): Promise<PartnerRequestResponse[]> => {
-    const response = await axiosInstance.get("admin/partner-requests")
+    const response = await axiosInstance.get("admin/partner-requests/")
     return response.data
   },
 
   // получение конкретной заявки на создание компании
-  getByInn: async (inn: string): Promise<PartnerRequestResponse> => {
-    const response = await axiosInstance.get(`partner/request/${inn}`)
-    return response.data
-  },// пупупу
+  getById: async (id: string) => {
+  const response = await axiosInstance.get(`admin/partner-requests/${id}`);
+  return response.data;
+},
 
   // получение заявки пользователя на создание компании
   get: async (): Promise<PartnerRequestResponse> => {

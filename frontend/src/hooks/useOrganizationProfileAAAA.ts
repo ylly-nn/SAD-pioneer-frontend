@@ -12,6 +12,8 @@ export const useProfile = () => {
   const [isOrganization, setIsOrganization] = useState(false);
   const [isOrganizationRequest, setIsOrganizationRequest] = useState(false);
 
+  const [requestStatus, setRequestStatus] = useState<string | null>(null);
+
   const checkProfile = async () => {
     setError(null);
     setIsLoading(true);
@@ -29,22 +31,25 @@ export const useProfile = () => {
       const statusCode = err.response?.status;
 
       if (statusCode === 403) {
-      setError(null);
+        setError(null);
       }
 
       try {
-        await organizationRequest.get();
+        const request = await organizationRequest.get();
+
         setProfileStatus("Pending");
+        setRequestStatus(request.status);
 
         // для защиты маршрутов
         setIsOrganizationRequest(true);
 
       } catch (err: any) {
         setProfileStatus("Empty");
+        setRequestStatus(null);
 
         const statusCode = err.response?.status;
         if (statusCode === 403) {
-        setError(null);
+          setError(null);
         }
       }
     } finally {
@@ -62,6 +67,7 @@ export const useProfile = () => {
     profileStatus,
     checkProfile,
     isOrganization,
-    isOrganizationRequest
+    isOrganizationRequest,
+    requestStatus
   };
 };

@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
-import { getPartnerRequestById, changePartnerRequestStatus } from "../api/admin";
 import { useParams } from "react-router-dom";
+import { organizationRequest } from "../api/organizationRequest";
+
+type OrderStatus = "new" | "pending" | "approved" | "rejected";
 
 export const useEditFormAdmin = () => {
   const { id } = useParams<{ id: string }>();
@@ -8,28 +10,21 @@ export const useEditFormAdmin = () => {
   const [formData, setFormData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
-  const [status, setStatus] = useState("new");
-
+  const [status, setStatus] = useState<OrderStatus>("new");
   const [reviewedAt, setReviewedAt] = useState<string | null>(null);
 
   useEffect(() => {
     const loadFormData = async () => {
-      if (!id) {
-        setLoading(false);
-        return;
-      }
+      if (!id) return;
 
       try {
         setLoading(true);
+        const data = await organizationRequest.getAll();
+        const current = data.find((r) => r.id === id);
 
-        const data = await getPartnerRequestById(id);
-
-        setFormData(data);
-
-        setStatus(data.status);
-
-        setReviewedAt(data.last_used || null);
-
+        setFormData(current);
+        setStatus(current?.status || "new");
+        setReviewedAt(current?.last_used || null);
       } catch (error) {
         console.error("Ошибка загрузки заявки:", error);
       } finally {
@@ -40,31 +35,29 @@ export const useEditFormAdmin = () => {
     loadFormData();
   }, [id]);
 
-  const handleStatusChange = (newStatus: string) => {
-    setStatus(newStatus);
-
-    if (
-      (newStatus === "approved" || newStatus === "rejected") &&
-      !reviewedAt
-    ) {
-      setReviewedAt(new Date().toISOString());
-    }
-  };
-
-  const handleSubmit = async () => {
-    if (!formData || !id) return;
+  const handleAction = async (newStatus: OrderStatus) => {
+    if (!id) return;
 
     try {
+      setStatus(newStatus);
 
-      await changePartnerRequestStatus(id, status);
+      if (newStatus === "pending") {
+        await organizationRequest.take(id);
+      } else if (newStatus === "approved") {
+        await organizationRequest.approve(id);
+      } else if (newStatus === "rejected") {
+        await organizationRequest.reject(id);
+      }
 
-      console.log("Статус обновлен:", status);
-
-      alert("Сохранено");
-
+      if (
+        (newStatus === "approved" || newStatus === "rejected") &&
+        !reviewedAt
+      ) {
+        setReviewedAt(new Date().toISOString());
+      }
     } catch (e) {
       console.error(e);
-      alert("Ошибка при сохранении");
+      alert("Ошибка при изменении статуса");
     }
   };
 
@@ -73,7 +66,6 @@ export const useEditFormAdmin = () => {
     loading,
     status,
     reviewedAt,
-    handleStatusChange,
-    handleSubmit
+    handleAction,
   };
 };

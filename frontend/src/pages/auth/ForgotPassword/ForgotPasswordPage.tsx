@@ -2,8 +2,10 @@ import styles from "./ForgotPasswordPage.module.scss";
 import { useForgotPassword } from "../../../hooks/useForgotPassword";
 import { validateEmail, validatePassword, validateConfirmPassword } from "../../../utils/validation";
 import { useState, useEffect } from "react";
+import { useNavigation } from "../../../hooks/useNavigation";
 
 const ForgotPasswordPage = () => {
+  const { goToLogin } = useNavigation();
   const {
     email,
     code,
@@ -134,7 +136,17 @@ const ForgotPasswordPage = () => {
   return (
     <div className={styles.page}>
       <div className={styles.card}>
-        <h2 className={styles.title}>Восстановление пароля</h2>
+
+        <div className={styles.header}>
+          <h1 className={styles.title}>Восстановление пароля</h1>
+          <button
+            className={styles.close}
+            onClick={() => goToLogin("user")}
+            aria-label="Закрыть"
+          >
+            x
+          </button>
+        </div>
 
         {step === "email" && (
           <form

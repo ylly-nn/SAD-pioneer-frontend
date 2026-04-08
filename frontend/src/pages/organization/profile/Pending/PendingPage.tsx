@@ -4,12 +4,10 @@ import { useProfile } from "../../../../hooks/useOrganizationProfile";
 
 import { useModal } from "../../../../hooks/useModal";
 import UserMenu from "../../../../components/modals/UserMenu";
-import { useOrderStatus } from "../../../../hooks/useOrderStatus";
 
 const PendingPage = () => {
-  const { getStatusStyle, getStatusLabel } = useOrderStatus();
 
-  const { goToViewForm } = useNavigation();
+  const { goToViewForm, goToCreateForm } = useNavigation();
 
   const { isModalOpen, toggleModal, closeModal } = useModal();
 
@@ -36,12 +34,6 @@ const PendingPage = () => {
               <p className={styles.mainText}>{currentStatus.text(name)}</p>
 
               <div className={styles.buttons}>
-                <div
-                  className={styles.statusBadge}
-                  style={getStatusStyle(currentStatusKey)}
-                >
-                  {getStatusLabel(currentStatusKey)}
-                </div>
 
                 <button
                   type="button"
@@ -50,6 +42,15 @@ const PendingPage = () => {
                 >
                   Посмотреть заявку
                 </button>
+                {currentStatusKey === "rejected" && (
+                  <button
+                    type="button"
+                    className={styles.detailsButton}
+                    onClick={goToCreateForm}
+                  >
+                    Подать новую заявку
+                  </button>
+                )}
               </div>
             </div>
           </form>

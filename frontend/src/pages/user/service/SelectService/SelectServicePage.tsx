@@ -6,7 +6,7 @@ import { useBooking } from "../../../../hooks/useBooking"
 
 
 const SelectServicePage = () => {
-  const { goHome, goToSelectOrganization } = useNavigation()
+  const { goToUser, goToSelectOrganization } = useNavigation()
   const { services } = useServices()
   const { updateBooking } = useBooking()
 
@@ -37,7 +37,7 @@ const SelectServicePage = () => {
             <div className={styles.footer}>
               <button
                 className={styles.backButton}
-                onClick={goHome}
+                onClick={goToUser}
               >
                 Назад
               </button>

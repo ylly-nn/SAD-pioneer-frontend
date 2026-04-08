@@ -9,10 +9,12 @@ const HomePage = () => {
     <div className={styles.page}>
       <div className={styles.container}>
         <div className={styles.header}>
+          <div>
           <h1 className={styles.title}>PIONEER</h1>
           <p className={styles.subtitle}>
             предоставление услуг<br />транспортным средствам
           </p>
+          </div>
         </div>
 
         <section className={styles.section}>

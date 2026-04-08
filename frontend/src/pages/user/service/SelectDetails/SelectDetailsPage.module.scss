@@ -320,3 +320,54 @@
   background: linear-gradient(135deg, rgba(84, 146, 147, 0.2) 0%, rgba(84, 146, 147, 0.4) 100%);
   pointer-events: none;
 }
+
+@media (max-width: 1024px) {
+  .leftSection {
+    padding: 32px;
+  }
+
+  .rightSection {
+    padding: 32px 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .page {
+    height: auto;
+    overflow: auto;
+  }
+
+  .content {
+    margin: 10px;
+    height: auto;
+  }
+
+  .columns {
+    flex-direction: column;
+  }
+
+  .leftSection {
+    padding: 20px;
+  }
+
+  .rightSection {
+    padding: 20px;
+    height: auto;
+  }
+
+  .rightTitle {
+    font-size: 20px;
+  }
+
+  .serviceItem {
+    padding: 14px;
+  }
+
+  .serviceName {
+    font-size: 16px;
+  }
+
+  .imageSection {
+    height: 180px;
+  }
+}

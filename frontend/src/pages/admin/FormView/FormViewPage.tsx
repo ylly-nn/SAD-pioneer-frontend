@@ -1,8 +1,7 @@
 import styles from "./FormViewPage.module.scss";
 import { useEditFormAdmin } from "../../../hooks/useEditFormAdmin";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { useOrderStatus } from "../../../hooks/useOrderStatus";
 
 const formatDate = (date: string | null) => {
   if (!date) return "Не указано";
@@ -17,35 +16,18 @@ const formatDate = (date: string | null) => {
 };
 
 const FormViewPage = () => {
-  const { formData, loading, status, reviewedAt, handleStatusChange, handleSubmit } = useEditFormAdmin();
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { getStatusStyle, getStatusLabel } = useOrderStatus();
+  const { formData, loading, status, reviewedAt, handleAction } =
+    useEditFormAdmin();
   const navigate = useNavigate();
-
-  const onSubmit = async () => {
-    if (isSubmitting) return;
-    
-    setIsSubmitting(true);
-    try {
-      // При сохранении изменений, handleSubmit должен отправить на бэк
-      // статус и текущую дату рассмотрения
-      await handleSubmit();
-      
-      // Если статус изменился на "одобрена" или "отклонена",
-      // дата рассмотрения автоматически установится на бэке
-      // или здесь можно передать явно
-    } catch (error) {
-      console.error("Ошибка при сохранении:", error);
-      alert("Произошла ошибка при сохранении изменений");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
 
   if (loading) {
     return (
       <div className={styles.page}>
         <div className={styles.card}>
-          <div style={{ textAlign: "center", padding: "40px" }}>Загрузка...</div>
+          <div style={{ textAlign: "center", padding: "40px" }}>
+            Загрузка...
+          </div>
         </div>
       </div>
     );
@@ -55,31 +37,48 @@ const FormViewPage = () => {
     return (
       <div className={styles.page}>
         <div className={styles.card}>
-          <div style={{ textAlign: "center", padding: "40px" }}>Заявка не найдена</div>
+          <div style={{ textAlign: "center", padding: "40px" }}>
+            Заявка не найдена
+          </div>
         </div>
       </div>
     );
   }
 
-  const handleLocalStatusChange = (newStatus: string) => {
-    handleStatusChange(newStatus);
-    
-    // Если статус меняется на "одобрена" или "отклонена",
-    // можно показать уведомление, что дата рассмотрения будет установлена
-    if (newStatus === "approved" || newStatus === "rejected"){
-      console.log(`Статус изменен на ${newStatus}, дата рассмотрения будет установлена при сохранении`);
-    }
-  };
-
   return (
     <div className={styles.page}>
       <div className={styles.card}>
         <div className={styles.header}>
-          <h1>Подключение организации</h1>
+          <div>
+            <h1>Подключение организации</h1>
+            <div className={styles.statusBadge} style={getStatusStyle(status)}>
+              {getStatusLabel(status)}
+            </div>
+          </div>
+
           <button onClick={() => navigate("/admin/requests")}>✕</button>
         </div>
 
         <div className={styles.form}>
+          {/* даты */}
+          <div className={styles.statusInfo}>
+            <div className={styles.field}>
+              <label className={styles.label}>Дата подачи</label>
+              <p className={styles.fieldValue}>
+                {formatDate(formData.created_at)}
+              </p>
+            </div>
+
+            <div className={styles.field}>
+              <label className={styles.label}>Дата рассмотрения</label>
+              <p className={styles.fieldValue}>
+                {reviewedAt ? formatDate(reviewedAt) : "—"}
+              </p>
+            </div>
+          </div>
+
+          <div className={styles.divider} />
+
           <div className={styles.columns}>
             {/* организация */}
             <div className={styles.section}>
@@ -174,46 +173,39 @@ const FormViewPage = () => {
             </div>
           </div>
 
-          {/* статус */}
-          <div className={styles.statusSubmit}>
-            <div className={styles.status}>
-              <div className={styles.field}>
-                <label className={styles.label}>Статус заявки:</label>
+          {/* кнопки */}
 
-                <select
-                  className={styles.select}
-                  value={status}
-                  onChange={(e) => handleLocalStatusChange(e.target.value)}
+          <div
+            className={`${styles.actions} ${
+              status === "pending" ? styles.double : styles.single
+            }`}
+          >
+            {status === "new" && (
+              <button
+                className={styles.takeButton}
+                onClick={() => handleAction("pending")}
+              >
+                В работу
+              </button>
+            )}
+
+            {status === "pending" && (
+              <>
+                <button
+                  className={styles.approveButton}
+                  onClick={() => handleAction("approved")}
                 >
-                  {/* нельзя вернуться в "новая" */}
-                  <option value="new" disabled>Новая</option>
-                  <option value="pending" disabled={status === "approved" || status === "rejected"}>В работе</option>
-                  <option value="approved">Одобрена</option>
-                  <option value="rejected">Отклонена</option>
-                </select>
-              </div>
+                  Одобрить
+                </button>
 
-              <div className={styles.field}>
-                <label className={styles.label}>Дата подачи заявки:</label>
-                <p className={styles.fieldValue}>
-                  {formatDate(formData.created_at) || "Не указано"}
-                </p>
-              </div>
-
-              <div className={styles.field}>
-                <label className={styles.label}>Дата рассмотрения заявки:</label>
-                <p className={styles.fieldValue}>
-                  {reviewedAt ? formatDate(reviewedAt) : "Не рассмотрена"}
-                </p>
-              </div>
-            </div>
-            <button 
-              className={styles.submitButton} 
-              onClick={onSubmit}
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? "Сохранение..." : "Сохранить изменения"}
-            </button>
+                <button
+                  className={styles.rejectButton}
+                  onClick={() => handleAction("rejected")}
+                >
+                  Отклонить
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>

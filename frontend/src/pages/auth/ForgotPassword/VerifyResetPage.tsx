@@ -1,8 +1,10 @@
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
 import styles from "./ForgotPasswordPage.module.scss";
+import { useNavigation } from "../../../hooks/useNavigation";
 
 const VerifyResetPage = () => {
+  const { goToLogin } = useNavigation();
 
   const location = useLocation();
   const email = location.state?.email || "";
@@ -48,6 +50,13 @@ const VerifyResetPage = () => {
 
         <div className={styles.header}>
           <h1 className={styles.title}>Подтверждение</h1>
+          <button
+            className={styles.close}
+            onClick={() => goToLogin("user")}
+            aria-label="Закрыть"
+          >
+            x
+          </button>
         </div>
 
         <p className={styles.a}>

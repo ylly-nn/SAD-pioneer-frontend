@@ -411,3 +411,53 @@
   transform: none;
   box-shadow: none;
 }
+
+@media (max-width: 1024px) {
+  .leftSection {
+    padding: 32px;
+  }
+
+  .rightSection {
+    padding: 32px 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .page {
+    height: auto;
+    overflow: auto;
+  }
+
+  .content {
+    margin: 10px;
+    height: auto;
+  }
+
+  .columns {
+    flex-direction: column;
+  }
+
+  .leftSection {
+    padding: 20px;
+  }
+
+  .rightSection {
+    padding: 20px;
+  }
+
+  .rightTitle {
+    font-size: 20px;
+  }
+
+  .calendar {
+    margin-bottom: 20px;
+  }
+
+  .day {
+    font-size: 12px;
+  }
+
+  .timeSlots {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

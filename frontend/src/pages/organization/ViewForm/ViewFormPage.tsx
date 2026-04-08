@@ -4,8 +4,8 @@ import { useViewForm } from "../../../hooks/useViewForm";
 import { useOrderStatus } from "../../../hooks/useOrderStatus";
 
 const ViewFormPage = () => {
-  const { getStatusLabel } = useOrderStatus();
-  const { goBack } = useNavigation();
+  const { getStatusStyle, getStatusLabel } = useOrderStatus();
+  const { goToOrganization } = useNavigation();
   const { formData } = useViewForm();
 
   const formatDateTime = (date?: string) => {
@@ -22,40 +22,35 @@ const ViewFormPage = () => {
     <div className={styles.page}>
       <div className={styles.card}>
         <div className={styles.header}>
-          <h1>Подключение организации</h1>
-          <button onClick={goBack}>✕</button>
+          <div>
+            <h1>Подключение организации</h1>
+            <div className={styles.statusBadge} style={getStatusStyle(formData.status)}>
+              {getStatusLabel(formData.status)}
+            </div>
+          </div>
+          <button onClick={goToOrganization}>✕</button>
         </div>
 
         <form className={styles.form}>
-          
-            {/* статус */}
-            <div className={styles.status}>
-              <div className={styles.field}>
-                <label className={styles.label}>Статус заявки:</label>
-                <div className={styles.fieldValue}>
-                  <div
-                      className={styles.statusBadge}>
-                        {getStatusLabel(formData.status)}
-                      </div>
-                </div>
-              </div>
 
-              <div className={styles.field}>
-                <label className={styles.label}>Дата подачи заявки:</label>
-                <p className={styles.fieldValue}>
-                  {formatDateTime(formData.created_at)  || "Не указано"}
-                </p>
-              </div>
-
-              <div className={styles.field}>
-                <label className={styles.label}>
-                  Дата рассмотрения заявки:
-                </label>
-                <p className={styles.fieldValue}>
-                  {formatDateTime(formData.last_used) || "Не указано"}
-                </p>
-              </div>
+          {/* даты */}
+          <div className={styles.statusInfo}>
+            <div className={styles.field}>
+              <label className={styles.label}>Дата подачи</label>
+              <p className={styles.fieldValue}>
+                {formatDateTime(formData.created_at)  || "—"}
+              </p>
             </div>
+
+            <div className={styles.field}>
+              <label className={styles.label}>Дата рассмотрения</label>
+              <p className={styles.fieldValue}>
+                {formatDateTime(formData.last_used) || "—"}
+              </p>
+            </div>
+          </div>
+
+          <div className={styles.divider} />
 
           <div className={styles.columns}>
             {/* организация */}

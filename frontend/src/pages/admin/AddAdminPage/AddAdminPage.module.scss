@@ -285,7 +285,7 @@
 
 @media (max-width: 480px) {
   .card {
-    width: 90%;
+    width: 75%;
     padding: 20px;
   }
 
@@ -305,7 +305,7 @@
 /* Планшеты и маленькие ноутбуки */
 @media (max-width: 768px) {
   .card {
-    width: 85%;
+    width: 75%;
     padding: 25px;
     max-height: 85vh;
   }
@@ -340,7 +340,7 @@
 /* Мобильные телефоны */
 @media (max-width: 480px) {
   .card {
-    width: 92%;
+    width: 75%;
     padding: 20px;
     max-height: 90vh;
   }

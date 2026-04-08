@@ -1,40 +1,72 @@
 import { useState, useEffect, useCallback } from 'react';
-import {
-  getPartnerRequestsByStatus,
-  changePartnerRequestStatus,
-  type PartnerRequest,
-} from '../../api/admin';
+import { organizationRequest } from '../../api/organizationRequest';
+import type { PartnerRequestResponse } from '../../types/partnerRequest';
 
 export const useAdminRequests = (statusFilter: string = 'all') => {
-  const [requests, setRequests] = useState<PartnerRequest[]>([]);
+  const [requests, setRequests] = useState<PartnerRequestResponse[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const loadRequests = useCallback(async () => {
     setLoading(true);
     setError(null);
+
     try {
-      const data = await getPartnerRequestsByStatus(statusFilter);
+      let data: PartnerRequestResponse[] | null = [];
+
+      switch (statusFilter) {
+        case 'new':
+          data = await organizationRequest.getNew();
+          break;
+        case 'pending':
+          data = await organizationRequest.getPending();
+          break;
+        case 'approved':
+          data = await organizationRequest.getApproved();
+          break;
+        case 'rejected':
+          data = await organizationRequest.getRejected();
+          break;
+        default:
+          data = await organizationRequest.getAll();
+      }
+
       setRequests(data || []);
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Ошибка при загрузке заявок');
-      console.error('Error loading requests:', err);
+      console.error(err);
+      setError('Ошибка при загрузке заявок');
       setRequests([]);
     } finally {
       setLoading(false);
     }
-  }, [statusFilter]); 
+  }, [statusFilter]);
 
-  const changeRequestStatus = useCallback(async (id: string, newStatus: string) => {
-    try {
-      const result = await changePartnerRequestStatus(id, newStatus);
-      await loadRequests(); 
-      return result;
-    } catch (err: any) {
-      console.error('Error changing status:', err);
-      throw err;
-    }
-  }, [loadRequests]);
+  const changeRequestStatus = useCallback(
+    async (
+  id: string,
+  newStatus: "new" | "pending" | "approved" | "rejected"
+) => {
+      try {
+        if (newStatus === 'pending') {
+          await organizationRequest.take(id);
+        } else if (newStatus === 'approved') {
+          await organizationRequest.approve(id);
+        } else if (newStatus === 'rejected') {
+          await organizationRequest.reject(id);
+        }
+
+        setRequests((prev) =>
+          prev.map((r) =>
+            r.id === id ? { ...r, status: newStatus } : r
+          )
+        );
+      } catch (err) {
+        console.error('Error changing status:', err);
+        throw err;
+      }
+    },
+    []
+  );
 
   useEffect(() => {
     loadRequests();

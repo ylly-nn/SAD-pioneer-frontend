@@ -1,78 +1,52 @@
-import { useState, useEffect } from 'react';
-import { useAdminRequests } from '../../../hooks/adminHooks/useAdminRequests';
-import styles from './AdminRequestsPage.module.scss';
-import { useNavigate } from 'react-router-dom';
-import { getPartnerRequestsByStatus } from '../../../api/admin';
-
+import { useState, useEffect } from "react";
+import { useAdminRequests } from "../../../hooks/adminHooks/useAdminRequests";
+import styles from "./AdminRequestsPage.module.scss";
+import { useNavigate } from "react-router-dom";
+import { useNavigation } from "../../../hooks/useNavigation";
+import { useOrderStatus } from "../../../hooks/useOrderStatus";
 
 const AdminRequestsPage = () => {
+  const { getStatusStyle, getStatusLabel } = useOrderStatus();
+  const { goToAdmin } = useNavigation();
   const navigate = useNavigate();
-  const [activeFilter, setActiveFilter] = useState('all');
-  
-  // Передаем activeFilter в хук
-  const { requests, loading, error, changeRequestStatus} = useAdminRequests(activeFilter);
-  
-  const safeRequests = requests || [];
+  const [activeFilter, setActiveFilter] = useState("all");
+
+  const { requests, loading, error, changeRequestStatus } =
+    useAdminRequests(activeFilter);
+
+  const safeRequests = (requests || []).slice().sort((a, b) => {
+    return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+  });
 
   const [allRequests, setAllRequests] = useState<any[]>([]);
 
   useEffect(() => {
-    const loadAllRequests = async () => {
-      try {
-        const allData = await getPartnerRequestsByStatus('all');
-        setAllRequests(allData || []);
-      } catch (err) {
-        console.error('Failed to load all requests:', err);
-      }
-    };
-    
-    loadAllRequests();
-  }, []);
-
-  useEffect(() => {
-    if (activeFilter === 'all' && requests) {
+    if (activeFilter === "all" && requests) {
       setAllRequests(requests);
     }
   }, [requests, activeFilter]);
 
-  const handleStatusChange = async (id: string, newStatus: string) => {
+  const handleStatusChange = async (
+    id: string,
+    newStatus: "pending" | "approved" | "rejected",
+  ) => {
     try {
       await changeRequestStatus(id, newStatus);
-      if (activeFilter === 'all') {
-        const updatedAllRequests = await getPartnerRequestsByStatus('all');
-        setAllRequests(updatedAllRequests || []);
-      }
+
+      setAllRequests((prev) =>
+        prev.map((r) => (r.id === id ? { ...r, status: newStatus } : r)),
+      );
     } catch (err) {
-      console.error('Failed to change status:', err);
-      alert('Ошибка при изменении статуса');
-    }
-  };
-
-  const getStatusText = (status: string) => {
-    switch (status) {
-      case 'new': return 'Новая';
-      case 'pending': return 'В работе';
-      case 'approved': return 'Одобрена';
-      case 'rejected': return 'Отклонена';
-      default: return status;
-    }
-  };
-
-  const getStatusClass = (status: string) => {
-    switch (status) {
-      case 'new': return styles.statusNew;
-      case 'pending': return styles.statusPending;
-      case 'approved': return styles.statusApproved;
-      case 'rejected': return styles.statusRejected;
-      default: return '';
+      console.error("Failed to change status:", err);
+      alert("Ошибка при изменении статуса");
     }
   };
 
   const getCountByStatus = (status: string) => {
-    if (status === 'all') {
+    if (status === "all") {
       return allRequests.length;
     }
-    return allRequests.filter(r => r.status === status).length;
+    return allRequests.filter((r) => r.status === status).length;
   };
 
   if (loading) return <div className={styles.loader}>Загрузка...</div>;
@@ -80,113 +54,143 @@ const AdminRequestsPage = () => {
 
   return (
     <div className={styles.container}>
+      {/* шапка */}
       <div className={styles.header}>
+        <button className={styles.toggleModalButton} onClick={goToAdmin}>
+          <span>❮</span>
+        </button>
+
         <h1>Заявки партнеров</h1>
       </div>
 
       <div className={styles.filters}>
-        <button 
-          className={activeFilter === 'all' ? styles.active : ''}
-          onClick={() => setActiveFilter('all')}
+        <button
+          className={activeFilter === "all" ? styles.active : ""}
+          onClick={() => setActiveFilter("all")}
         >
-          Все ({getCountByStatus('all')})
+          Все ({getCountByStatus("all")})
         </button>
-        <button 
-          className={activeFilter === 'new' ? styles.active : ''}
-          onClick={() => setActiveFilter('new')}
+        <button
+          className={activeFilter === "new" ? styles.active : ""}
+          onClick={() => setActiveFilter("new")}
         >
-          Новые ({getCountByStatus('new')})
+          Новые ({getCountByStatus("new")})
         </button>
-        <button 
-          className={activeFilter === 'pending' ? styles.active : ''}
-          onClick={() => setActiveFilter('pending')}
+        <button
+          className={activeFilter === "pending" ? styles.active : ""}
+          onClick={() => setActiveFilter("pending")}
         >
-          В работе ({getCountByStatus('pending')})
+          В работе ({getCountByStatus("pending")})
         </button>
-        <button 
-          className={activeFilter === 'approved' ? styles.active : ''}
-          onClick={() => setActiveFilter('approved')}
+        <button
+          className={activeFilter === "approved" ? styles.active : ""}
+          onClick={() => setActiveFilter("approved")}
         >
-          Одобренные ({getCountByStatus('approved')})
+          Одобренные ({getCountByStatus("approved")})
         </button>
-        <button 
-          className={activeFilter === 'rejected' ? styles.active : ''}
-          onClick={() => setActiveFilter('rejected')}
+        <button
+          className={activeFilter === "rejected" ? styles.active : ""}
+          onClick={() => setActiveFilter("rejected")}
         >
-          Отклоненные ({getCountByStatus('rejected')})
+          Отклоненные ({getCountByStatus("rejected")})
         </button>
       </div>
 
       {safeRequests.length === 0 ? (
         <div className={styles.emptyState}>Нет заявок</div>
       ) : (
-        <div className={styles.tableWrapper}>
-          <table className={styles.table}>
-            <thead>
-              <tr>
-                <th>Организация</th>
-                <th>ИНН</th>
-                <th>Контактное лицо</th>
-                <th>Email</th>
-                <th>Телефон</th>
-                <th>Статус</th>
-                <th>Действия</th>
-              </tr>
-            </thead>
-            <tbody>
-              {safeRequests.map((request) => (
-                <tr key={request.id}>
-                  <td>
-                    <div>{request.org_name}</div>
-                    <div className={styles.orgShortName}>{request.org_short_name}</div>
-                  </td>
-                  <td>{request.inn}</td>
-                  <td>{`${request.surname} ${request.name} ${request.patronymic}`}</td>
-                  <td>{request.email}</td>
-                  <td>{request.phone}</td>
-                  <td>
-                    <span className={`${styles.statusBadge} ${getStatusClass(request.status)}`}>
-                      {getStatusText(request.status)}
-                    </span>
-                  </td>
-                  <td>
-                    <div className={styles.actions}>
-                      {request.status === 'new' && (
-                        <button
-                          className={styles.takeButton}
-                          onClick={() => handleStatusChange(request.id, 'pending')}
-                        >
-                          Взять в работу
-                        </button>
-                      )}
-                      {request.status === 'pending' && (
-                        <>
-                          <button
-                            className={styles.approveButton}
-                            onClick={() => handleStatusChange(request.id, 'approved')}
-                          >
-                            Одобрить
-                          </button>
-                          <button
-                            className={styles.rejectButton}
-                            onClick={() => handleStatusChange(request.id, 'rejected')}
-                          >
-                            Отклонить
-                          </button>
-                        </>
-                      )}
-                      <button
-                        className={styles.viewButton}
-                        onClick={() => navigate(`/admin/form/${request.id}`, { state: { formData: request } })}
-                      >
-                        Просмотр
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className={styles.cardsGrid}>
+          {safeRequests.map((request) => (
+            <div
+              key={request.id}
+              className={`${styles.card} ${
+                request.status === "approved" || request.status === "rejected"
+                  ? styles.fadedCard
+                  : ""
+              }`}
+            >
+              <div className={styles.cardHeader}>
+                <div>
+                  <div className={styles.orgName}>{request.org_name}</div>
+                  <div className={styles.orgShort}>
+                    {request.org_short_name}
+                  </div>
+                </div>
+
+                <div
+                  className={styles.statusBadge}
+                  style={getStatusStyle(request.status)}
+                >
+                  {getStatusLabel(request.status)}
+                </div>
+              </div>
+
+              {/* инфаормация */}
+              <div className={styles.cardBody}>
+                <div>
+                  <b>ИНН:</b> {request.inn}
+                </div>
+
+                <div>
+                  <b>Контакт:</b>{" "}
+                  {`${request.surname} ${request.name} ${request.patronymic}`}
+                </div>
+
+                <div>
+                  <b>Email:</b> {request.email}
+                </div>
+
+                <div>
+                  <b>Телефон:</b> {request.phone}
+                </div>
+
+                <div className={styles.date}>
+                  {new Date(request.created_at).toLocaleString()}
+                </div>
+              </div>
+
+              {/* действия */}
+              <div className={styles.cardActions}>
+                {request.status === "new" && (
+                  <button
+                    className={styles.takeButton}
+                    onClick={() => handleStatusChange(request.id, "pending")}
+                  >
+                    В работу
+                  </button>
+                )}
+
+                {request.status === "pending" && (
+                  <>
+                    <button
+                      className={styles.approveButton}
+                      onClick={() => handleStatusChange(request.id, "approved")}
+                    >
+                      Одобрить
+                    </button>
+
+                    <button
+                      className={styles.rejectButton}
+                      onClick={() => handleStatusChange(request.id, "rejected")}
+                    >
+                      Отклонить
+                    </button>
+                  </>
+                )}
+
+                <button
+                  className={styles.viewButton}
+                  onClick={() =>
+                    navigate(`/admin/form/${request.id}`, {
+                      state: { formData: request },
+                    })
+                  }
+                >
+                  Подробнее
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
       )}
     </div>

@@ -7,13 +7,31 @@
 }
 
 .header {
-  margin-bottom: 24px;
-  
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 24px;
+  border-bottom: 1px solid #f0f0f0;
+
+
   h1 {
-    font-size: 28px;
-    font-weight: 700;
-    color: #1f2937;
-    margin: 0;
+    font-size: 22px;
+    font-weight: 600;
+    color: #111827;
+  }
+}
+
+.toggleModalButton {
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: #666;
+  line-height: 1;
+  padding: 0;
+
+  &:hover {
+    color: #000;
   }
 }
 
@@ -56,153 +74,132 @@
   }
 }
 
-.tableWrapper {
+.cardsGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card {
   background: white;
-  border-radius: 12px;
-  overflow-x: auto;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
+  border-radius: 16px;
+  padding: 18px;
+  border: 1px solid #eef0f2;
+  transition: all 0.2s;
 
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  min-width: 800px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 
-  th {
-    text-align: left;
-    padding: 16px;
-    background: #f8fafc;
-    font-weight: 600;
-    font-size: 14px;
-    color: #1e293b;
-    border-bottom: 2px solid #e2e8f0;
-  }
-
-  td {
-    padding: 16px;
-    border-bottom: 1px solid #f1f5f9;
-    font-size: 14px;
-    color: #334155;
-    vertical-align: middle;
-  }
-
-  tr {
-    transition: background 0.2s;
-    
-    &:hover {
-      background: #f8fafc;
-    }
+  &:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+    transform: translateY(-2px);
   }
 }
 
-.orgShortName {
+.fadedCard {
+  opacity: 0.5;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.orgName {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.orgShort {
   font-size: 12px;
-  color: #64748b;
-  margin-top: 4px;
+  color: #6b7280;
 }
 
-.statusBadge {
-  display: inline-block;
-  padding: 4px 12px;
-  border-radius: 20px;
+.cardBody {
+  font-size: 14px;
+  color: #374151;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.date {
   font-size: 12px;
-  font-weight: 500;
-  min-width: 80px;
-  text-align: center;
+  color: #9ca3af;
+  margin-top: 6px;
 }
 
-.statusNew {
-  background: #fef3c7;
-  color: #d97706;
-}
-
-.statusPending {
-  background: #dbeafe;
-  color: #2563eb;
-}
-
-.statusApproved {
-  background: #dcfce7;
-  color: #16a34a;
-}
-
-.statusRejected {
-  background: #fee2e2;
-  color: #dc2626;
-}
-
-.actions {
+.cardActions {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
 }
 
-.takeButton {
+.takeButton,
+.approveButton,
+.rejectButton,
+.viewButton {
   padding: 6px 12px;
-  background: #dbeafe;
-  color: #2563eb;
-  border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   font-size: 12px;
-  font-weight: 500;
+  border: none;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: 0.2s;
+}
+
+.takeButton {
+  background: #e0f2fe;
+  color: #0369a1;
 
   &:hover {
-    background: #bfdbfe;
-    transform: translateY(-1px);
+    background: #bae6fd;
   }
 }
 
 .approveButton {
-  padding: 6px 12px;
   background: #dcfce7;
   color: #16a34a;
-  border: none;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
 
   &:hover {
     background: #bbf7d0;
-    transform: translateY(-1px);
   }
 }
 
 .rejectButton {
-  padding: 6px 12px;
   background: #fee2e2;
   color: #dc2626;
-  border: none;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
 
   &:hover {
     background: #fecaca;
-    transform: translateY(-1px);
   }
 }
 
 .viewButton {
-  padding: 6px 12px;
   background: #f1f5f9;
   color: #475569;
-  border: none;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
 
   &:hover {
     background: #e2e8f0;
-    transform: translateY(-1px);
   }
+}
+
+.statusBadge {
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+
+  line-height: 1;
 }
 
 .emptyState {
@@ -213,6 +210,15 @@
   color: #64748b;
   font-size: 16px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.fadedRow {
+  opacity: 0.5;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.8;
+  }
 }
 
 .loader {
@@ -232,204 +238,49 @@
   font-size: 16px;
 }
 
-/* Планшеты */
-@media (max-width: 1024px) {
-  .container {
-    padding: 20px;
+@media (max-width: 768px) {
+  .card {
+    padding: 14px;
   }
 
-  .header h1 {
-    font-size: 26px;
+  .orgName {
+    font-size: 14px;
+    margin-bottom: 8px;
   }
 
-  .filters {
-    padding: 14px 16px;
-    gap: 10px;
-  }
+  .orgShort {
+  margin-bottom: 8px;
+}
 
-  .filters button {
-    padding: 6px 16px;
+  .cardBody {
     font-size: 13px;
   }
-}
 
-/* Мобильные телефоны */
-@media (max-width: 768px) {
-  .container {
-    padding: 16px;
+  .cardActions {
+    flex-direction: column;
+
+    button {
+      width: 100%;
+    }
   }
 
-  .header {
-    margin-bottom: 16px;
-  }
-
-  .header h1 {
-    font-size: 24px;
-  }
-
-  .filters {
-    padding: 12px;
-    gap: 8px;
-    margin-bottom: 16px;
-  }
-
-  .filters button {
-    padding: 6px 12px;
-    font-size: 12px;
-  }
-
-  .tableWrapper {
-    border-radius: 8px;
-  }
-
-  .table {
-    min-width: auto;
-    width: 100%;
-  }
-
-  .table th,
-  .table td {
-    padding: 12px 8px;
-    font-size: 12px;
-  }
-
-  .table th:first-child,
-  .table td:first-child {
-    padding-left: 12px;
-  }
-
-  .table th:last-child,
-  .table td:last-child {
-    padding-right: 12px;
-  }
-
-  .orgShortName {
-    font-size: 10px;
+  .cardHeader {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .statusBadge {
-    padding: 3px 8px;
-    font-size: 10px;
-    min-width: 60px;
-  }
-
-  .actions {
-    gap: 6px;
-  }
-
-  .takeButton,
-  .approveButton,
-  .rejectButton,
-  .viewButton {
-    padding: 4px 8px;
-    font-size: 10px;
-  }
-
-  .emptyState,
-  .loader,
-  .error {
-    padding: 32px;
-    font-size: 14px;
-  }
-}
-
-/* Маленькие телефоны */
-@media (max-width: 600px) {
-  .container {
-    padding: 12px;
-  }
-
-  .header h1 {
-    font-size: 20px;
+    align-self: flex-start;
   }
 
   .filters {
-    padding: 10px;
-    gap: 6px;
-  }
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 4px;
 
-  .filters button {
-    padding: 4px 10px;
-    font-size: 11px;
-  }
-
-  .table th,
-  .table td {
-    padding: 8px 6px;
-    font-size: 11px;
-  }
-
-  .table th:nth-child(5),
-  .table td:nth-child(5),
-  .table th:nth-child(3),
-  .table td:nth-child(3) {
+  &::-webkit-scrollbar {
     display: none;
   }
-
-  .table th:first-child,
-  .table td:first-child {
-    padding-left: 8px;
-  }
-
-  .table th:last-child,
-  .table td:last-child {
-    padding-right: 8px;
-  }
 }
-
-/* Очень маленькие телефоны */
-@media (max-width: 480px) {
-  .filters {
-    flex-direction: row;
-    justify-content: center;
-  }
-
-  .filters button {
-    flex: 1;
-    text-align: center;
-    min-width: 70px;
-  }
-
-  .actions {
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .takeButton,
-  .approveButton,
-  .rejectButton,
-  .viewButton {
-    width: 100%;
-    text-align: center;
-  }
-
-  .statusBadge {
-    font-size: 9px;
-    min-width: 50px;
-  }
-}
-
-/* Альбомная ориентация */
-@media (max-width: 850px) and (orientation: landscape) {
-  .container {
-    padding: 12px;
-  }
-
-  .header h1 {
-    font-size: 22px;
-  }
-
-  .filters {
-    padding: 8px 12px;
-  }
-
-  .table th,
-  .table td {
-    padding: 8px;
-    font-size: 11px;
-  }
-
-  .actions {
-    flex-direction: row;
-  }
 }
