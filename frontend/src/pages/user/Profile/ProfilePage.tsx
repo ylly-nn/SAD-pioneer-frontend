@@ -58,9 +58,16 @@ const ProfilePage = () => {
             <h1>Ваша страница</h1>
           </div>
 
-          <button className={styles.toggleModalButton} onClick={toggleModal}>
-            ☰
-          </button>
+          <div className={styles.menuContainer}>
+            <button className={styles.toggleModalButton} onClick={toggleModal}>
+              ☰
+            </button>
+            <UserMenu
+              isOpen={isModalOpen}
+              onClose={closeModal}
+              variant="user"
+            />
+          </div>
         </div>
 
         {/* история*/}
@@ -187,8 +194,6 @@ const ProfilePage = () => {
           )}
         </div>
       </div>
-
-      <UserMenu isOpen={isModalOpen} onClose={closeModal} variant="user" />
     </div>
   );
 };

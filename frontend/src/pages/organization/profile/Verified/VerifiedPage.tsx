@@ -6,8 +6,12 @@ import { useModal } from "../../../../hooks/useModal";
 import UserMenu from "../../../../components/modals/UserMenu";
 
 const VerifiedPage = () => {
-  const { goToOrganizationOrders, goToOrganizationBranches, goToOrganizationAddUser }= useNavigation();
-  
+  const {
+    goToOrganizationOrders,
+    goToOrganizationBranches,
+    goToOrganizationAddUser,
+  } = useNavigation();
+
   const { org, branchesCount, loading } = useOrganizationData();
   const { isModalOpen, toggleModal, closeModal } = useModal();
 
@@ -24,31 +28,36 @@ const VerifiedPage = () => {
       <div className={styles.container}>
         <div className={styles.header}>
           <div>
-          <h1 className={styles.title}>PIONEER</h1>
-          <p className={styles.subtitle}>
-            организация<br />панель управления
-          </p>
+            <h1 className={styles.title}>PIONEER</h1>
+            <p className={styles.subtitle}>
+              организация
+              <br />
+              панель управления
+            </p>
           </div>
-          <button className={styles.toggleModalButton} onClick={toggleModal}>
-            ☰
-          </button>
+
+          <div className={styles.menuContainer}>
+            <button className={styles.toggleModalButton} onClick={toggleModal}>
+              ☰
+            </button>
+            <UserMenu
+              isOpen={isModalOpen}
+              onClose={closeModal}
+              variant="organization"
+              theme="glass"
+            />
+          </div>
         </div>
 
         <div className={styles.orgInfo}>
-          <h2 className={styles.orgName}>
-            {org?.org_name || "Организация"}
-          </h2>
+          <h2 className={styles.orgName}>{org?.org_name || "Организация"}</h2>
           <div className={styles.orgContacts}>
-            <span className={styles.orgEmail}>
-              {branchesCount} филиалов
-            </span>
+            <span className={styles.orgEmail}>{branchesCount} филиалов</span>
           </div>
         </div>
 
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>
-            Управление организацией
-          </h2>
+          <h2 className={styles.sectionTitle}>Управление организацией</h2>
 
           <div className={styles.cards}>
             {/* Заказы */}
@@ -60,7 +69,8 @@ const VerifiedPage = () => {
               >
                 <h3 className={styles.cardTitle}>Заказы</h3>
                 <p className={styles.cardDescription}>
-                  Просмотр и управление заказами, отслеживание статусов, история бронирований
+                  Просмотр и управление заказами, отслеживание статусов, история
+                  бронирований
                 </p>
               </button>
             </div>
@@ -74,9 +84,10 @@ const VerifiedPage = () => {
               >
                 <h3 className={styles.cardTitle}>Филиалы</h3>
                 <p className={styles.cardDescription}>
-                  Управление филиалами, добавление новых, настройка расписания и услуг
+                  Управление филиалами, добавление новых, настройка расписания и
+                  услуг
                 </p>
-                </button>
+              </button>
             </div>
 
             {/* Пользователи */}
@@ -86,9 +97,7 @@ const VerifiedPage = () => {
                 className={styles.cardButton}
                 aria-label="Управление пользователями"
               >
-                <h3 className={styles.cardTitle}>
-                  Добавить пользователя
-                </h3>
+                <h3 className={styles.cardTitle}>Добавить пользователя</h3>
                 <p className={styles.cardDescription}>
                   Приглашение сотрудников
                 </p>
@@ -97,7 +106,6 @@ const VerifiedPage = () => {
           </div>
         </section>
       </div>
-      <UserMenu isOpen={isModalOpen} onClose={closeModal} variant="organization" />
     </div>
   );
 };

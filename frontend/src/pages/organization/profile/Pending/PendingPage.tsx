@@ -6,7 +6,6 @@ import { useModal } from "../../../../hooks/useModal";
 import UserMenu from "../../../../components/modals/UserMenu";
 
 const PendingPage = () => {
-
   const { goToViewForm, goToCreateForm } = useNavigation();
 
   const { isModalOpen, toggleModal, closeModal } = useModal();
@@ -19,9 +18,16 @@ const PendingPage = () => {
         <div className={styles.header}>
           <h1>Страница организации</h1>
 
-          <button className={styles.toggleModalButton} onClick={toggleModal}>
-            ☰
-          </button>
+          <div className={styles.menuContainer}>
+            <button className={styles.toggleModalButton} onClick={toggleModal}>
+              ☰
+            </button>
+            <UserMenu
+              isOpen={isModalOpen}
+              onClose={closeModal}
+              variant="organization"
+            />
+          </div>
         </div>
 
         <div className={styles.scrollableArea}>
@@ -34,7 +40,6 @@ const PendingPage = () => {
               <p className={styles.mainText}>{currentStatus.text(name)}</p>
 
               <div className={styles.buttons}>
-
                 <button
                   type="button"
                   className={styles.detailsButton}
@@ -56,12 +61,6 @@ const PendingPage = () => {
           </form>
         </div>
       </div>
-
-      <UserMenu
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        variant="organization"
-      />
     </div>
   );
 };

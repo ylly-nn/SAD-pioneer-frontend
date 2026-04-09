@@ -3,21 +3,32 @@ import styles from "./UserMenu.module.scss";
 import { useNavigation } from "../../hooks/useNavigation";
 import { useLogout } from "../../hooks/useLogout";
 
-type Variant = "organization" | "user" | "mixed";
+type Variant = "organization" | "user" | "mixed" | "home";
+type Theme = "light" | "glass";
+
+type MenuItem =
+  | { label: string; action: () => void; type?: "button" }
+  | { label: string; type: "label" };
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
   variant: Variant;
+  theme?: Theme;
 };
 
-const UserMenu = ({ isOpen, onClose, variant }: Props) => {
+const UserMenu = ({
+  isOpen,
+  onClose,
+  variant,
+  theme = "light",
+}: Props) => {
   const ref = useRef<HTMLDivElement>(null);
 
   const { goHome, goToOrganization, goToUser } = useNavigation();
   const { logout } = useLogout();
 
-  const config = {
+  const config: Record<Variant, MenuItem[]> = {
     organization: [
       { label: "Главная", action: goHome },
       { label: "Владелец ТС", action: goToUser },
@@ -31,9 +42,11 @@ const UserMenu = ({ isOpen, onClose, variant }: Props) => {
       { label: "Организация", action: goToOrganization },
       { label: "Владелец ТС", action: goToUser },
     ],
+    home: [
+      { label: "Вы авторизованы", type: "label" },
+    ],
   };
 
-  // закрытие по клику вне
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target as Node)) {
@@ -55,27 +68,34 @@ const UserMenu = ({ isOpen, onClose, variant }: Props) => {
   const items = config[variant];
 
   return (
-    <div className={styles.wrapper}>
-      <div ref={ref} className={styles.menu}>
-        {items.map((item) => (
-          <button
-            key={item.label}
-            className={styles.item}
-            onClick={() => {
-              item.action();
-              onClose();
-            }}
-          >
-            {item.label}
-          </button>
-        ))}
+    <div className={`${styles.wrapper} ${styles[theme]}`}>
+      <div ref={ref} className={`${styles.menu} ${styles[theme]}`}>
+        {items.map((item, index) => {
+          if (item.type === "label") {
+            return (
+              <div key={index} className={styles.label}>
+                {item.label}
+              </div>
+            );
+          }
+
+          return (
+            <button
+              key={item.label}
+              className={styles.item}
+              onClick={() => {
+                item.action();
+                onClose();
+              }}
+            >
+              {item.label}
+            </button>
+          );
+        })}
 
         <div className={styles.divider} />
 
-        <button
-          className={styles.logout}
-          onClick={logout}
-        >
+        <button className={styles.logout} onClick={logout}>
           Выйти
         </button>
       </div>

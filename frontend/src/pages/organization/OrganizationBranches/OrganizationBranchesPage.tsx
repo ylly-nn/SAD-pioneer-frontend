@@ -48,9 +48,16 @@ const OrganizationBranchesPage = () => {
             <h1>Филиалы организации</h1>
           </div>
 
-          <button className={styles.toggleModalButton} onClick={toggleModal}>
-            ☰
-          </button>
+          <div className={styles.menuContainer}>
+            <button className={styles.toggleModalButton} onClick={toggleModal}>
+              ☰
+            </button>
+            <UserMenu
+              isOpen={isModalOpen}
+              onClose={closeModal}
+              variant="mixed"
+            />
+          </div>
         </div>
 
         {/* действия */}
@@ -99,7 +106,7 @@ const OrganizationBranchesPage = () => {
                   onClick={() => goToOrganizationBranch(branch.branch_id)}
                 >
                   <div className={styles.cardHeader}>
-                  <h3>{branch.city}</h3>
+                    <h3>{branch.city}</h3>
                   </div>
 
                   <div className={styles.cardAddress}>{branch.address}</div>
@@ -120,7 +127,6 @@ const OrganizationBranchesPage = () => {
           )}
         </div>
       </div>
-      <UserMenu isOpen={isModalOpen} onClose={closeModal} variant="mixed" />
     </div>
   );
 };

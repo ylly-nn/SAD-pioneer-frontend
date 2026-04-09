@@ -56,9 +56,13 @@ const BranchPage = () => {
 
             <h1>Филиал</h1>
           </div>
+
+          <div className={styles.menuContainer}>
           <button className={styles.toggleModalButton} onClick={toggleModal}>
             ☰
           </button>
+          <UserMenu isOpen={isModalOpen} onClose={closeModal} variant="mixed" />
+          </div>
         </div>
 
         {/* действия */}
@@ -224,7 +228,7 @@ const BranchPage = () => {
           </div>
         </div>
       </div>
-      <UserMenu isOpen={isModalOpen} onClose={closeModal} variant="mixed" />
+      
 
       {deleteTarget && (
         <div

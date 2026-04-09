@@ -124,9 +124,16 @@ const OrganizationOrdersPage = () => {
             <h1>Заказы</h1>
           </div>
 
-          <button className={styles.toggleModalButton} onClick={toggleModal}>
-            ☰
-          </button>
+          <div className={styles.menuContainer}>
+            <button className={styles.toggleModalButton} onClick={toggleModal}>
+              ☰
+            </button>
+            <UserMenu
+              isOpen={isModalOpen}
+              onClose={closeModal}
+              variant="mixed"
+            />
+          </div>
         </div>
 
         {/* история*/}
@@ -306,33 +313,33 @@ const OrganizationOrdersPage = () => {
           )}
         </div>
       </div>
-      <UserMenu isOpen={isModalOpen} onClose={closeModal} variant="mixed" />
+
       <ConfirmModal
-  isOpen={!!modalData}
-  text={modalData ? getModalText(modalData.action) : ""}
-  onCancel={() => setModalData(null)}
-  onConfirm={async () => {
-    if (!modalData) return;
+        isOpen={!!modalData}
+        text={modalData ? getModalText(modalData.action) : ""}
+        onCancel={() => setModalData(null)}
+        onConfirm={async () => {
+          if (!modalData) return;
 
-    try {
-      if (modalData.action === "approve") {
-        await approve(modalData.id, modalData.status);
-      }
+          try {
+            if (modalData.action === "approve") {
+              await approve(modalData.id, modalData.status);
+            }
 
-      if (modalData.action === "reject") {
-        await reject(modalData.id, modalData.status);
-      }
+            if (modalData.action === "reject") {
+              await reject(modalData.id, modalData.status);
+            }
 
-      if (modalData.action === "cancel") {
-        await reject(modalData.id, modalData.status);
-      }
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setModalData(null);
-    }
-  }}
-/>
+            if (modalData.action === "cancel") {
+              await reject(modalData.id, modalData.status);
+            }
+          } catch (e) {
+            console.error(e);
+          } finally {
+            setModalData(null);
+          }
+        }}
+      />
     </div>
   );
 };

@@ -27,12 +27,11 @@
   flex-direction: column;
 }
 
-/* HEADER */
-
 .header {
   margin-top: 20px;
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
 
   div {
     display: flex;
@@ -42,13 +41,19 @@
   }
 }
 
+.menuContainer {
+  position: relative;
+}
+
 .toggleModalButton {
   background: none;
   border: none;
   font-size: 26px;
   color: #F7F7F7;
   cursor: pointer;
-  height: 50px;
+
+  height: auto;
+  line-height: 1;
 
   &:hover {
     color: #549293;
@@ -70,8 +75,6 @@
   text-align: right;
   margin-left: 20px;
 }
-
-/* ORG */
 
 .orgInfo {
   margin-top: 40px;
@@ -98,8 +101,6 @@
   color: rgba(255, 255, 255, 0.8);
 }
 
-/* SECTION */
-
 .section {
   margin-top: 60px;
   flex: 1;
@@ -112,8 +113,6 @@
   margin-bottom: 40px;
   text-transform: uppercase;
 }
-
-/* CARDS */
 
 .cards {
   display: grid;
@@ -157,10 +156,6 @@
   color: rgba(255, 255, 255, 0.8);
 }
 
-/* =========================
-   💻 FIX SMALL LAPTOP (<= 1200px)
-   ========================= */
-
 @media (max-width: 1200px) {
   .page {
     height: auto;
@@ -172,10 +167,6 @@
     padding-bottom: 40px;
   }
 }
-
-/* =========================
-   💻 LAPTOP (<= 1024px)
-   ========================= */
 
 @media (max-width: 1024px) {
   .page {
@@ -193,10 +184,6 @@
   }
 }
 
-/* =========================
-   📱 TABLET (<= 768px)
-   ========================= */
-
 @media (max-width: 768px) {
   .page {
     height: auto;
@@ -211,7 +198,7 @@
 
   .header {
     display: flex;
-    flex-direction: row; // важно!
+    flex-direction: row;
     align-items: flex-start;
     justify-content: space-between;
     gap: 10px;
@@ -219,14 +206,14 @@
 
   .header > div {
     display: flex;
-    flex-direction: column; // текст в колонку
+    flex-direction: column;
     align-items: flex-start;
     gap: 4px;
   }
 
   .toggleModalButton {
     flex-shrink: 0;
-    align-self: flex-start; // чтобы не съезжала вниз
+    align-self: flex-start;
   }
 
   .subtitle {
@@ -256,10 +243,6 @@
     padding: 20px;
   }
 }
-
-/* =========================
-   📱 MOBILE (<= 480px)
-   ========================= */
 
 @media (max-width: 480px) {
   .container {

@@ -1,25 +1,49 @@
 .wrapper {
   position: absolute;
-  top: 60px;
-  right: 24px;
+
+  top: calc(100% + 8px);
+  right: 0;
   z-index: 1000;
 }
 
 .menu {
   min-width: 220px;
-  background: #ffffff;
   border-radius: 12px;
   padding: 8px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+
+  animation: dropdown 0.15s ease;
+}
+
+.menu.light {
+  background: #ffffff;
 
   box-shadow: 
     0 10px 25px rgba(0, 0, 0, 0.08),
     0 4px 10px rgba(0, 0, 0, 0.04);
 
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+  color: #1a1a1a;
+}
 
-  animation: dropdown 0.15s ease;
+.menu.glass {
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.12),
+    rgba(33, 33, 33, 0.3)
+  );
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  border: 1px solid rgba(255, 255, 255, 0.15);
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.25);
+
+  color: #f7f7f7;
 }
 
 .item {
@@ -30,8 +54,12 @@
   border-radius: 8px;
   cursor: pointer;
   font-size: 14px;
+  transition: 0.15s;
+}
 
-  transition: background 0.15s ease;
+.menu.light .item {
+  width: 100%;
+  color: #1a1a1a;
 
   &:hover {
     background: #f5f7f7;
@@ -42,13 +70,43 @@
   }
 }
 
-.divider {
-  height: 1px;
+.menu.glass .item {
+  width: 100%;
+  color: #f7f7f7;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  &:active {
+    background: rgba(255, 255, 255, 0.2);
+  }
+}
+
+.label {
+  padding: 10px 12px;
+  font-size: 14px;
+}
+
+.menu.light .label {
+  color: #555;
+}
+
+.menu.glass .label {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+
+.menu.light .divider {
   background: #eee;
-  margin: 6px 0;
+}
+
+.menu.glass .divider {
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .logout {
+  width: 100%;
   padding: 10px 12px;
   border: none;
   background: transparent;
@@ -56,10 +114,29 @@
   border-radius: 8px;
   cursor: pointer;
   font-size: 14px;
+}
+
+.menu.light .logout {
   color: #d11a2a;
 
   &:hover {
     background: #fff1f1;
+  }
+}
+
+.menu.glass .logout {
+  color: #ff8080;
+
+  &:hover {
+    background: rgba(255, 0, 0, 0.15);
+  }
+}
+
+@media (max-width: 768px) {
+  .wrapper {
+    position: fixed;
+    top: 70px;
+    right: 16px;
   }
 }
 
