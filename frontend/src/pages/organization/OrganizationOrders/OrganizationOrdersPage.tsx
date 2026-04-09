@@ -7,6 +7,7 @@ import { useOrderFilters } from "../../../hooks/useOrderFilters";
 import { useModal } from "../../../hooks/useModal";
 import UserMenu from "../../../components/modals/UserMenu";
 import { useNavigation } from "../../../hooks/useNavigation";
+import ConfirmModal from "../../../components/modals/ConfirmModal";
 
 const OrganizationOrdersPage = () => {
   const { goToOrganization } = useNavigation();
@@ -87,6 +88,23 @@ const OrganizationOrdersPage = () => {
       hour: "2-digit",
       minute: "2-digit",
     });
+
+  const [modalData, setModalData] = useState<{
+    id: string;
+    action: "approve" | "reject" | "cancel";
+    status: string;
+  } | null>(null);
+
+  const getModalText = (action: "approve" | "reject" | "cancel") => {
+    switch (action) {
+      case "approve":
+        return "Вы точно хотите принять этот заказ?";
+      case "reject":
+        return "Вы точно хотите отклонить этот заказ?";
+      case "cancel":
+        return "Вы точно хотите отменить этот заказ?";
+    }
+  };
 
   if (isLoading) return <div className={styles.page}>Загрузка...</div>;
 
@@ -229,7 +247,13 @@ const OrganizationOrdersPage = () => {
                         <button
                           className={styles.approveBtn}
                           disabled={loadingId === order.id}
-                          onClick={() => approve(order.id, order.status)}
+                          onClick={() =>
+                            setModalData({
+                              id: order.id,
+                              action: "approve",
+                              status: order.status,
+                            })
+                          }
                         >
                           Принять
                         </button>
@@ -239,7 +263,13 @@ const OrganizationOrdersPage = () => {
                         <button
                           className={styles.rejectBtn}
                           disabled={loadingId === order.id}
-                          onClick={() => reject(order.id, order.status)}
+                          onClick={() =>
+                            setModalData({
+                              id: order.id,
+                              action: "reject",
+                              status: order.status,
+                            })
+                          }
                         >
                           Отклонить
                         </button>
@@ -249,7 +279,13 @@ const OrganizationOrdersPage = () => {
                         <button
                           className={styles.rejectBtn}
                           disabled={loadingId === order.id}
-                          onClick={() => reject(order.id, order.status)}
+                          onClick={() =>
+                            setModalData({
+                              id: order.id,
+                              action: "cancel",
+                              status: order.status,
+                            })
+                          }
                         >
                           Отменить
                         </button>
@@ -271,6 +307,32 @@ const OrganizationOrdersPage = () => {
         </div>
       </div>
       <UserMenu isOpen={isModalOpen} onClose={closeModal} variant="mixed" />
+      <ConfirmModal
+  isOpen={!!modalData}
+  text={modalData ? getModalText(modalData.action) : ""}
+  onCancel={() => setModalData(null)}
+  onConfirm={async () => {
+    if (!modalData) return;
+
+    try {
+      if (modalData.action === "approve") {
+        await approve(modalData.id, modalData.status);
+      }
+
+      if (modalData.action === "reject") {
+        await reject(modalData.id, modalData.status);
+      }
+
+      if (modalData.action === "cancel") {
+        await reject(modalData.id, modalData.status);
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setModalData(null);
+    }
+  }}
+/>
     </div>
   );
 };

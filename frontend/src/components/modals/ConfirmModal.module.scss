@@ -1,0 +1,58 @@
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: #fff;
+  padding: 24px;
+  border-radius: 16px;
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+
+  p {
+    margin-bottom: 20px;
+  }
+}
+
+.modalActions {
+  display: flex;
+  gap: 12px;
+}
+/*
+.confirmButton {
+  align-self: flex-start;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: none;
+  background: #f0f0f0;
+  color: rgb(0, 0, 0);
+  cursor: pointer;
+
+  &:hover {
+    color: white;
+    background: #549293;
+  }
+}*/
+
+.confirmButton {
+  flex: 1;
+  background: #f0f0f0;
+  color: rgb(0, 0, 0);
+  padding: 10px;
+  border-radius: 6px;
+  border: none;
+
+  &:hover {
+    color: white;
+    background: #549293;
+  }
+}

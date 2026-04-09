@@ -1,7 +1,9 @@
 import styles from "./FormViewPage.module.scss";
 import { useEditFormAdmin } from "../../../hooks/useEditFormAdmin";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useOrderStatus } from "../../../hooks/useOrderStatus";
+import ConfirmModal from "../../../components/modals/ConfirmModal";
 
 const formatDate = (date: string | null) => {
   if (!date) return "Не указано";
@@ -20,6 +22,21 @@ const FormViewPage = () => {
   const { formData, loading, status, reviewedAt, handleAction } =
     useEditFormAdmin();
   const navigate = useNavigate();
+
+  const [modalAction, setModalAction] = useState<
+    "pending" | "approved" | "rejected" | null
+  >(null);
+
+  const getModalText = (action: "pending" | "approved" | "rejected") => {
+    switch (action) {
+      case "pending":
+        return "Взять заявку в работу?";
+      case "approved":
+        return "Одобрить заявку?";
+      case "rejected":
+        return "Отклонить заявку?";
+    }
+  };
 
   if (loading) {
     return (
@@ -183,7 +200,7 @@ const FormViewPage = () => {
             {status === "new" && (
               <button
                 className={styles.takeButton}
-                onClick={() => handleAction("pending")}
+                onClick={() => setModalAction("pending")}
               >
                 В работу
               </button>
@@ -193,14 +210,14 @@ const FormViewPage = () => {
               <>
                 <button
                   className={styles.approveButton}
-                  onClick={() => handleAction("approved")}
+                  onClick={() => setModalAction("approved")}
                 >
                   Одобрить
                 </button>
 
                 <button
                   className={styles.rejectButton}
-                  onClick={() => handleAction("rejected")}
+                  onClick={() => setModalAction("rejected")}
                 >
                   Отклонить
                 </button>
@@ -209,6 +226,18 @@ const FormViewPage = () => {
           </div>
         </div>
       </div>
+
+      <ConfirmModal
+        isOpen={!!modalAction}
+        text={modalAction ? getModalText(modalAction) : ""}
+        onCancel={() => setModalAction(null)}
+        onConfirm={async () => {
+          if (!modalAction) return;
+
+          await handleAction(modalAction);
+          setModalAction(null);
+        }}
+      />
     </div>
   );
 };

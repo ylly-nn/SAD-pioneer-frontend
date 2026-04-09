@@ -4,6 +4,7 @@ import styles from "./AdminRequestsPage.module.scss";
 import { useNavigate } from "react-router-dom";
 import { useNavigation } from "../../../hooks/useNavigation";
 import { useOrderStatus } from "../../../hooks/useOrderStatus";
+import ConfirmModal from "../../../components/modals/ConfirmModal";
 
 const AdminRequestsPage = () => {
   const { getStatusStyle, getStatusLabel } = useOrderStatus();
@@ -47,6 +48,22 @@ const AdminRequestsPage = () => {
       return allRequests.length;
     }
     return allRequests.filter((r) => r.status === status).length;
+  };
+
+  const [modalData, setModalData] = useState<{
+    id: string;
+    action: "pending" | "approved" | "rejected";
+  } | null>(null);
+
+  const getModalText = (action: "pending" | "approved" | "rejected") => {
+    switch (action) {
+      case "pending":
+        return "Вы точно хотите взять эту заявку в работу?";
+      case "approved":
+        return "Вы точно хотите одобрить эту заявку?";
+      case "rejected":
+        return "Вы точно хотите отклонить эту заявку?";
+    }
   };
 
   if (loading) return <div className={styles.loader}>Загрузка...</div>;
@@ -154,7 +171,9 @@ const AdminRequestsPage = () => {
                 {request.status === "new" && (
                   <button
                     className={styles.takeButton}
-                    onClick={() => handleStatusChange(request.id, "pending")}
+                    onClick={() =>
+                      setModalData({ id: request.id, action: "pending" })
+                    }
                   >
                     В работу
                   </button>
@@ -164,14 +183,18 @@ const AdminRequestsPage = () => {
                   <>
                     <button
                       className={styles.approveButton}
-                      onClick={() => handleStatusChange(request.id, "approved")}
+                      onClick={() =>
+                        setModalData({ id: request.id, action: "approved" })
+                      }
                     >
                       Одобрить
                     </button>
 
                     <button
                       className={styles.rejectButton}
-                      onClick={() => handleStatusChange(request.id, "rejected")}
+                      onClick={() =>
+                        setModalData({ id: request.id, action: "rejected" })
+                      }
                     >
                       Отклонить
                     </button>
@@ -193,6 +216,18 @@ const AdminRequestsPage = () => {
           ))}
         </div>
       )}
+
+      <ConfirmModal
+        isOpen={!!modalData}
+        text={modalData ? getModalText(modalData.action) : ""}
+        onCancel={() => setModalData(null)}
+        onConfirm={async () => {
+          if (!modalData) return;
+
+          await handleStatusChange(modalData.id, modalData.action);
+          setModalData(null);
+        }}
+      />
     </div>
   );
 };
