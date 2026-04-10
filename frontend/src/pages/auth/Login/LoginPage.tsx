@@ -70,10 +70,12 @@ const LoginPage = () => {
             </div>
 
             <div className={passwordError ? styles.fieldWithError : styles.field}>
-              <div className={styles.b}>
+              
                 <label className={styles.label} htmlFor="password">
                   пароль
                 </label>
+
+                <div className={styles.inputWrapper}>
                 <button
                   type="button"
                   className={styles.eyeButton}
@@ -82,9 +84,9 @@ const LoginPage = () => {
                     showPassword ? "Скрыть пароль" : "Показать пароль"
                   }
                 >
-                  {showPassword ? "●" : "○"}
+                  {showPassword ? "◉" : "◎"}
                 </button>
-              </div>
+              
               <input
                 id="password"
                 name="password"
@@ -96,6 +98,7 @@ const LoginPage = () => {
                 onChange={handleChange}
                 onBlur={() => handleBlur('password')}
               />
+              </div>
               {passwordError && <div className={styles.error}>{passwordError}</div>}
               <div className={styles.forgotPassword}>
                   <Link to={ROUTES.RESET_PASSWORD} className={styles.link}>

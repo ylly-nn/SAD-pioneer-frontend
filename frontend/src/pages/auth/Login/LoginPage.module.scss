@@ -113,15 +113,33 @@
   color: #f7f7f7;
 }
 
+.inputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
 .eyeButton {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+
   background: none;
   border: none;
-  font-size: 1.2rem;
-  color: #666;
+  cursor: pointer;
+
+  font-size: 18px;
+  color: #549293;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   transition: color 0.2s;
 
   &:hover {
-    color: #333;
+    color: #7c415b;
   }
 }
 
@@ -141,6 +159,7 @@
   transition: border-color 0.2s;
   background: none;
   color: #549293;
+  padding-right: 40px;
 }
 
 .input:-webkit-autofill,

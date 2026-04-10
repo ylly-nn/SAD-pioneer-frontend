@@ -23,12 +23,14 @@ const RegisterPage = () => {
   } = useRegisterForm();
 
   const [showPassword, setShowPassword] = useState(false);
+  const [showСonfirmPassword, setShowСonfirmPassword] = useState(false);
 
   const togglePassword = () => setShowPassword(!showPassword);
+  const toggleСonfirmPassword = () => setShowСonfirmPassword(!showСonfirmPassword);
 
-  const emailError = getFieldError('email');
-  const passwordError = getFieldError('password');
-  const confirmPasswordError = getFieldError('confirmPassword');
+  const emailError = getFieldError("email");
+  const passwordError = getFieldError("password");
+  const confirmPasswordError = getFieldError("confirmPassword");
 
   return (
     <div className={styles.page}>
@@ -55,20 +57,35 @@ const RegisterPage = () => {
                 name="email"
                 type="email"
                 placeholder="введите email"
-                className={`${styles.input} ${emailError ? styles.inputError : ''}`}
+                className={`${styles.input} ${emailError ? styles.inputError : ""}`}
                 autoComplete="off"
                 value={formData.email}
                 onChange={handleChange}
-                onBlur={() => handleBlur('email')}
+                onBlur={() => handleBlur("email")}
               />
               {emailError && <div className={styles.error}>{emailError}</div>}
             </div>
 
-            <div className={passwordError ? styles.fieldWithError : styles.field}>
-              <div className={styles.b}>
-                <label className={styles.label} htmlFor="password">
-                  пароль
-                </label>
+            <div
+              className={passwordError ? styles.fieldWithError : styles.field}
+            >
+              <label className={styles.label} htmlFor="password">
+                пароль
+              </label>
+
+              <div className={styles.inputWrapper}>
+                <input
+                  id="password"
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="введите пароль"
+                  className={`${styles.input} ${passwordError ? styles.inputError : ""}`}
+                  autoComplete="new-password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  onBlur={() => handleBlur("password")}
+                />
+
                 <button
                   type="button"
                   className={styles.eyeButton}
@@ -77,39 +94,50 @@ const RegisterPage = () => {
                     showPassword ? "Скрыть пароль" : "Показать пароль"
                   }
                 >
-                  {showPassword ? "●" : "○"}
+                  {showPassword ? "◉" : "◎"}
                 </button>
               </div>
-              <input
-                id="password"
-                name="password"
-                type={showPassword ? "text" : "password"}
-                placeholder="введите пароль"
-                className={`${styles.input} ${passwordError ? styles.inputError : ''}`}
-                autoComplete="new-password"
-                value={formData.password}
-                onChange={handleChange}
-                onBlur={() => handleBlur('password')}
-              />
-              {passwordError && <div className={styles.error}>{passwordError}</div>}
+
+              {passwordError && (
+                <div className={styles.error}>{passwordError}</div>
+              )}
             </div>
 
-            <div className={confirmPasswordError ? styles.fieldWithError : styles.field}>
+            <div
+              className={
+                confirmPasswordError ? styles.fieldWithError : styles.field
+              }
+            >
               <label className={styles.label} htmlFor="confirm-password">
                 подтвердите пароль
               </label>
-              <input
-                id="confirm-password"
-                name="confirm-password"
-                type={showPassword ? "text" : "password"}
-                placeholder="повторите пароль"
-                className={`${styles.input} ${confirmPasswordError ? styles.inputError : ''}`}
-                autoComplete="off"
-                value={confirmPassword}
-                onChange={handleChange}
-                onBlur={() => handleBlur('confirmPassword')}
-              />
-              {confirmPasswordError && <div className={styles.error}>{confirmPasswordError}</div>}
+
+              <div className={styles.inputWrapper}>
+                <button
+                  type="button"
+                  className={styles.eyeButton}
+                  onClick={toggleСonfirmPassword}
+                  aria-label={
+                    showСonfirmPassword ? "Скрыть пароль" : "Показать пароль"
+                  }
+                >
+                  {showСonfirmPassword ? "◉" : "◎"}
+                </button>
+                <input
+                  id="confirm-password"
+                  name="confirm-password"
+                  type={showСonfirmPassword ? "text" : "password"}
+                  placeholder="повторите пароль"
+                  className={`${styles.input} ${confirmPasswordError ? styles.inputError : ""}`}
+                  autoComplete="off"
+                  value={confirmPassword}
+                  onChange={handleChange}
+                  onBlur={() => handleBlur("confirmPassword")}
+                />
+              </div>
+              {confirmPasswordError && (
+                <div className={styles.error}>{confirmPasswordError}</div>
+              )}
             </div>
 
             <div className={styles.fieldCheckbox}>
