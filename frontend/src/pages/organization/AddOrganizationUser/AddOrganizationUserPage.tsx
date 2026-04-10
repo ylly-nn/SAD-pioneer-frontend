@@ -4,8 +4,10 @@ import styles from "./AddOrganizationUserPage.module.scss";
 import axiosInstance from "../../../api/axios";
 import { useNavigation } from "../../../hooks/useNavigation";
 import { ROUTES } from "../../../constants/routes";
+import { usePageToast } from "../../../hooks/usePageToast";
 
 const AddOrganizationUserPage = () => {
+  usePageToast();
   const { goToOrganization }= useNavigation();
 
   const navigate = useNavigate();
@@ -111,7 +113,7 @@ const AddOrganizationUserPage = () => {
           <h1 className={styles.title}>Добавление пользователя</h1>
           <button
             className={styles.close}
-            onClick={goToOrganization}
+            onClick={() => goToOrganization()}
             aria-label="Закрыть"
           >
             ✕

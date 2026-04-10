@@ -6,8 +6,10 @@ import { useState } from "react";
 import { ROUTES } from "../../../constants/routes";
 import { useNavigation } from "../../../hooks/useNavigation";
 import { useLoginForm } from "../../../hooks/useLoginForm";
+import { usePageToast } from "../../../hooks/usePageToast";
 
 const LoginPage = () => {
+  usePageToast();
 
   const { goHome } = useNavigation();
   const { 
@@ -38,7 +40,7 @@ const LoginPage = () => {
           <h1 className={styles.title}>Вход</h1>
           <button
             className={styles.close}
-            onClick={goHome}
+            onClick={() => goHome()}
             aria-label="Закрыть"
           >
             ✕

@@ -10,8 +10,10 @@ import {
   isFormValid,
   type FormErrors
 } from "../../../utils/validation";
+import { usePageToast } from "../../../hooks/usePageToast";
 
 const AddAdmin = () => {
+  usePageToast();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");

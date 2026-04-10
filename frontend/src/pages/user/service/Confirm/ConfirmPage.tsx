@@ -1,8 +1,11 @@
 import styles from "./ConfirmPage.module.scss"
 import { useNavigation } from "../../../../hooks/useNavigation"
 import { useConfirmOrder } from "../../../../hooks/useConfirmOrder"
+import { usePageToast } from "../../../../hooks/usePageToast";
+
 
 const ConfirmPage = () => {
+  usePageToast();
   const { goToUser } = useNavigation()
   const { loading, orderData, view } = useConfirmOrder()
 
@@ -19,7 +22,6 @@ const ConfirmPage = () => {
       <div className={styles.content}>
         <section className={styles.columns}>
 
-          {/* LEFT */}
           <div className={styles.leftSection}>
             <div className={styles.formContent}>
               <div className={styles.confirmationCard}>
@@ -67,7 +69,7 @@ const ConfirmPage = () => {
 
                 <button
                   className={styles.submit}
-                  onClick={goToUser}
+                  onClick={() => goToUser()}
                 >
                   На главную
                 </button>
@@ -80,7 +82,6 @@ const ConfirmPage = () => {
             </div>
           </div>
 
-          {/* RIGHT */}
           <div className={styles.rightSection}>
             <div className={styles.overlay}>
               <div className={styles.overlayContent}>

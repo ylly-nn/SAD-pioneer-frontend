@@ -1,7 +1,9 @@
 import styles from "./EmptyPage.module.scss";
 import { useNavigation } from "../../../../hooks/useNavigation";
+import { usePageToast } from "../../../../hooks/usePageToast";
 
 const EmptyPage = () => {
+  usePageToast();
   const {
     goHome,
     goToCreateForm
@@ -18,13 +20,13 @@ const EmptyPage = () => {
         <div style={{ height: '20px' }}></div>
         <button 
           className={styles.requestButton}
-          onClick={goToCreateForm}
+          onClick={() => goToCreateForm()}
         >
           Оформить заявку
         </button>
 
         <div className={styles.footer}>
-          <button className={styles.backLink} onClick={goHome}>
+          <button className={styles.backLink} onClick={() => goHome()}>
             Назад
           </button>
         </div>

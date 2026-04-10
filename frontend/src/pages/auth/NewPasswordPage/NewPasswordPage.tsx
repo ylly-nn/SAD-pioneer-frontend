@@ -2,8 +2,10 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styles from "./NewPasswordPage.module.scss";
 import { validatePassword, validateConfirmPassword } from "../../../utils/validation";
+import { usePageToast } from "../../../hooks/usePageToast";
 
 const NewPasswordPage = () => {
+  usePageToast();
   const location = useLocation();
   const navigate = useNavigate();
   const email = location.state?.email || "";

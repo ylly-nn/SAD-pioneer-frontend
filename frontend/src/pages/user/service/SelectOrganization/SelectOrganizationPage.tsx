@@ -9,6 +9,8 @@ import { useSelectOrganization } from "../../../../hooks/useSelectOrganization"
 import { useNavigation } from "../../../../hooks/useNavigation"
 import { useBooking } from "../../../../hooks/useBooking"
 import { user } from "../../../../api/user"
+import { usePageToast } from "../../../../hooks/usePageToast";
+
 
 const mapDefaultState = {
   center: [55.751574, 37.573856],
@@ -16,6 +18,7 @@ const mapDefaultState = {
 }
 
 const SelectOrganizationPage = () => {
+  usePageToast();
 
   const wrapperRef = useRef<HTMLDivElement>(null)
 
@@ -27,7 +30,6 @@ const SelectOrganizationPage = () => {
 
   const { goToSelectService, goToSelectDetails } = useNavigation()
   const { isLoaded, booking, updateBooking } = useBooking()
-//serviceId
 
 useEffect(() => {
   if (!isLoaded) return
@@ -76,10 +78,6 @@ useEffect(() => {
     "Тула": "Тула",
   }
 
-  // =========================
-  // 🔥 ПОИСК (ФИКС)
-  // =========================
-
   const [search, setSearch] = useState("")
 
   const cleanSearch = (() => {
@@ -95,10 +93,6 @@ useEffect(() => {
   const suggestions = useOrganizationSearch(branches, cleanSearch)
 
   const [coordsMap, setCoordsMap] = useState<Record<string, number[]>>({})
-
-  // =========================
-  // 🔥 ЛОГИКА ГОРОДА
-  // =========================
 
   useEffect(() => {
     if (!search || search.length < 2) return
@@ -139,9 +133,6 @@ useEffect(() => {
     return () => clearTimeout(t)
   }, [search, city, skipGeocode])
 
-  // =========================
-  // 📍 КООРДИНАТЫ
-  // =========================
 
   useEffect(() => {
     if (!ymapsReady || !city) return
@@ -163,9 +154,6 @@ useEffect(() => {
     load()
   }, [branches, ymapsReady, city])
 
-  // =========================
-  // 📍 ВЫБОР
-  // =========================
 
   const handleSelectSuggestion = async (branch: any) => {
     setSkipGeocode(true)
@@ -190,9 +178,6 @@ useEffect(() => {
     setTimeout(() => setSkipGeocode(false), 300)
   }
 
-  // =========================
-  // 📍 SUBMIT
-  // =========================
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -217,9 +202,6 @@ useEffect(() => {
     goToSelectDetails()
   }
 
-  // =========================
-  // UI
-  // =========================
 
   return (
     <div className={styles.page}>
@@ -318,7 +300,7 @@ useEffect(() => {
             <div className={styles.footer}>
               <button
                 className={styles.backButton}
-                onClick={goToSelectService}
+                onClick={() => goToSelectService()}
               >
                 Назад
               </button>

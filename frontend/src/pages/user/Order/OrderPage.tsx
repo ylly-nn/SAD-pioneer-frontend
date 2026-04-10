@@ -2,8 +2,11 @@ import styles from "./OrderPage.module.scss";
 import { useNavigation } from "../../../hooks/useNavigation";
 import { useUserOrderDetails } from "../../../hooks/useUserOrderDetails";
 import { useOrderStatus } from "../../../hooks/useOrderStatus";
+import { usePageToast } from "../../../hooks/usePageToast";
+
 
 const OrderPage = () => {
+  usePageToast();
   const { getStatusLabel } = useOrderStatus();
 
   const { goBack } = useNavigation();

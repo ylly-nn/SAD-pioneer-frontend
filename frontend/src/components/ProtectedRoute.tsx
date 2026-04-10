@@ -13,7 +13,13 @@ interface Props {
 const redirectToLogin = (location: RouterLocation) => (
   <Navigate
     to={ROUTES.LOGIN}
-    state={{ from: location.pathname + location.search }}
+    state={{
+      from: location.pathname + location.search,
+      toast: {
+        message: "Сначала войдите в систему",
+        type: "error",
+      },
+    }}
     replace
   />
 );
@@ -31,7 +37,6 @@ export const ProtectedRoute = ({ children }: Props) => {
 
 // базовая страница
 export const HomeRoute = ({ children }: Props) => {
-
   if (isAuthenticated()) {
     console.log("REDIRECT HOME");
     return <Navigate to={ROUTES.HOME} replace />;
@@ -39,15 +44,6 @@ export const HomeRoute = ({ children }: Props) => {
 
   return <>{children}</>;
 };
-/*
-export const HomeRoute = ({ children }: Props) => {
-  
-  if (isAuthenticated()) {
-    return <Navigate to={ROUTES.HOME} replace />;
-  }
-
-  return <>{children}</>;
-};*/
 
 // для маршрутов организации
 export const ProtectedRouteOrganizations = ({ children }: Props) => {
@@ -66,7 +62,18 @@ export const ProtectedRouteOrganizations = ({ children }: Props) => {
 
   // если у пользователя нет организации
   if (!isOrganization) {
-    return <Navigate to={ROUTES.ORGANIZATION.PROFILE} replace />;
+    return (
+      <Navigate
+        to={ROUTES.ORGANIZATION.PROFILE}
+        state={{
+          toast: {
+            message: "У вас ещё нет организации",
+            type: "error",
+          },
+        }}
+        replace
+      />
+    );
   }
 
   return <>{children}</>;
@@ -89,7 +96,18 @@ export const ProtectedRouteOrganizationsRequest = ({ children }: Props) => {
 
   // если у пользователя нет заявки
   if (!isOrganizationRequest) {
-    return <Navigate to={ROUTES.ORGANIZATION.PROFILE} replace />;
+    return (
+      <Navigate
+        to={ROUTES.ORGANIZATION.PROFILE}
+        state={{
+          toast: {
+            message: "У вас нет доступа к этому разделу. Необходимо оформить заявку",
+            type: "error",
+          },
+        }}
+        replace
+      />
+    );
   }
 
   return <>{children}</>;
@@ -97,7 +115,8 @@ export const ProtectedRouteOrganizationsRequest = ({ children }: Props) => {
 
 // для маршрутов пользователей у которых ещё нет ни организации, ни заявки
 export const ProtectedRouteNoOrganizations = ({ children }: Props) => {
-  const { isOrganization, isOrganizationRequest, isLoading, requestStatus } = useProfile();
+  const { isOrganization, isOrganizationRequest, isLoading, requestStatus } =
+    useProfile();
 
   // если пользователь не авторизован
   const location = useLocation();
@@ -110,9 +129,8 @@ export const ProtectedRouteNoOrganizations = ({ children }: Props) => {
     return <div>Загрузка...</div>;
   }
 
-  
   // если у пользователя есть заявка
-  if (isOrganizationRequest && (requestStatus != "rejected")) {
+  if (isOrganizationRequest && requestStatus != "rejected") {
     return <Navigate to={ROUTES.ORGANIZATION.PROFILE} replace />;
   }
 

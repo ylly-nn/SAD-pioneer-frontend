@@ -10,7 +10,6 @@ const ProtectedAdminRoute = ({ children }: { children: JSX.Element }) => {
   useEffect(() => {
     const checkAdmin = async () => {
       try {
-        // любой admin endpoint
         await api.get("/admin/partner-requests/");
         setIsAdmin(true);
       } catch (err) {
@@ -26,7 +25,12 @@ const ProtectedAdminRoute = ({ children }: { children: JSX.Element }) => {
   if (loading) return <div>Проверка доступа...</div>;
 
   if (!isAdmin) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/" state={{
+          toast: {
+            message: "У нет доступа к этому разделу",
+            type: "error",
+          },
+        }} replace />;
   }
 
   return children;

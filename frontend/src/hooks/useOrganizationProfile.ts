@@ -87,7 +87,7 @@ export const useProfile = () => {
   const currentStatus = statusMap[formData.status];
 
   return {
-    name: formData.name,
+    org_short_name: formData.org_short_name,
     status: formData.status,
     currentStatus,
     error,

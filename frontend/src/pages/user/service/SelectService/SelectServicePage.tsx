@@ -3,9 +3,11 @@ import styles from "./SelectServicePage.module.scss"
 import { useServices } from "../../../../hooks/useServices"
 import { useNavigation } from "../../../../hooks/useNavigation"
 import { useBooking } from "../../../../hooks/useBooking"
+import { usePageToast } from "../../../../hooks/usePageToast";
 
 
 const SelectServicePage = () => {
+  usePageToast();
   const { goToUser, goToSelectOrganization } = useNavigation()
   const { services } = useServices()
   const { updateBooking } = useBooking()
@@ -37,7 +39,7 @@ const SelectServicePage = () => {
             <div className={styles.footer}>
               <button
                 className={styles.backButton}
-                onClick={goToUser}
+                onClick={() => goToUser()}
               >
                 Назад
               </button>

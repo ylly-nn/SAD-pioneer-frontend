@@ -3,11 +3,13 @@ import styles from "./RegisterPage.module.scss";
 import { ROUTES } from "../../../constants/routes";
 import { useNavigation } from "../../../hooks/useNavigation";
 import { useRegisterForm } from "../../../hooks/useRegisterForm";
+import { usePageToast } from "../../../hooks/usePageToast";
 
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
 const RegisterPage = () => {
+  usePageToast();
   const { goHome } = useNavigation();
   const {
     formData,
@@ -39,7 +41,7 @@ const RegisterPage = () => {
           <h1 className={styles.title}>Регистрация</h1>
           <button
             className={styles.close}
-            onClick={goHome}
+            onClick={() => goHome()}
             aria-label="Закрыть"
           >
             x

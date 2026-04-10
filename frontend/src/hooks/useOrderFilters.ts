@@ -13,7 +13,7 @@ interface UseOrderFiltersProps<T> {
   getStatus: (order: T) => string;
   getBranchKey?: (order: T) => string;
 
-  getDate: (order: T) => string | Date; // 👈 важно
+  getDate: (order: T) => string | Date;
   sortDirection?: SortDirection;
 }
 
@@ -28,7 +28,6 @@ export const useOrderFilters = <T>({
   getDate,
   sortDirection = "desc",
 }: UseOrderFiltersProps<T>) => {
-  // 🔍 поиск
   const searchedOrders = useSearch(
     orders,
     searchQuery,
@@ -48,7 +47,6 @@ export const useOrderFilters = <T>({
       return matchesStatus && matchesBranch;
     });
 
-    // 📅 сортировка по дате
     const sorted = [...filtered].sort((a, b) => {
       const dateA = new Date(getDate(a)).getTime();
       const dateB = new Date(getDate(b)).getTime();

@@ -2,8 +2,10 @@ import styles from "./ServiceFormPage.module.scss"
 import { useParams } from "react-router-dom"
 import { useAddBranchService } from "../../../../hooks/useAddBranchService"
 import { useNavigation } from "../../../../hooks/useNavigation"
+import { usePageToast } from "../../../../hooks/usePageToast";
 
 const ServiceFormPage = () => {
+  usePageToast();
   const { goToOrganizationBranch } = useNavigation();
   const { id } = useParams<{ id: string }>()
 

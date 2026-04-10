@@ -4,8 +4,11 @@ import { useOrganizationData } from "../../../../hooks/useOrganizationData";
 import { useNavigation } from "../../../../hooks/useNavigation";
 import { useModal } from "../../../../hooks/useModal";
 import UserMenu from "../../../../components/modals/UserMenu";
+import { usePageToast } from "../../../../hooks/usePageToast";
+
 
 const VerifiedPage = () => {
+  usePageToast();
   const {
     goToOrganizationOrders,
     goToOrganizationBranches,
@@ -63,7 +66,7 @@ const VerifiedPage = () => {
             {/* Заказы */}
             <div className={styles.card}>
               <button
-                onClick={goToOrganizationOrders}
+                onClick={() => goToOrganizationOrders()}
                 className={styles.cardButton}
                 aria-label="Управление заказами"
               >
@@ -78,7 +81,7 @@ const VerifiedPage = () => {
             {/* Филиалы */}
             <div className={styles.card}>
               <button
-                onClick={goToOrganizationBranches}
+                onClick={() => goToOrganizationBranches()}
                 className={styles.cardButton}
                 aria-label="Управление филиалами"
               >
@@ -93,7 +96,7 @@ const VerifiedPage = () => {
             {/* Пользователи */}
             <div className={styles.card}>
               <button
-                onClick={goToOrganizationAddUser}
+                onClick={() => goToOrganizationAddUser()}
                 className={styles.cardButton}
                 aria-label="Управление пользователями"
               >

@@ -3,8 +3,10 @@ import { useForgotPassword } from "../../../hooks/useForgotPassword";
 import { validateEmail, validatePassword, validateConfirmPassword } from "../../../utils/validation";
 import { useState, useEffect } from "react";
 import { useNavigation } from "../../../hooks/useNavigation";
+import { usePageToast } from "../../../hooks/usePageToast";
 
 const ForgotPasswordPage = () => {
+  usePageToast();
   const { goToLogin } = useNavigation();
   const {
     email,

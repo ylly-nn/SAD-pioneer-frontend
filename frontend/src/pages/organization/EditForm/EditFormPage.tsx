@@ -1,8 +1,10 @@
 import styles from "./EditFormPage.module.scss";
 import { useNavigation } from "../../../hooks/useNavigation";
 import { useEditForm } from "../../../hooks/useEditForm";
+import { usePageToast } from "../../../hooks/usePageToast";
 
 const EditFormPage = () => {
+  usePageToast();
   const { goToOrganization } = useNavigation();
 
   const {
@@ -22,7 +24,7 @@ const EditFormPage = () => {
       <div className={styles.card}>
         <div className={styles.header}>
           <h1>Подключение организации</h1>
-          <button onClick={goToOrganization}>✕</button>
+          <button onClick={() => goToOrganization()}>✕</button>
         </div>
 
         <form onSubmit={handleSubmit} className={styles.form}>

@@ -7,6 +7,8 @@ import { useFreeTimeCached } from "../../../../hooks/useFreeTime";
 import { useCreateOrder } from "../../../../hooks/useCreateOrder";
 import { useCalendar } from "../../../../hooks/useCalendar";
 import { formatLocalDate } from "../../../../utils/date";
+import { usePageToast } from "../../../../hooks/usePageToast";
+
 
 const getUserTimezone = () => Intl.DateTimeFormat().resolvedOptions().timeZone;
 
@@ -28,6 +30,7 @@ const monthNames = [
 const weekdays = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
 
 const SelectTimePage = () => {
+  usePageToast();
   const { goToSelectDetails } = useNavigation();
   const { booking, isLoaded } = useBooking();
   const { createOrder, loading } = useCreateOrder();
@@ -73,7 +76,6 @@ const SelectTimePage = () => {
     <div className={styles.page}>
       <div className={styles.content}>
         <section className={styles.columns}>
-          {/* LEFT */}
           <div className={styles.leftSection}>
             <div className={styles.header}>
               <h1 className={styles.title}>Запись на услугу</h1>
@@ -102,7 +104,10 @@ const SelectTimePage = () => {
             </div>
 
             <div className={styles.footer}>
-              <button className={styles.backButton} onClick={goToSelectDetails}>
+              <button
+                className={styles.backButton}
+                onClick={() => goToSelectDetails()}
+              >
                 Назад
               </button>
 
@@ -110,7 +115,6 @@ const SelectTimePage = () => {
             </div>
           </div>
 
-          {/* RIGHT */}
           <div className={styles.rightSection}>
             <h2 className={styles.rightTitle}>Выберите дату и время</h2>
 
@@ -147,9 +151,9 @@ const SelectTimePage = () => {
                     <div key={i}>
                       <button
                         className={`${styles.day} 
-          ${isSelected ? styles.selected : ""}
-          ${isPast ? styles.disabled : ""}
-        `}
+                        ${isSelected ? styles.selected : ""}
+                        ${isPast ? styles.disabled : ""}
+                        `}
                         disabled={isPast}
                         onClick={() => {
                           if (!isPast) {
@@ -175,9 +179,9 @@ const SelectTimePage = () => {
                     key={slot.iso}
                     disabled={isPast}
                     className={`${styles.timeSlot} 
-        ${selectedSlot === slot.iso ? styles.selected : ""}
-        ${isPast ? styles.disabled : ""}
-      `}
+                    ${selectedSlot === slot.iso ? styles.selected : ""}
+                    ${isPast ? styles.disabled : ""}
+                    `}
                     onClick={() => !isPast && setSelectedSlot(slot.iso)}
                   >
                     {slot.time}

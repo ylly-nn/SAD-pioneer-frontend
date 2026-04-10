@@ -2,8 +2,11 @@ import styles from "./ViewFormPage.module.scss";
 import { useNavigation } from "../../../hooks/useNavigation";
 import { useViewForm } from "../../../hooks/useViewForm";
 import { useOrderStatus } from "../../../hooks/useOrderStatus";
+import { usePageToast } from "../../../hooks/usePageToast";
+
 
 const ViewFormPage = () => {
+  usePageToast();
   const { getStatusStyle, getStatusLabel } = useOrderStatus();
   const { goToOrganization } = useNavigation();
   const { formData } = useViewForm();
@@ -28,7 +31,7 @@ const ViewFormPage = () => {
               {getStatusLabel(formData.status)}
             </div>
           </div>
-          <button onClick={goToOrganization}>✕</button>
+          <button onClick={() => goToOrganization()}>✕</button>
         </div>
 
         <form className={styles.form}>

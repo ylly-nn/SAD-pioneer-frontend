@@ -1,16 +1,19 @@
 import styles from "./PendingPage.module.scss";
 import { useNavigation } from "../../../../hooks/useNavigation";
 import { useProfile } from "../../../../hooks/useOrganizationProfile";
+import { usePageToast } from "../../../../hooks/usePageToast";
+
 
 import { useModal } from "../../../../hooks/useModal";
 import UserMenu from "../../../../components/modals/UserMenu";
 
 const PendingPage = () => {
+  usePageToast();
   const { goToViewForm, goToCreateForm } = useNavigation();
 
   const { isModalOpen, toggleModal, closeModal } = useModal();
 
-  const { name, currentStatus, currentStatusKey } = useProfile();
+  const { org_short_name, currentStatus, currentStatusKey } = useProfile();
 
   return (
     <div className={styles.page}>
@@ -37,13 +40,15 @@ const PendingPage = () => {
 
               <h2 className={styles.mainTitle}>{currentStatus.title}</h2>
 
-              <p className={styles.mainText}>{currentStatus.text(name)}</p>
+              <p className={styles.mainText}>{currentStatus.text(org_short_name)}</p>
 
               <div className={styles.buttons}>
                 <button
                   type="button"
                   className={styles.detailsButton}
-                  onClick={goToViewForm}
+                  onClick={() =>
+                    goToViewForm()
+                  }
                 >
                   Посмотреть заявку
                 </button>
@@ -51,7 +56,7 @@ const PendingPage = () => {
                   <button
                     type="button"
                     className={styles.detailsButton}
-                    onClick={goToCreateForm}
+                    onClick={() => goToCreateForm()}
                   >
                     Подать новую заявку
                   </button>

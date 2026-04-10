@@ -8,8 +8,10 @@ import { useModal } from "../../../hooks/useModal";
 import UserMenu from "../../../components/modals/UserMenu";
 import { useNavigation } from "../../../hooks/useNavigation";
 import ConfirmModal from "../../../components/modals/ConfirmModal";
+import { usePageToast } from "../../../hooks/usePageToast";
 
 const OrganizationOrdersPage = () => {
+  usePageToast();
   const { goToOrganization } = useNavigation();
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
   const { isModalOpen, toggleModal, closeModal } = useModal();
@@ -116,7 +118,7 @@ const OrganizationOrdersPage = () => {
           <div>
             <button
               className={styles.toggleModalButton}
-              onClick={goToOrganization}
+              onClick={() => goToOrganization()}
             >
               <span>❮</span>
             </button>

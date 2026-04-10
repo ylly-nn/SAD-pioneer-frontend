@@ -5,8 +5,10 @@ import { isAuthenticated } from "../../api/tokenService";
 import { useNavigation } from "../../hooks/useNavigation";
 import { useModal } from "../../hooks/useModal";
 import UserMenu from "../../components/modals/UserMenu";
+import { usePageToast } from "../../hooks/usePageToast";
 
 const HomePage = () => {
+  usePageToast();
   const { goToUser, goToOrganization } = useNavigation();
   const { isModalOpen, toggleModal, closeModal } = useModal();
 
@@ -51,7 +53,7 @@ const HomePage = () => {
 
           <ul className={styles.cards}>
             <li className={styles.card}>
-              <button onClick={goToUser} className={styles.cardButton}>
+              <button onClick={() => goToUser()} className={styles.cardButton}>
                 <h3 className={styles.cardTitle}>Я владелец тс</h3>
                 <p className={styles.cardDescription}>
                   Я ищу надёжных исполнителей, которые качественно выполняют
@@ -61,7 +63,7 @@ const HomePage = () => {
             </li>
 
             <li className={styles.card}>
-              <button onClick={goToOrganization} className={styles.cardButton}>
+              <button onClick={() => goToOrganization()} className={styles.cardButton}>
                 <h3 className={styles.cardTitle}>Мы организация</h3>
                 <p className={styles.cardDescription}>
                   Мы хотим чтобы потенциальные клиенты могли узнать о нас и

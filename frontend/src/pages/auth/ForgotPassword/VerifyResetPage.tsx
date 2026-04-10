@@ -2,8 +2,10 @@ import { useLocation } from "react-router-dom";
 import { useState } from "react";
 import styles from "./ForgotPasswordPage.module.scss";
 import { useNavigation } from "../../../hooks/useNavigation";
+import { usePageToast } from "../../../hooks/usePageToast";
 
 const VerifyResetPage = () => {
+  usePageToast();
   const { goToLogin } = useNavigation();
 
   const location = useLocation();

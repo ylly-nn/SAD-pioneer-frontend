@@ -25,7 +25,6 @@ export const useAddBranchService = (branchId: string) => {
 
         setServices(allServices)
 
-        // 👇 список уже добавленных услуг в филиал
         const existing = (branchData?.services ?? []).map(
           (s: any) => s.service_id
         )
@@ -43,13 +42,12 @@ export const useAddBranchService = (branchId: string) => {
 
   const selectService = (id: string) => {
     setSelectedId(id)
-    setError(null) // 👈 сбрасываем ошибку при выборе
+    setError(null)
   }
 
   const addServiceToBranch = async () => {
     if (!selectedId) return false
 
-    // ❗ ПРОВЕРКА НА ДУБЛИКАТ
     if (branchServices.includes(selectedId)) {
       setError("Такая услуга уже добавлена. Выберите другую")
       return false

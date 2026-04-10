@@ -3,8 +3,11 @@ import { useProfile } from "../../../hooks/useOrganizationProfileAAAA";
 import EmptyPage from "./Empty/EmptyPage";
 import PendingPage from "./Pending/PendingPage";
 import VerifiedPage from "./Verified/VerifiedPage";
+import { usePageToast } from "../../../hooks/usePageToast";
+
 
 const ProfilePage = () => {
+  usePageToast();
   const { isLoading, profileStatus } = useProfile();
 
   if (isLoading) {

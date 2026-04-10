@@ -1,7 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import styles from "./AdminDashboardPage.module.scss";
+import { usePageToast } from "../../../hooks/usePageToast";
 
 const AdminDashboardPage = () => {
+  usePageToast();
   const navigate = useNavigate();
   
   const menuItems = [

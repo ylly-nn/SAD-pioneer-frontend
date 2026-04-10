@@ -5,8 +5,10 @@ import { useNavigation } from "../../../hooks/useNavigation";
 import { useSearch } from "../../../hooks/useSearch";
 import { useModal } from "../../../hooks/useModal";
 import UserMenu from "../../../components/modals/UserMenu";
+import { usePageToast } from "../../../hooks/usePageToast";
 
 const OrganizationBranchesPage = () => {
+  usePageToast();
   const { isModalOpen, toggleModal, closeModal } = useModal();
 
   const {
@@ -40,7 +42,7 @@ const OrganizationBranchesPage = () => {
           <div>
             <button
               className={styles.toggleModalButton}
-              onClick={goToOrganization}
+              onClick={() => goToOrganization()}
             >
               <span>❮</span>
             </button>
@@ -87,7 +89,7 @@ const OrganizationBranchesPage = () => {
             {/* кнопка */}
             <button
               className={styles.primaryButton}
-              onClick={goToOrganizationAddBranch}
+              onClick={() => goToOrganizationAddBranch()}
             >
               <span className={styles.addIcon}>+</span>
               Добавить филиал
@@ -120,7 +122,7 @@ const OrganizationBranchesPage = () => {
           ) : (
             <div className={styles.emptyState}>
               <h3>Филиалы не найдены</h3>
-              <button onClick={goToOrganizationAddBranch}>
+              <button onClick={() => goToOrganizationAddBranch()}>
                 Создать филиал
               </button>
             </div>

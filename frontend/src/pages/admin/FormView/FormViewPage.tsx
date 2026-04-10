@@ -4,8 +4,10 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useOrderStatus } from "../../../hooks/useOrderStatus";
 import ConfirmModal from "../../../components/modals/ConfirmModal";
+import { usePageToast } from "../../../hooks/usePageToast";
 
 const formatDate = (date: string | null) => {
+  usePageToast();
   if (!date) return "Не указано";
 
   return new Date(date).toLocaleString("ru-RU", {

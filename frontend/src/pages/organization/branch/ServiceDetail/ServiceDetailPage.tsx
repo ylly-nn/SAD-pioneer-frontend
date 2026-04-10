@@ -1,8 +1,10 @@
 import styles from "./ServiceDetailPage.module.scss";
 import { useNavigation } from "../../../../hooks/useNavigation";
 import { useServiceDetailForm } from "../../../../hooks/useServiceDetailForm";
+import { usePageToast } from "../../../../hooks/usePageToast";
 
 const ServiceDetailPage = () => {
+  usePageToast();
   const { goBack } = useNavigation();
 
   const {
@@ -31,7 +33,6 @@ const ServiceDetailPage = () => {
         </div>
 
         <form className={styles.form} onSubmit={handleSubmit}>
-          {/* NAME */}
           <div className={styles.field}>
             <label>Название</label>
             <input
@@ -45,7 +46,6 @@ const ServiceDetailPage = () => {
             )}
           </div>
 
-          {/* DURATION */}
           <div className={styles.field}>
             <label>Длительность (мин)</label>
             <input
@@ -60,7 +60,6 @@ const ServiceDetailPage = () => {
             )}
           </div>
 
-          {/* PRICE */}
           <div className={styles.field}>
             <label>Цена</label>
             <input

@@ -5,8 +5,10 @@ import { useNavigate } from "react-router-dom";
 import { useNavigation } from "../../../hooks/useNavigation";
 import { useOrderStatus } from "../../../hooks/useOrderStatus";
 import ConfirmModal from "../../../components/modals/ConfirmModal";
+import { usePageToast } from "../../../hooks/usePageToast";
 
 const AdminRequestsPage = () => {
+  usePageToast();
   const { getStatusStyle, getStatusLabel } = useOrderStatus();
   const { goToAdmin } = useNavigation();
   const navigate = useNavigate();
@@ -73,7 +75,7 @@ const AdminRequestsPage = () => {
     <div className={styles.container}>
       {/* шапка */}
       <div className={styles.header}>
-        <button className={styles.toggleModalButton} onClick={goToAdmin}>
+        <button className={styles.toggleModalButton} onClick={() => goToAdmin()}>
           <span>❮</span>
         </button>
 

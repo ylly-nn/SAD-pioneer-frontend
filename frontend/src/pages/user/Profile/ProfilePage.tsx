@@ -6,8 +6,11 @@ import { useUserProfile } from "../../../hooks/useUserProfile";
 import { useOrderFilters } from "../../../hooks/useOrderFilters";
 import UserMenu from "../../../components/modals/UserMenu";
 import { useOrderStatus } from "../../../hooks/useOrderStatus";
+import { usePageToast } from "../../../hooks/usePageToast";
+
 
 const ProfilePage = () => {
+  usePageToast();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("all");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
@@ -51,7 +54,7 @@ const ProfilePage = () => {
         {/* шапка */}
         <div className={styles.header}>
           <div>
-            <button className={styles.toggleModalButton} onClick={goHome}>
+            <button className={styles.toggleModalButton} onClick={() => goHome()}>
               <span>❮</span>
             </button>
 
@@ -132,7 +135,7 @@ const ProfilePage = () => {
             {/* кнопка */}
             <button
               className={styles.primaryButton}
-              onClick={goToSelectService}
+              onClick={() => goToSelectService()}
             >
               + Новая запись
             </button>
@@ -152,7 +155,7 @@ const ProfilePage = () => {
               {activeTab === "current" && (
                 <button
                   className={styles.primaryButton}
-                  onClick={goToSelectService}
+                  onClick={() => goToSelectService()}
                 >
                   Создать запись
                 </button>

@@ -3,8 +3,10 @@ import { ROUTES } from "../../../constants/routes";
 import { useVerification } from '../../../hooks/useVerification';
 import { Link } from "react-router-dom";
 import styles from './RegisterPage.module.scss';
+import { usePageToast } from "../../../hooks/usePageToast";
 
 const VerifyPage = () => {
+  usePageToast();
   const location = useLocation();
   const email = location.state?.email || '';
   const { code, error, isLoading, handleCodeChange, handleSubmit } = useVerification(email);

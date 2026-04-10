@@ -5,81 +5,120 @@ import { type UserOrder } from "../types/orders";
 import { type Role } from "../types/auth";
 import { roleService } from "../services/roleService";
 
+type ToastType = "success" | "error" | "info";
+
+interface NavOptions {
+  message?: string;
+  type?: ToastType;
+}
+
 export const useNavigation = () => {
   const navigate = useNavigate();
 
+  const withState = (options?: NavOptions) =>
+    options
+      ? {
+          state: {
+            toast: {
+              message: options.message,
+              type: options.type || "info",
+            },
+          },
+        }
+      : {};
+
   return {
-    goHome: () => navigate("/"),
+    goHome: (opt?: NavOptions) => navigate("/", withState(opt)),
     goBack: () => navigate(-1),
 
-    goToLogin: (role: Role) => {
+    goToLogin: (role: Role, opt?: NavOptions) => {
       roleService.setRole(role);
-      navigate("/login");
+      navigate("/login", withState(opt));
     },
 
-    goToRegister: (role: Role) => {
+    goToRegister: (role: Role, opt?: NavOptions) => {
       roleService.setRole(role);
-      navigate("/register");
+      navigate("/register", withState(opt));
     },
 
-    goToProfile: () => {
-  const role = roleService.getRole();
+    goToProfile: (opt?: NavOptions) => {
+      const role = roleService.getRole();
 
-  if (role === "organization") {
-    navigate(ROUTES.ORGANIZATION.PROFILE);
-  } else {
-    navigate(ROUTES.USER.PROFILE);
-  }
-},
+      if (role === "organization") {
+        navigate(ROUTES.ORGANIZATION.PROFILE, withState(opt));
+      } else {
+        navigate(ROUTES.USER.PROFILE, withState(opt));
+      }
+    },
 
     // владельцы тс
-    goToUser: () => {
-  roleService.setRole("user");
-  navigate(ROUTES.USER.PROFILE);
-},
+    goToUser: (opt?: NavOptions) => {
+      roleService.setRole("user");
+      navigate(ROUTES.USER.PROFILE, withState(opt));
+    },
 
+    goToSelectService: (opt?: NavOptions) =>
+      navigate(ROUTES.USER.SERVICE.SELECT, withState(opt)),
+    goToSelectOrganization: (opt?: NavOptions) =>
+      navigate(ROUTES.USER.SERVICE.ORGANIZATION, withState(opt)),
+    goToSelectDetails: (opt?: NavOptions) =>
+      navigate(ROUTES.USER.SERVICE.DETAILS, withState(opt)),
+    goToSelectTime: (opt?: NavOptions) =>
+      navigate(ROUTES.USER.SERVICE.TIME, withState(opt)),
+    goToConfirmBooking: (opt?: NavOptions) =>
+      navigate(ROUTES.USER.SERVICE.CONFIRM, withState(opt)),
 
-    goToSelectService: () => navigate(ROUTES.USER.SERVICE.SELECT),
-    goToSelectOrganization: () => navigate(ROUTES.USER.SERVICE.ORGANIZATION),
-    goToSelectDetails: () => navigate(ROUTES.USER.SERVICE.DETAILS),
-    goToSelectTime: () => navigate(ROUTES.USER.SERVICE.TIME),
-    goToConfirmBooking: () => navigate(ROUTES.USER.SERVICE.CONFIRM),
-
-    goToOrderDetails: (order: UserOrder) =>
+    goToOrderDetails: (order: UserOrder, opt?: NavOptions) =>
       navigate(`${ROUTES.USER.ORDER}/${order.order_id}`, {
-        state: { order },
+        state: { order, ...withState(opt).state },
       }),
 
     // организации
-    goToOrganization: () => {
-  roleService.setRole("organization");
-  navigate(ROUTES.ORGANIZATION.PROFILE);
-},
+    goToOrganization: (opt?: NavOptions) => {
+      roleService.setRole("organization");
+      navigate(ROUTES.ORGANIZATION.PROFILE, withState(opt));
+    },
 
-    goToCreateForm: () => navigate(ROUTES.ORGANIZATION.EDIT_FORM),
-    goToViewForm: () => navigate(ROUTES.ORGANIZATION.VIEW_FORM),
+    goToCreateForm: (opt?: NavOptions) =>
+      navigate(ROUTES.ORGANIZATION.EDIT_FORM, withState(opt)),
+    goToViewForm: (opt?: NavOptions) =>
+      navigate(ROUTES.ORGANIZATION.VIEW_FORM, withState(opt)),
 
-    goToOrganizationOrders: () => navigate(ROUTES.ORGANIZATION.ORDERS),
+    goToOrganizationOrders: (opt?: NavOptions) =>
+      navigate(ROUTES.ORGANIZATION.ORDERS, withState(opt)),
 
-    goToOrganizationBranches: () => navigate(ROUTES.ORGANIZATION.BRANCH.ALL),
-    goToOrganizationAddBranch: () => navigate(ROUTES.ORGANIZATION.BRANCH.FORM),
-    goToOrganizationBranch: (id: string) =>
-      navigate(`${ROUTES.ORGANIZATION.BRANCH.PROFILE}/${id}`),
+    goToOrganizationBranches: (opt?: NavOptions) =>
+      navigate(ROUTES.ORGANIZATION.BRANCH.ALL, withState(opt)),
+    goToOrganizationAddBranch: (opt?: NavOptions) =>
+      navigate(ROUTES.ORGANIZATION.BRANCH.FORM, withState(opt)),
+    goToOrganizationBranch: (id: string, opt?: NavOptions) =>
+      navigate(`${ROUTES.ORGANIZATION.BRANCH.PROFILE}/${id}`, withState(opt)),
 
-    goToOrganizationAddService: (id: string) =>
-      navigate(generatePath(ROUTES.ORGANIZATION.BRANCH.SERVICE.ADD, { id })),
-    goToOrganizationAddServiceDetail: (id: string, serviceId: string) =>
+    goToOrganizationAddService: (id: string, opt?: NavOptions) =>
+      navigate(
+        generatePath(ROUTES.ORGANIZATION.BRANCH.SERVICE.ADD, { id }),
+        withState(opt),
+      ),
+    goToOrganizationAddServiceDetail: (
+      id: string,
+      serviceId: string,
+      opt?: NavOptions,
+    ) =>
       navigate(
         generatePath(ROUTES.ORGANIZATION.BRANCH.SERVICE.DETAIL, {
           id,
           serviceId,
         }),
+        withState(opt),
       ),
 
-    goToOrganizationAddUser: () => navigate(ROUTES.ORGANIZATION.USERS.FORM),
+    goToOrganizationAddUser: (opt?: NavOptions) =>
+      navigate(ROUTES.ORGANIZATION.USERS.FORM, withState(opt)),
 
     // администраторы
-    goToAdmin: () => navigate(ROUTES.ADMIN.PROFILE),
-    goToAdminFormDetail: () => navigate(ROUTES.ADMIN.FORM_DETAIL),
+    goToAdmin: (opt?: NavOptions) =>
+      navigate(ROUTES.ADMIN.PROFILE, withState(opt)),
+    goToAdminFormDetail: (opt?: NavOptions) =>
+      navigate(ROUTES.ADMIN.FORM_DETAIL, withState(opt)),
   };
 };

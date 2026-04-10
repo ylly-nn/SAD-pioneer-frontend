@@ -4,8 +4,10 @@ import styles from "./BranchFormPage.module.scss";
 import { useNavigation } from "../../../../hooks/useNavigation";
 import { useBranchForm } from "../../../../hooks/useBranchFormLogic";
 import { YMaps, Map } from "@pbe/react-yandex-maps";
+import { usePageToast } from "../../../../hooks/usePageToast";
 
 const BranchFormPage = () => {
+  usePageToast();
   const { goToOrganizationBranches } = useNavigation();
 
   const [ymapsInstance, setYmapsInstance] = useState<any>(null);
@@ -30,7 +32,7 @@ const BranchFormPage = () => {
 
           <button
             className={styles.close}
-            onClick={goToOrganizationBranches}
+            onClick={() => goToOrganizationBranches()}
             type="button"
           >
             ✕

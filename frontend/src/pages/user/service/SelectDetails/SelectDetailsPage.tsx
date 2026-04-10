@@ -3,10 +3,13 @@ import styles from "./SelectDetailsPage.module.scss"
 import { useNavigation } from "../../../../hooks/useNavigation"
 import { useBooking } from "../../../../hooks/useBooking"
 import { useBranchDetails } from "../../../../hooks/useBranchDetails"
+import { usePageToast } from "../../../../hooks/usePageToast";
+
 
 import washImg from "../../../../assets/wash.jpg"
 
 const SelectDetailsPage = () => {
+  usePageToast();
   const { goToSelectOrganization, goToSelectTime } = useNavigation()
   const { booking, isLoaded, updateBooking } = useBooking()
 
@@ -19,7 +22,7 @@ const SelectDetailsPage = () => {
     totalPrice,
     loading,
     error,
-  } = useBranchDetails(booking.serviceByBranchId, booking) // ✅ передаём booking
+  } = useBranchDetails(booking.serviceByBranchId, booking)
 
   useEffect(() => {
     if (!isLoaded) return
@@ -109,7 +112,7 @@ const SelectDetailsPage = () => {
             <div className={styles.footer}>
               <button
                 className={styles.backButton}
-                onClick={goToSelectOrganization}
+                onClick={() => goToSelectOrganization()}
               >
                 Назад
               </button>
@@ -117,7 +120,6 @@ const SelectDetailsPage = () => {
             </div>
           </div>
 
-          {/* RIGHT */}
           <div className={styles.rightSection}>
             <h2 className={styles.rightTitle}>
               Выберите услуги

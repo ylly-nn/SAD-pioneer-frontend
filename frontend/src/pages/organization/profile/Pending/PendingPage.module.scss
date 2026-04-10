@@ -328,7 +328,11 @@
   align-items: center;
 }
 
-
+.error{
+  position: absolute;
+  margin-bottom: 0px;
+  margin-right: 0px;
+}
 
 /* адаптив */
 @media (max-width: 768px) {

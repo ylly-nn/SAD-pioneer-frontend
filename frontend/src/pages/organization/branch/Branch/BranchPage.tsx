@@ -5,8 +5,10 @@ import { useNavigation } from "../../../../hooks/useNavigation";
 import { useModal } from "../../../../hooks/useModal";
 import UserMenu from "../../../../components/modals/UserMenu";
 import { useState } from "react";
+import { usePageToast } from "../../../../hooks/usePageToast";
 
 const BranchPage = () => {
+  usePageToast();
   const {
     goToOrganizationAddService,
     goToOrganizationAddServiceDetail,
@@ -49,7 +51,7 @@ const BranchPage = () => {
           <div>
             <button
               className={styles.toggleModalButton}
-              onClick={goToOrganizationBranches}
+              onClick={() => goToOrganizationBranches()}
             >
               <span>❮</span>
             </button>
