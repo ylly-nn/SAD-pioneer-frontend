@@ -7,7 +7,6 @@ import ConfirmModal from "../../../components/modals/ConfirmModal";
 import { usePageToast } from "../../../hooks/usePageToast";
 
 const formatDate = (date: string | null) => {
-  usePageToast();
   if (!date) return "Не указано";
 
   return new Date(date).toLocaleString("ru-RU", {
@@ -20,6 +19,7 @@ const formatDate = (date: string | null) => {
 };
 
 const FormViewPage = () => {
+  usePageToast();
   const { getStatusStyle, getStatusLabel } = useOrderStatus();
   const { formData, loading, status, reviewedAt, handleAction } =
     useEditFormAdmin();

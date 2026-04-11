@@ -92,6 +92,8 @@
   font-size: clamp(24px, 4vw, 32px);
   color: #F7F7F7;
   font-weight: 700;
+  overflow-wrap: anywhere;
+  hyphens: auto;
 }
 
 .orgContacts {
