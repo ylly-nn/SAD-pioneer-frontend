@@ -160,7 +160,7 @@
 
 @media (max-width: 1200px) {
   .page {
-    height: auto;
+    min-height: 100vh;
     overflow-y: auto;
   }
 
@@ -172,7 +172,7 @@
 
 @media (max-width: 1024px) {
   .page {
-    height: auto;
+    min-height: 100vh;
     overflow-y: auto;
   }
 
@@ -188,7 +188,7 @@
 
 @media (max-width: 768px) {
   .page {
-    height: auto;
+    min-height: 100vh;
     overflow-y: auto;
   }
 
