@@ -1,0 +1,337 @@
+// AddOrganizationUserPage.module.scss
+
+.page {
+  position: relative;
+  background: rgb(22, 71, 71);
+  height: 100vh;
+  width: 100vw;
+}
+
+.page::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("../../../assets/33.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: blur(8px);
+}
+
+.page::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(15, 28, 30, 0.112);
+  z-index: 1;
+}
+
+.card {
+  width: 400px;
+  height: auto;
+  max-height: 90vh;
+  overflow-y: auto;
+
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  background-color: #00000003;
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+  background: linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.119) 0%,
+        rgba(33, 33, 33, 0.299) 80%,
+        rgba(21, 21, 21, 0) 100%
+    );
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(10px);
+  
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 
+      0 8px 20px rgba(0, 0, 0, 0.2),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.1),
+      inset 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.title {
+  color: #f7f7f7;
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.close {
+  color: #f7f7f7;
+  font-weight: bold;
+  height: 32px;
+  width: 32px;
+  font-size: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.close:hover {
+  color: #7c415b;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.description {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 16px;
+  margin: 0 0 8px 0;
+  line-height: 1.5;
+}
+
+.note {
+  color: #549293;
+  font-size: 14px;
+  margin: 0 0 24px 0;
+  font-style: italic;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.field {
+  margin-bottom: 1.5rem;
+}
+
+.label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+  font-size: 16px;
+  color: #f7f7f7;
+}
+
+.input {
+  box-sizing: border-box;
+  height: 45px;
+  width: 100%;
+  border-radius: 5px;
+  border: none;
+  border-bottom: 2px solid #549293;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+  background: none;
+  color: #549293;
+  padding: 0 8px;
+}
+
+.input:-webkit-autofill,
+.input:-webkit-autofill:hover,
+.input:-webkit-autofill:focus,
+.input:-webkit-autofill:active {
+  -webkit-text-fill-color: #549293;
+  box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.01);
+  transition: background-color 5000s ease-in-out 0s;
+  border-radius: 5px;
+  border-bottom: 2px solid #549293;
+}
+
+.input:hover:not(:disabled) {
+  border-color: #7c415b;
+}
+
+.input::placeholder {
+  color: #566262;
+  opacity: 1;
+}
+
+.input:focus {
+  border-color: #f7f7f7;
+  outline: none;
+}
+
+.inputError {
+  border-color: #7c415b;
+}
+
+.inputError:focus {
+  border-color: #7c415b;
+}
+
+.input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.error {
+  color: #7c415b;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.submit {
+  width: 100%;
+  height: 45px;
+  padding: 0.75rem;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background-color: #549293;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.submit:hover:not(:disabled) {
+  background-color: #7c415b;
+}
+
+.submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.infoBox {
+  display: flex;
+  gap: 12px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  margin: 20px 0;
+}
+
+.infoIcon {
+  width: 24px;
+  height: 24px;
+  color: #549293;
+  flex-shrink: 0;
+}
+
+.infoBox p {
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+}
+
+.footer {
+  font-size: 15px;
+  color: #549293;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.backLink {
+  color: #f7f7f7;
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  transition: color 0.2s ease;
+}
+
+.backLink:hover {
+  color: #7c415b;
+}
+
+// Скрываем скроллбар, но оставляем функциональность
+.card::-webkit-scrollbar {
+  width: 4px;
+}
+
+.card::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.card::-webkit-scrollbar-thumb {
+  background: #549293;
+  border-radius: 2px;
+}
+
+.card::-webkit-scrollbar-thumb:hover {
+  background: #7c415b;
+}
+
+.errorGeneral {
+  color: #7c415b;
+  font-size: 14px;
+  margin: 10px 0;
+  text-align: center;
+  padding: 8px;
+  background: rgba(255, 107, 107, 0.1);
+  border-radius: 4px;
+}
+.error.includes{
+  color: #7c415b;
+}
+
+
+@media (max-width: 768px) {
+  .card {
+    width: 75%;
+    padding: 24px;
+  }
+
+  .title {
+    font-size: 26px;
+  }
+
+  .label {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    width: 75%;
+    padding: 16px;
+  }
+
+  .title {
+    font-size: 22px;
+  }
+
+  .input {
+    height: 40px;
+    font-size: 14px;
+  }
+
+  .submit {
+    height: 40px;
+    font-size: 14px;
+  }
+}

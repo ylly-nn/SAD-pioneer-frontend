@@ -1,0 +1,302 @@
+.page {
+  background: #f3f4f6;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.content {
+  margin: 30px auto;
+  height: calc(100vh - 60px);
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.columns {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+/* левая сторона */
+.leftSection {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 48px;
+  gap: 30px;
+}
+
+.header {
+  flex-shrink: 0;
+}
+
+.title {
+  font-size: 26px;
+  font-weight: 600;
+  margin: 0;
+  color: #111827;
+}
+
+.formContent {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.confirmationCard {
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+}
+
+.successIcon {
+  margin-bottom: 24px;
+  animation: scaleIn 0.3s ease-out;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.successTitle {
+  font-size: 24px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 32px;
+}
+
+.details {
+  background: #f9fafb;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 32px;
+  text-align: left;
+}
+
+.detailItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.detailItem:last-child {
+  border-bottom: none;
+}
+
+.detailLabel {
+  font-size: 14px;
+  font-weight: 500;
+  color: #6b7280;
+}
+
+.detailValue {
+  font-size: 14px;
+  font-weight: 500;
+  color: #111827;
+}
+
+.submit {
+  width: 100%;
+  height: 48px;
+  background: #549293;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.submit:hover {
+  background: #447c7d;
+}
+
+.backButton {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  color: #6b7280;
+  transition: 0.2s;
+}
+
+.backButton:hover {
+  color: #549293;
+}
+
+.footer {
+  display: flex;
+}
+
+.step {
+    margin-left: auto;
+  font-size: 14px;
+  color: #9ca3af;
+  align-items: center;
+}
+
+/* правая сторона */
+.rightSection {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  background: linear-gradient(135deg, #549293 0%, #3a6b6c 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+}
+
+.overlay {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.overlayContent {
+  text-align: center;
+  color: white;
+  max-width: 400px;
+}
+
+.overlayTitle {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.overlayText {
+  font-size: 16px;
+  line-height: 1.6;
+  opacity: 0.95;
+}
+
+/* Адаптивность */
+@media (max-width: 1024px) {
+
+  .page {
+    height: auto;
+    overflow: visible;
+  }
+
+  .content {
+    height: auto;
+  }
+
+  .leftSection {
+    padding: 32px;
+  }
+
+  .rightSection {
+    padding: 32px;
+  }
+}
+
+@media (max-width: 768px) {
+
+  .page {
+    height: auto;
+    overflow: visible;
+  }
+
+  .content {
+    height: auto;
+    margin: 10px;
+  }
+
+  .columns {
+    flex-direction: column;
+  }
+  .leftSection {
+    padding: 20px;
+    gap: 20px;
+    overflow: visible;
+  }
+
+  .rightSection {
+    padding: 24px;
+    min-height: 280px;
+    overflow: visible;
+  }
+
+  .confirmationCard {
+    max-width: 100%;
+  }
+
+  .successIcon svg {
+    width: 60px;
+    height: 60px;
+  }
+
+  .successTitle {
+    font-size: 20px;
+    margin-bottom: 24px;
+  }
+
+  .details {
+    padding: 16px;
+  }
+
+  .detailItem {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .submit {
+    height: 44px;
+    font-size: 15px;
+  }
+
+  .overlayContent {
+    max-width: 100%;
+  }
+
+  .overlayTitle {
+    font-size: 22px;
+  }
+
+  .overlayText {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .leftSection {
+    padding: 16px;
+  }
+
+  .rightSection {
+    padding: 20px;
+  }
+
+  .successTitle {
+    font-size: 18px;
+  }
+
+  .overlayTitle {
+    font-size: 20px;
+  }
+
+  .overlayText {
+    font-size: 13px;
+  }
+}

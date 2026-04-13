@@ -1,0 +1,155 @@
+.page {
+  background: #f3f4f6;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.content {
+  margin: 30px auto;
+  height: calc(100vh - 60px);
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.columns {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+/* 🔹 ЛЕВАЯ */
+.leftSection {
+  flex: 0.65;
+  display: flex;
+  flex-direction: column;
+  padding: 48px;
+}
+
+.formContent {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.confirmationCard {
+  width: 100%;
+  max-width: 420px;
+}
+
+/* заголовки */
+.title {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 24px;
+}
+
+/* 🔹 ПРАВАЯ */
+.rightSection {
+  flex: 0.35;
+  background: #f9fafb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+}
+
+.rightCard {
+  width: 100%;
+  max-width: 420px;
+}
+
+/* блоки */
+.sectionTitle {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.details {
+  background: white;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.details1 {
+  background: white;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  padding: 10px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.detailItem {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.detailItem:last-child {
+  border-bottom: none;
+}
+
+.detailLabel {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.detailValue {
+  font-size: 14px;
+  font-weight: 500;
+  color: #111827;
+}
+
+.divider {
+  height: 1px;
+  background: #e5e7eb;
+  margin: 20px 0;
+}
+
+/* кнопка */
+.submit {
+  width: 100%;
+  height: 48px;
+  background: #549293;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+/* адаптив */
+@media (max-width: 768px) {
+  .columns {
+    flex-direction: column;
+  }
+
+  .leftSection,
+  .rightSection {
+    flex: unset;
+    padding: 24px;
+  }
+
+  .content {
+    margin: 15px;
+    height: calc(100vh - 30px);
+  }
+
+  .details1 {
+  max-height: 20vh;
+}
+}

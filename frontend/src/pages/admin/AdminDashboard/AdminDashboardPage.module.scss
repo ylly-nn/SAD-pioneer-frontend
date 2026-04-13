@@ -1,0 +1,277 @@
+.page {
+  background: #f3f4f6;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+}
+
+.container {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.title {
+  font-size: 48px;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0;
+  background: linear-gradient(135deg, #1f2937 0%, #3b4b5e 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  font-size: 16px;
+  color: #6b7280;
+  margin-top: 12px;
+  margin-bottom: 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px;
+  min-height: 400px;
+}
+
+.card {
+  background: white;
+  border-radius: 24px;
+  padding: 48px 32px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #549293 0%, #7fb4b5 100%);
+  transform: translateY(-100%);
+  transition: transform 0.3s ease;
+}
+
+.card:hover::before {
+  transform: translateY(0);
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+  border-color: rgba(84, 146, 147, 0.2);
+}
+
+.cardIcon {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #f0f8f8 0%, #e6f3f3 100%);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  color: #549293;
+  transition: all 0.3s ease;
+}
+
+.card:hover .cardIcon {
+  transform: scale(1.05);
+  background: linear-gradient(135deg, #e6f3f3 0%, #d9eeee 100%);
+}
+
+.cardTitle {
+  font-size: 28px;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 12px 0;
+  line-height: 1.3;
+}
+
+.cardDescription {
+  font-size: 16px;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.6;
+  max-width: 280px;
+}
+
+@media (max-width: 768px) {
+  .page {
+    padding: 24px;
+    align-items: flex-start;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .card {
+    padding: 32px 24px;
+  }
+
+  .cardTitle {
+    font-size: 24px;
+  }
+
+  .title {
+    font-size: 36px;
+  }
+}
+
+.statusNew {
+  background: #fff3e0;
+  color: #ed6c02;
+}
+
+.statusPending {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+
+.statusApproved {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.statusRejected {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.statusContainer {
+  min-width: 140px;
+}
+
+.statusSelect {
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid #e5e7eb;
+  cursor: pointer;
+  background: white;
+  transition: all 0.2s;
+  
+  &:hover {
+    border-color: #549293;
+  }
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.statusSelect.statusNew {
+  background: #fff3e0;
+  color: #ed6c02;
+  border-color: #ffb74d;
+}
+
+.statusSelect.statusPending {
+  background: #e3f2fd;
+  color: #1976d2;
+  border-color: #90caf9;
+}
+
+// Добавить стили для actions
+.actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.actionButton {
+  padding: 8px 16px;
+  background: #f3f4f6;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #4b5563;
+  
+  &:hover {
+    background: #e5e7eb;
+  }
+}
+
+.approveButton {
+  background: #e8f5e9;
+  color: #2e7d32;
+  
+  &:hover {
+    background: #c8e6c9;
+  }
+}
+
+.rejectButton {
+  background: #ffebee;
+  color: #c62828;
+  
+  &:hover {
+    background: #ffcdd2;
+  }
+}
+
+.viewButton {
+  padding: 8px 16px;
+  background: #f3f4f6;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #4b5563;
+  
+  &:hover {
+    background: #549293;
+    color: white;
+  }
+}
+
+.emptyState {
+  text-align: center;
+  padding: 48px;
+  background: white;
+  border-radius: 12px;
+  color: #6b7280;
+  font-size: 16px;
+}
+
+.loader {
+  text-align: center;
+  padding: 48px;
+  color: #6b7280;
+}
+
+.error {
+  text-align: center;
+  padding: 48px;
+  color: #c62828;
+  background: #ffebee;
+  border-radius: 12px;
+  margin-bottom: 16px;
+}
